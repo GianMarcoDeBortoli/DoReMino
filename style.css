@@ -1,0 +1,446 @@
+/* ---------------------------- inizio @media screen -------------------------------------- */
+@media screen {
+
+html,body {
+  height: 100%;
+  margin: 0;
+}
+
+body{
+  font-size: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ---------------------------- grid-container -------------------------------------- */
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "header header header header header"
+    "main main main main main"
+    "main main main main main";
+  /*grid-gap: 0.5em;
+  padding: 0.5em;*/
+  min-height:100%;
+}
+
+/* ---------------------------- END grid-container -------------------------------------- */
+
+/* ---------------------------- grid-containerPlayGame -------------------------------------- */
+
+.grid-containerPlayGame {
+  display: grid;
+  grid-template-areas:
+    "header header header header header"
+    "main main main main main"
+    "main main main main main";
+  /*grid-gap: 0.5em;
+  padding: 0.5em;*/
+  min-height:30%;
+}
+
+/* ---------------------------- END grid-containerPlayGame -------------------------------------- */
+
+/* ---------------header------------*/
+.theheader{
+  background-color: lightgrey;
+  /*background-image: url('notes.png');
+  background-size: 100% 150%;
+  background-repeat: no-repeat;*/
+  color: white;
+  grid-area: header;
+  padding: 0.1em;
+  text-align:center;
+  min-width: 30em;
+}
+
+h1 {
+/*margin:-250px 0 0 0;*/
+/*height:138px;*/
+display:block;
+text-align:center;
+color: #f1f1f1;
+text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+font: normal normal 100px Monaco;
+/*width:400px;
+/*float:center;*/
+margin:0;
+}
+
+h2 {
+/*margin:-250px 0 0 0;*/
+/*height:138px;*/
+display:block;
+text-align:center;
+color: #f1f1f1;
+text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+font: normal normal 50px Monaco;
+/*width:400px;
+/*float:center;*/
+margin:0 -20px -80px -20px;
+}
+
+
+/* --------------- fine header ------------*/
+
+/* ---------------header PlayGame ------------*/
+.theheaderPlayGame{
+  color: white;
+  grid-area: header;
+  padding: 1em 3em 0 3em;
+  text-align:center;
+  min-width: 20em;
+}
+/* --------------- fine header ------------*/
+
+/* ---------------------------- content in NewGame -------------------------------------- */
+.thecontent {
+  grid-area: main;
+  padding:4% 5% 4% 5%;
+  min-width: 30em;
+}
+/* ---------------------------- END content in NewGame -------------------------------------- */
+
+/* ---------------------------- form in NewGame -------------------------------------- */
+div.form {
+    border: 0.2em solid lightgrey;
+    width: 80%;
+    margin: auto;
+    padding: 3em 1em 3em 1em;
+    border-radius: 0.4em; /* arrotondamento angoli */
+    text-align: center;
+}
+
+.form input[type=submit], button {
+    /*font-size: 100%;
+    width: 30%;
+    background-color: black;
+    color: white;
+    padding: 1em 1em;
+    margin: 0.8em 2em;
+    border: none;
+    border-radius: 0.4em;*/
+    font-size: 100%;
+    width:400px;
+    height:60px;
+    border: none;
+    margin: 3em 0 0.5em 3em;
+    position: relative;
+    z-index:99999;
+    text-align:center;
+    display: inline-block;
+    color: #f1f1f1;
+    outline: none;
+    background: #33bbff;
+    background: -moz-linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    background: -o-linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    background: -webkit-linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    background: linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+    box-shadow: inset 0 -1px 1px #66ccff, 0 8px 0 #0088cc, 0 10px 15px rgba(0, 0, 0, 0.35);
+    -moz-transition: all 100ms ease-in-out;
+    -o-transition: all 100ms ease-in-out;
+    -webkit-transition: all 100ms ease-in-out;
+    -ms-transition: all 100ms ease-in-out;
+    transition: all 100ms ease-in-out;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    font: normal normal 2em/1 Monaco;
+    text-decoration: none;
+}
+
+.form button {
+  margin: 2em 0 20px 15em;
+}
+.form input[type=submit]:hover, button:hover {
+    color: rgba(0, 0, 0, 0.1);
+}
+
+
+.form label {
+    float:left;
+    display: inline-block;
+    width:20%;
+    font: normal normal 1.5em Monaco;
+}
+
+/*.form select {
+  width:55%;
+  font-size: 100%;
+  padding: 0.5em 0.5em;
+  margin: 3em 2em;
+}*/
+
+/* ----------------------------  costumize select in startGame -------------------------------------- */
+/* The container must be positioned relative: */
+.custom-select {
+  float:left;
+  position: relative;
+  font: normal normal 1em Monaco;
+  display: inline-block;
+  width:20%;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+  background-color: #33bbff;
+  /*border-radius: 0.4em; /* arrotondamento angoli */
+}
+
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  background-color: #33bbff;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+/* ---------------------------- END costumize select in startGame -------------------------------------- */
+
+/* ---------------------------- END form in NewGame -------------------------------------- */
+
+/* --------------------------------- timer PlayGame ------------------------------------- */
+#timer {
+  font-family: sans-serif;
+  color: black;
+  display: grid;
+  place-items: center;
+  float: right;
+  display:block;
+}
+
+.base-timer {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}
+
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.base-timer__path-elapsed {
+  stroke-width: 7px;
+  stroke: grey;
+}
+
+.base-timer__path-remaining {
+  stroke-width: 7px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+  color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+  color: orange;
+}
+
+.base-timer__path-remaining.red {
+  color: red;
+}
+
+.base-timer__label {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+/* --------------------------------- END timer PlayGame ------------------------------------- */
+
+/* -------------------------------- bar content PlayGame ---------------------------- */
+.button {
+  background: limegreen;
+  color: black;
+  text-align: center;
+  width: 10%;
+  margin:0 1% 2% 0%;
+  border-radius: 5px;
+  padding: 1%;
+  cursor: pointer;
+  float: left;
+  display:block;
+  font: normal normal 1.5em Monaco;
+}
+
+.button:hover{
+  background-color: lightgreen;
+}
+
+#finishGame{
+  float:right;
+}
+
+#bar {
+  background-color: lightgrey;
+  /*padding: 1% 0% 1% 1%;*/
+  padding:10px;
+  border-radius: 5px;
+  width: 65%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.tile {
+  width: 60px;
+  height: 124px;
+  border-radius: 5px;
+  display: inline-block;
+  background-color: white;
+  border: 2px solid black;
+  cursor: pointer;
+}
+.tileUpper {
+  width: 60px;
+  height: 60px;
+  border-radius: 3px 3px 0px 0px;
+  display: inline-block;
+  background-color: black;
+
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.tileLower {
+  width: 60px;
+  height: 60px;
+  border-radius: 0px 0px 3px 3px;
+  background-color: black;
+  cursor: pointer;
+}
+
+.darkSlateBlue{
+  background-color: darkSlateBlue;
+}
+
+.darkGoldenRod{
+  background-color: darkGoldenRod;
+}
+
+.darkRed{
+  background-color: darkRed;
+}
+
+.paleVioletRed{
+  background-color: paleVioletRed;
+}
+
+.darkGreen{
+  background-color: darkGreen;
+}
+
+.darkBlue{
+  background-color: darkBlue;
+}
+
+.lawnGreen{
+   background-color: lawnGreen;
+}
+
+.darkSlateGray{
+  background-color: darkSlateGray;
+}
+
+.darkOrange{
+  background-color: darkOrange;
+}
+
+.turquoise{
+  background-color: turquoise;
+}
+
+.yellow {
+background-color: yellow;
+}
+
+.red {
+  background-color: red;
+}
+
+.slateBlue{
+  background-color: slateBlue;
+}
+
+.goldenRod{
+  background-color: goldenRod;
+}
+
+.fireBrick{
+  background-color: fireBrick;
+}
+
+.lightPink{
+  background-color: lightPink;
+}
+
+.forestGreen{
+  background-color: forestGreen;
+}
+
+.blue{
+  background-color: blue;
+}
+/* -------------------------------- END bar content PlayGame ---------------------------- */
+
+}
+/* ---------------------------- END @media screen -------------------------------------- */
