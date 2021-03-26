@@ -3,11 +3,12 @@ const modelLength = 10
 var grades = []
 let tiles = document.querySelectorAll(".tile");
 var setPieces = [] // elenco dei tiles con associati i due gradi e l'angolazione
+let pieceNum = -1; //mi serve per togliere la tessera droppata dall'array setPieces
 const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen","darkBlue","lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]
 // nel nome di questi colori si potrebbe anche mettere il nome della nota corrispondente, non serve ma se ci aiuta a livello di codice si può fare
-const barContainer = document.getElementById("bar")
 
-// function to get parameters from URL ----------------------------------------------------
+
+// function to get parameters from URL ------------------------------------------------------------------------------
 function parseGetVars()
 {
   // creo una array
@@ -61,16 +62,21 @@ if(mode == "Ionian"){
 }else if(mode == "Locrian"){
   grades = [-4,-2,0,1,3,5,6,8,10,12]
 }
-// ---------------- END of the portion of code related to create grades --------------------------
+// ---------------- END of the portion of code related to create grades ---------------------------------------------
 
 // VIEW
 // Creates a button of the specified color
-function createTile(color1,color2) {
+function createTile(color1,color2,i) {
   // creo il tassello di domino
   let tile = document.createElement("div");
-  tile.classList.add("tile");
+  tile.classList.add("tile_v");
 
-  tile.addEventListener("dblclick", function(){rotate(tile)});
+
+  // assegnare un id ad ogni tile --------
+  tile.id = i;
+
+  tile.setAttribute("draggable", true)
+  tile.addEventListener("dragstart",  function() {pieceNum = drag(event)})
 
   // faccio due sottoclassi con la parte sopra e sotto
   // che sono di due colori diversi
@@ -82,8 +88,56 @@ function createTile(color1,color2) {
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
 
+  tile.addEventListener("dblclick", call_rotate);
+
   return tile
 }
+
+// -------------------- funzioni per DRAG and DROP ------------------------------------------------
+
+//funzione che, dato l'evento drag su un elemento ne raccoglie i dati avendo come argomento l'ID dell'elemento stesso
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+  let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
+  return i;
+}
+
+//funzione che assegna all'elemento container gli eventhandlers necessari a permettere il drop al suo interno
+function dropBox(array) {
+  let i = 0;
+  while(array[i]) {
+    if (array[i].children.length == 0) {
+      array[i].addEventListener("drop", function() {drop(event)})
+      array[i].addEventListener("dragover", function() {allowDrop(event)})
+      break;
+    }
+    i++;
+  }
+}
+dropBox(containerArray);
+
+//funzione che non ho capito a che serva
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+//funzione che, dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare
+//la plice su setPieces serve a rimuovere dall'array la tessera appena droppata per far si che la funzione rotate continui a funzionare tramite l'indice preso dall'elemento bar
+function drop(ev) {
+  if (ev.target.children.length === 0) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+    setPieces.splice(pieceNum, 1);
+    console.log(setPieces);
+    ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
+    ev.target.removeEventListener("drop", function() {drop(event)});
+    ev.target.removeEventListener("dragover", function() {allowDrop(event)});
+    dropBox(containerArray);
+  }
+}
+// -------------------- END funzioni per DRAG and DROP -------------------------------------------------
+
 
 //------------ createSet() non so se vada in VIEW ---------------------
 function createSet(){
@@ -98,8 +152,8 @@ function createSet(){
    const number1 = Math.floor(Math.random() * colorsAvailable.length)
    const number2 = Math.floor(Math.random() * colorsAvailable.length)
    //Math.floor() restituisce un numero intero arrotondato per difetto
-      const tile = createTile(colorsAvailable[number1],colorsAvailable[number2]) // Create actual tile of that two colors chosen in a randomic way
-barContainer.appendChild(tile) // Add it to the bar div
+   const tile = createTile(colorsAvailable[number1],colorsAvailable[number2],i) // Create actual tile of that two colors chosen in a randomic way
+   barContainer.appendChild(tile) // Add it to the bar div
    piece = {
      // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
      tile: tile,
@@ -110,47 +164,83 @@ barContainer.appendChild(tile) // Add it to the bar div
 
    setPieces.push(piece)
     }
+      render()
 }
 //------------ FINE createSet() non so se vada in VIEW -----
 
-function rotate(tile){
-  for(let i = 0; i< setPieces.length; i++){
-    if(setPieces[i].tile==tile){
-      // at the beginning I have [grade1, grade2]
-      if(setPieces[i].angle==0){
-          tile.style.transform = "rotate(90deg)";
-          setPieces[i].angle=90;
-          // I also want to swap grade1 and grade2 to have [grade2, grade1]
-          let g1 = setPieces[i].grade1; // variabile di supporto
-          setPieces[i].grade1 = setPieces[i].grade2;
-          setPieces[i].grade2 = g1;
-      }else if(setPieces[i].angle==90){
-          tile.style.transform = "rotate(180deg)";
-          setPieces[i].angle=180;
-          // I still have [grade2, grade1]
-      }else if(setPieces[i].angle==180){
-          tile.style.transform = "rotate(270deg)";
-          setPieces[i].angle=270;
-          // I again want to swap grade1 and grade2 to have [grade1, grade2]
-          let g1 = setPieces[i].grade1; // variabile di supporto
-          setPieces[i].grade1 = boardPieces[i].grade2;
-          setPieces[i].grade2 = g1;
-      }else if(setPieces[i].angle==270){
-          tile.style.transform = "rotate(360deg)";
-          setPieces[i].angle=0;
-      }else{
-        // se non ci troviamo in uno di questi casi dovrebbe esserci un errore
-        // tile.style.transform = "rotate(20deg)"; era un modo per vedere se entrava in questo else visivamente
+// --------------------------- rotation ----------------------------------------------------------
+//funzione che calcola il nuovo angolo da dare al piece ruotato
+function iterate_angle(n) {
+  n += 90;
+  n = n % 360;
+  return n;
+}
+//in ordine: trova l'indice della tessera all'interno di setPieces passando per la bar;
+//la if serve a permettere la la rotazione anche se l'evento avviene su upper o lower;
+//controlla l'angolo del piece su cui avviene l'evento per decidere come agire;
+//se serve, scambia di posto tileupper e tilelower e i due grade all'interno del piece;
+//infine modifica l'angolo del piece
+function rotate(event){
+  let i =  Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget)
+  if (event.target = event.currentTarget) {
+    // at the beginning I have [grade1, grade2]
+    if (setPieces[i].angle == 0) {
+      event.currentTarget.classList.remove("tile_v");
+      event.currentTarget.classList.add("tile_h");
+      //event.currentTarget.style.flexFlow = "row-reverse wrap"; //questa riga dovrebbe fare la stessa cosa delle seguenti sei
+      let tileUpper = event.currentTarget.firstElementChild;
+      let tileLower = event.currentTarget.lastElementChild;
+      while (event.currentTarget.firstChild) {
+        event.currentTarget.removeChild(event.currentTarget.lastChild);
       }
+      event.currentTarget.appendChild(tileLower);
+      event.currentTarget.appendChild(tileUpper);
+      // I also want to swap grade1 and grade2 to have [grade2, grade1]
+      let tempGrade = setPieces[i].grade1;
+      setPieces[i].grade1 = setPieces[i].grade2;
+      setPieces[i].grade2 = tempGrade;
     }
+    if (setPieces[i].angle == 90) {
+      event.currentTarget.classList.remove("tile_h");
+      event.currentTarget.classList.add("tile_v");
+      // I still have [grade2, grade1]
+    }
+    if (setPieces[i].angle == 180) {
+      event.currentTarget.classList.remove("tile_v");
+      event.currentTarget.classList.add("tile_h");
+      let tileUpper = event.currentTarget.firstElementChild;
+      let tileLower = event.currentTarget.lastElementChild;
+      while (event.currentTarget.firstChild) {
+        event.currentTarget.removeChild(event.currentTarget.lastChild);
+      }
+      event.currentTarget.appendChild(tileLower);
+      event.currentTarget.appendChild(tileUpper);
+      // I again want to swap grade1 and grade2 to have [grade1, grade2]
+      let tempGrade = setPieces[i].grade1;
+      setPieces[i].grade1 = setPieces[i].grade2;
+      setPieces[i].grade2 = tempGrade;
+    }
+    if (setPieces[i].angle == 270) {
+      event.currentTarget.classList.remove("tile_h");
+      event.currentTarget.classList.add("tile_v");
+    }
+    setPieces[i].angle = iterate_angle(setPieces[i].angle);
+    console.log(setPieces[i]);
   }
 }
+
+//funzione ausiliaria che chiama la rotate per gestire l'eventListener corrispondente
+function call_rotate () {
+  rotate(event);
+}
+// --------------------------- END rotation ----------------------------------------------------------
 
 // Different from the normal render function because it has to create all the tiles
 
 function firstPainfulRender() {
+  const barContainer = document.getElementById("bar");
   createSet();
-  render()
+  render();
 }
 
 // -------------------------------------- Timer --------------------------------------------------

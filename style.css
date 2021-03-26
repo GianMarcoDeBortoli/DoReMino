@@ -338,18 +338,38 @@ div.form {
   border-radius: 5px;
   width: 65%;
   display: flex;
-  justify-content: space-around;
+  flex-flow: row wrap;
 }
 
-.tile {
+.tile_v {
   width: 60px;
-  height: 124px;
+  height: 125px;
+  border-radius: 5px;
+  background-color: white;
+  border: 2px solid black;
+  margin-right: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.tile_h {
+  width: 125px;
+  height: 60px;
   border-radius: 5px;
   display: inline-block;
   background-color: white;
   border: 2px solid black;
+  margin-right: 10px;
   cursor: pointer;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-self: center;
 }
+
 .tileUpper {
   width: 60px;
   height: 60px;
