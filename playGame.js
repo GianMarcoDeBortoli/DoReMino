@@ -8,6 +8,7 @@ const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "da
 // nel nome di questi colori si potrebbe anche mettere il nome della nota corrispondente, non serve ma se ci aiuta a livello di codice si può fare
 
 
+
 // function to get parameters from URL ------------------------------------------------------------------------------
 function parseGetVars()
 {
@@ -63,6 +64,20 @@ if(mode == "Ionian"){
   grades = [-4,-2,0,1,3,5,6,8,10,12]
 }
 // ---------------- END of the portion of code related to create grades ---------------------------------------------
+
+//funzione che crea le caselle all'interno del contenitore #containers e assegna le classi per la distribuzione spaziale
+function createTable() {
+  let table = document.getElementById("containers");
+  for (i = 0; i < 4; i++) {
+    let box = document.createElement("div");
+    box.id = "dropContainer"+i;
+    box.classList.add("box");
+    table.appendChild(box);
+  }
+}
+
+//creo un array che contenga i tre contenitori "drop" creati in html
+let containerArray = document.getElementById("containers").children;
 
 // VIEW
 // Creates a button of the specified color

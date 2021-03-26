@@ -462,5 +462,35 @@ background-color: yellow;
 }
 /* -------------------------------- END bar content PlayGame ---------------------------- */
 
+/* ------------------- style percorso temporaneo ---------------------------------- */
+.firstRow {
+  width: 124px;
+  height: 60px;
+  border: 1px solid black;
+  margin: 10px;
+  display: inline-block;
+  position: relative;
+}
+
+.firstChange {
+  width: 60px;
+  height: 124px;
+  border: 1px solid black;
+  margin: 10px;
+  display: block;
+  position: relative;
+  left: 670px;
+}
+
+.secondRow {
+  width: 124px;
+  height: 60px;
+  border: 1px solid black;
+  margin: 10px;
+  display: inline-block;
+  position: relative;
+}
+/* -------------------  END style percorso temporaneo ---------------------------------- */
+
 }
 /* ---------------------------- END @media screen -------------------------------------- */
