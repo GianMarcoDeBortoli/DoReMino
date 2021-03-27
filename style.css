@@ -336,7 +336,7 @@ div.form {
   /*padding: 1% 0% 1% 1%;*/
   padding:10px;
   border-radius: 5px;
-  width: 65%;
+  width: 90%;
   display: flex;
   flex-flow: row wrap;
 }
@@ -373,18 +373,16 @@ div.form {
 .tileUpper {
   width: 60px;
   height: 60px;
-  border-radius: 3px 3px 0px 0px;
+  /*border-radius: 3px 3px 0px 0px;*/
   display: inline-block;
   background-color: black;
-
-  margin-right: 5px;
   cursor: pointer;
 }
 
 .tileLower {
   width: 60px;
   height: 60px;
-  border-radius: 0px 0px 3px 3px;
+  /*border-radius: 0px 0px 3px 3px;*/
   background-color: black;
   cursor: pointer;
 }

@@ -6,7 +6,7 @@ var setPieces = [] // elenco dei tiles con associati i due gradi e l'angolazione
 let pieceNum = -1; //mi serve per togliere la tessera droppata dall'array setPieces
 const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen","darkBlue","lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]
 // nel nome di questi colori si potrebbe anche mettere il nome della nota corrispondente, non serve ma se ci aiuta a livello di codice si può fare
-
+const barContainer = document.getElementById("bar");
 
 
 // function to get parameters from URL ------------------------------------------------------------------------------
@@ -253,7 +253,6 @@ function call_rotate () {
 // Different from the normal render function because it has to create all the tiles
 
 function firstPainfulRender() {
-  const barContainer = document.getElementById("bar");
   createSet();
   render();
 }
