@@ -1,4 +1,4 @@
-// MODEL
+//------------------------------------------------------- MODEL-----------------------------------------------------------
 const modelLength = 10
 var grades = []
 let tiles = document.querySelectorAll(".tile");
@@ -9,45 +9,40 @@ const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "da
 const barContainer = document.getElementById("bar");
 
 
-// function to get parameters from URL ------------------------------------------------------------------------------
-function parseGetVars()
-{
-  // creo una array
-  var args = new Array();
-  // individuo la query (cioè tutto quello che sta a destra del ?)
-  // per farlo uso il metodo substring della proprietà search
-  // dell'oggetto location
-  var query = window.location.search.substring(1);
-  // se c'è una querystring procedo alla sua analisi
-  if (query)
-  {
-    // divido la querystring in blocchi sulla base del carattere &
-    // (il carattere & è usato per concatenare i diversi parametri della URL)
-    var strList = query.split('&');
-    // faccio un ciclo per leggere i blocchi individuati nella querystring
-    for(str in strList)
-    {
-      // divido ogni blocco mediante il simbolo uguale
-      // (uguale è usato per l'assegnazione del valore)
-      var parts = strList[str].split('=');
-      // inserisco nella array args l'accoppiata nome = valore di ciascun
-      // parametro presente nella querystring
-      args[unescape(parts[0])] = unescape(parts[1]);
-    }
-  }
-  return args;
+//boxes
+const boxesPerRow = 6;
+const dim1 = 60;
+const dim2 = 124;
+const spaceBetweenBoxes = 5;
+
+//table
+const rows = 6;
+const rowHeight = dim2 + 10; //10 is padding
+const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 40; //40 is padding
+const tableHeight = rows * rowHeight;
+
+let table = document.getElementById("table");
+
+
+//--------------------------------------------------------------------------------------------------------------------------
+
+
+//-------------------------------------------TILES CREATION AND MANAGEMENT--------------------------------------------------
+
+// function to get parameters from URL
+// URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
+// per accedere ai valori del dizionario si usa la get(key)
+function parseGetVars() {
+
+  let params = new URLSearchParams(document.location.search.substring(1));
+  let modal = params.get("mode");
+  return modal;
+
 }
 
-// Recupero i valori passati con GET
-// Per farlo creo una variabile cui assegno come valore
-// il risultato della funzione vista in precedenza
-var get = parseGetVars();
+let mode = parseGetVars();
 
-// estraggo dall'array contenente i valori della querystring
-// il valore del parametro "sito"
-var mode = get['mode'];
-
-//riempire grades in base al mode ricevuto da select dell'utente
+// Riempire grades in base al mode ricevuto da select dell'utente
 if(mode == "Ionian"){
   grades = [-5,-3,-1,0,2,4,5,7,9,11,12]
 }else if(mode == "Dorian"){
@@ -63,33 +58,14 @@ if(mode == "Ionian"){
 }else if(mode == "Locrian"){
   grades = [-4,-2,0,1,3,5,6,8,10,12]
 }
-// ---------------- END of the portion of code related to create grades ---------------------------------------------
 
-//funzione che crea le caselle all'interno del contenitore #containers e assegna le classi per la distribuzione spaziale
-function createTable() {
-  let table = document.getElementById("containers");
-  for (i = 0; i < 4; i++) {
-    let box = document.createElement("div");
-    box.id = "dropContainer"+i;
-    box.classList.add("box");
-    table.appendChild(box);
-  }
-}
 
-//creo un array che contenga i tre contenitori "drop" creati in html
-let containerArray = document.getElementById("containers").children;
-
-// VIEW
-// Creates a button of the specified color
+// Creates a tile of the specified color
 function createTile(color1,color2,i) {
-  // creo il tassello di domino
+
   let tile = document.createElement("div");
   tile.classList.add("tile_v");
-
-
-  // assegnare un id ad ogni tile --------
-  tile.id = i;
-
+  tile.id = i;   // L'id serve al drag
   tile.setAttribute("draggable", true)
   tile.addEventListener("dragstart",  function() {pieceNum = drag(event)})
 
@@ -106,90 +82,44 @@ function createTile(color1,color2,i) {
   tile.addEventListener("dblclick", call_rotate);
 
   return tile
+
 }
 
-// -------------------- funzioni per DRAG and DROP ------------------------------------------------
 
-//funzione che, dato l'evento drag su un elemento ne raccoglie i dati avendo come argomento l'ID dell'elemento stesso
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-  let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
-  return i;
-}
+function createSet() {
 
-//funzione che assegna all'elemento container gli eventhandlers necessari a permettere il drop al suo interno
-function dropBox(array) {
-  let i = 0;
-  while(array[i]) {
-    if (array[i].children.length == 0) {
-      array[i].addEventListener("drop", function() {drop(event)})
-      array[i].addEventListener("dragover", function() {allowDrop(event)})
-      break;
+  let colorsAvailable= []
+  // per tutti i valori di grades, inserisco nei colori da utilizzare in questa partita, un sottogruppo di quelli disponibili, selezionando i colori in colors in base al numero presente in grades
+  for(let i = 0; i < grades.length; i++){
+    colorsAvailable[i] = colors[grades[i]+5]; // for example -5 in grades becomes 0 in colors, because i want to use the position to access colors: colors[0] corresponds always to grade -5
+  }
+
+  for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
+    const number1 = Math.floor(Math.random() * colorsAvailable.length)
+    const number2 = Math.floor(Math.random() * colorsAvailable.length)
+    //Math.floor() restituisce un numero intero arrotondato per difetto
+    const tile = createTile(colorsAvailable[number1],colorsAvailable[number2],i) // Create actual tile of that two colors chosen in a randomic way
+    barContainer.appendChild(tile) // Add it to the bar div
+    piece = {
+      // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
+      tile: tile,
+      grade1: number1-5,
+      grade2: number2-5,
+      angle: 0,
     }
-    i++;
+
+    setPieces.push(piece)
   }
 }
-dropBox(containerArray);
-
-//funzione che non ho capito a che serva
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-//funzione che, dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare
-//la plice su setPieces serve a rimuovere dall'array la tessera appena droppata per far si che la funzione rotate continui a funzionare tramite l'indice preso dall'elemento bar
-function drop(ev) {
-  if (ev.target.children.length === 0) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-    setPieces.splice(pieceNum, 1);
-    console.log(setPieces);
-    ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-    ev.target.removeEventListener("drop", function() {drop(event)});
-    ev.target.removeEventListener("dragover", function() {allowDrop(event)});
-    dropBox(containerArray);
-  }
-}
-// -------------------- END funzioni per DRAG and DROP -------------------------------------------------
 
 
-//------------ createSet() non so se vada in VIEW ---------------------
-function createSet(){
- //const barContainer = document.getElementById("bar") l'ho spostata in model
- let colorsAvailable= []
- // per tutti i valori di grades, inserisco nei colori da utilizzare in questa partita, un sottogruppo di quelli disponibili, selezionando i colori in colors in base al numero presente in grades
- for(let i = 0; i < grades.length; i++){
-   colorsAvailable[i] = colors[grades[i]+5]; // for example -5 in grades becomes 0 in colors, because i want to use the position to access colors: colors[0] corresponds always to grade -5
- }
-
- for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
-   const number1 = Math.floor(Math.random() * colorsAvailable.length)
-   const number2 = Math.floor(Math.random() * colorsAvailable.length)
-   //Math.floor() restituisce un numero intero arrotondato per difetto
-   const tile = createTile(colorsAvailable[number1],colorsAvailable[number2],i) // Create actual tile of that two colors chosen in a randomic way
-   barContainer.appendChild(tile) // Add it to the bar div
-   piece = {
-     // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
-     tile: tile,
-     grade1: number1-5,
-     grade2: number2-5,
-     angle: 0,
-   }
-
-   setPieces.push(piece)
-    }
-      render()
-}
-//------------ FINE createSet() non so se vada in VIEW -----
-
-// --------------------------- rotation ----------------------------------------------------------
 //funzione che calcola il nuovo angolo da dare al piece ruotato
 function iterate_angle(n) {
   n += 90;
   n = n % 360;
   return n;
 }
+
 //in ordine: trova l'indice della tessera all'interno di setPieces passando per la bar;
 //la if serve a permettere la la rotazione anche se l'evento avviene su upper o lower;
 //controlla l'angolo del piece su cui avviene l'evento per decidere come agire;
@@ -248,16 +178,184 @@ function rotate(event){
 function call_rotate () {
   rotate(event);
 }
-// --------------------------- END rotation ----------------------------------------------------------
 
-// Different from the normal render function because it has to create all the tiles
+//---------------------------------------------------------------------------------------------------------------
+
+
+//----------------------------------------CREATE TABLE-----------------------------------------------------------
+
+
+//prende in argomento la const table, il numero di rows e l'altezza di una row.
+//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
+function add_rows(table, num, height) {
+  for (i = 0; i < num; i++) {
+      let row = document.createElement("div");
+      row.classList.add("row");
+      row.id = "row"+i;
+      row.style.height = height+"px";
+      if (i%2 == 0) {
+          row.style.flexFlow = "row wrap";
+      } else {
+          row.style.flexFlow = "row-reverse wrap";
+      }
+      table.appendChild(row);
+  }
+}
+
+//due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
+function horiz_box(box, dim1, dim2) {
+  box.classList.add("box_h");
+  box.style.width = dim2+"px";
+  box.style.height = dim1+"px";
+}
+
+function vert_box(box, dim1, dim2) {
+  box.classList.add("box_v");
+  box.style.width = dim1+"px";
+  box.style.height = dim2+"px";
+}
+
+//prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
+//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
+//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
+function add_boxes(numRows, numBoxes, width, height) {
+  let cntbox = 0;
+
+  for (i = 0; i < numRows; i++) {
+
+      let row = document.getElementById("row"+i);
+
+      for (j = 0; j < numBoxes-1; j++) {
+          let box = document.createElement("div");
+          horiz_box(box, width, height);
+          box.textContent = cntbox;
+          cntbox++;
+          row.appendChild(box);
+      }
+
+      let box = document.createElement("div");
+      vert_box(box, width, height);
+      box.textContent = cntbox;
+      cntbox++;
+      row.appendChild(box);
+  }
+}
+
+
+function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
+  table.style.width = tableWidth+"px";
+  table.style.height = tableHeight+"px";
+  add_rows(table, numRows, rowHeight);
+  add_boxes(numRows, numBoxes, width, height)
+}
+
+
+//---------------------------------------------------------------------------------------------------------------
+
+
+//------------------------------------------------------RENDER---------------------------------------------------
 
 function firstPainfulRender() {
   createSet();
-  render();
+  draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2);
 }
 
-// -------------------------------------- Timer --------------------------------------------------
+firstPainfulRender()
+
+//---------------------------------------------------------------------------------------------------------------
+
+
+//----------------------------------------------------CONTROLLER-------------------------------------------------
+
+function change_set() {
+  for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
+     barContainer.removeChild(setPieces[i].tile)
+  }
+  // svuotare setPieces
+  setPieces = []
+  createSet()
+}
+
+changeSet.onclick = change_set
+
+//---------------------------------------------------------------------------------------------------------------
+
+
+// -------------------------------------------------DRAG and DROP------------------------------------------------
+
+
+// Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
+let rowCollection = document.getElementById("table").children;
+let boxes = [];
+for (i = 0; i < rows; i++) {
+    let rowChild = rowCollection[i].children;
+    for (j = 0; j < boxesPerRow; j++) {
+        boxes.push(rowChild[j]);
+    }
+}
+
+// Funzioni ausiliarie che permettono la cancellazione dell'eventiListener quando serve.
+function add_drop() {drop(event)};
+function add_prevent_drop() {prevent_drop(event)};
+
+// PreventDefault() impedisce che all'evento a cui è legato sia associata un'azione di default del browser.
+// Per esempio se in mozilla, per default, l'evento dragover aziona il drop siamo fregati.
+function prevent_drop(ev) {
+  ev.preventDefault();
+}
+
+// Dato l'evento drag su un elemento ne raccoglie i dati avendo come argomento l'ID dell'elemento stesso.
+// Inoltre, draggando una tessera, raccoglie l'indice della stessa passando per il parent "bar"
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+  let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
+  return i;
+}
+
+// Assegna solamente al primo elemento senza figli dell'array dato gli eventListeners necessari a permettere il drop
+// al suo interno e toglie l'attributo draggable all'ultima tessera inserita.
+function drop_box(array) {
+  let i = 0;
+  while(array[i]) {
+    if (array[i-1]) {
+      array[i-1].children[0].setAttribute("draggable", false);
+    }
+    if (array[i].children.length == 0) {
+      array[i].addEventListener("drop", add_drop);
+      array[i].addEventListener("dragover", add_prevent_drop);
+      break;
+    }
+    i++;
+  }
+}
+drop_box(boxes);
+
+
+// Dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare tramite l'id.
+// La plice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
+// continui a funzionare tramite l'indice preso dall'elemento "bar"
+function drop(ev) {
+  if (ev.target.children.length === 0) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+    setPieces.splice(pieceNum, 1);
+    console.log(setPieces);
+    ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
+    ev.target.removeEventListener("drop", add_drop);
+    ev.target.removeEventListener("dragover", add_prevent_drop);
+    drop_box(boxes);
+    console.log(ev.target.firstElementChild);
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+
+
+
+// ----------------------------------------------------------- TIMER --------------------------------------------------
+
+
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 10;
 const ALERT_THRESHOLD = 5;
@@ -373,24 +471,3 @@ function setCircleDasharray() {
     .setAttribute("stroke-dasharray", circleDasharray);
 }
 //---------------------------------END timer -------------------------------------
-
-// Updates the classes to display the selected keys as described in model.
-function render() {
-  tiles = document.querySelectorAll(".tile");
-}
-
-// CONTROLLER
-
-function change_set() {
-   for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
-      barContainer.removeChild(setPieces[i].tile)
-   }
-  // svuotare setPieces
-  setPieces = []
-  createSet()
-  render()
-}
-
-changeSet.onclick = change_set
-
-firstPainfulRender()

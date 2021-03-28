@@ -461,33 +461,33 @@ background-color: yellow;
 /* -------------------------------- END bar content PlayGame ---------------------------- */
 
 /* ------------------- style percorso temporaneo ---------------------------------- */
-.firstRow {
-  width: 124px;
-  height: 60px;
-  border: 1px solid black;
-  margin: 10px;
-  display: inline-block;
-  position: relative;
+
+
+#table {
+  display: flex;
+  background-color: grey;
+  flex-direction: column;
 }
 
-.firstChange {
-  width: 60px;
-  height: 124px;
-  border: 1px solid black;
-  margin: 10px;
-  display: block;
-  position: relative;
-  left: 670px;
+.row {
+  background-color: red;
+  display: flex;
+  width: auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 5px 20px 0 20px;
 }
 
-.secondRow {
-  width: 124px;
-  height: 60px;
-  border: 1px solid black;
-  margin: 10px;
-  display: inline-block;
-  position: relative;
+.box_h {
+  align-self: flex-start;
+  background-color: white;
 }
+
+.box_v {
+  align-self: flex-start;
+  background-color: white;
+}
+
 /* -------------------  END style percorso temporaneo ---------------------------------- */
 
 }
