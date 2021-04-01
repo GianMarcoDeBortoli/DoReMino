@@ -12,13 +12,13 @@ const barContainer = document.getElementById("bar");
 //boxes
 const boxesPerRow = 6;
 const dim1 = 60;
-const dim2 = 124;
+const dim2 = 120;
 const spaceBetweenBoxes = 5;
 
 //table
 const rows = 6;
 const rowHeight = dim2 + 10; //10 is padding
-const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 40; //40 is padding
+const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 20; //40 is padding
 const tableHeight = rows * rowHeight;
 
 let table = document.getElementById("table");
@@ -204,15 +204,16 @@ function add_rows(table, num, height) {
 
 //due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
 function horiz_box(box, dim1, dim2) {
-  box.classList.add("box_h");
+  box.classList.add("box");
   box.style.width = dim2+"px";
   box.style.height = dim1+"px";
 }
 
 function vert_box(box, dim1, dim2) {
-  box.classList.add("box_v");
+  box.classList.add("box");
   box.style.width = dim1+"px";
   box.style.height = dim2+"px";
+  
 }
 
 //prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
@@ -333,19 +334,31 @@ drop_box(boxes);
 
 // Dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare tramite l'id.
 // La plice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
-// continui a funzionare tramite l'indice preso dall'elemento "bar"
+// continui a funzionare tramite l'indice pieceNum preso dall'elemento "bar" tramite il drag
 function drop(ev) {
   if (ev.target.children.length === 0) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-    setPieces.splice(pieceNum, 1);
-    console.log(setPieces);
-    ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-    ev.target.removeEventListener("drop", add_drop);
-    ev.target.removeEventListener("dragover", add_prevent_drop);
-    drop_box(boxes);
-    console.log(ev.target.firstElementChild);
+    //controllo che la casella e la tessera siano entrambe orizzontali
+    if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      ev.target.appendChild(document.getElementById(data));
+      setPieces.splice(pieceNum, 1);
+      ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
+      ev.target.removeEventListener("drop", add_drop);
+      ev.target.removeEventListener("dragover", add_prevent_drop);
+      drop_box(boxes);
+    }
+    //controllo che la casella e la tessera siano entrambe verticali
+    else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      ev.target.appendChild(document.getElementById(data));
+      setPieces.splice(pieceNum, 1);
+      ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
+      ev.target.removeEventListener("drop", add_drop);
+      ev.target.removeEventListener("dragover", add_prevent_drop);
+      drop_box(boxes);
+    }
   }
 }
 
