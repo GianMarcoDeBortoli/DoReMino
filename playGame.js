@@ -4,10 +4,17 @@ var grades = []
 let tiles = document.querySelectorAll(".tile");
 var setPieces = [] // elenco dei tiles con associati i due gradi e l'angolazione
 let pieceNum = -1; //mi serve per togliere la tessera droppata dall'array setPieces
+//let  = 10; // mi serve per changeset che dipende dal numero di elementi in setPieces
 const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen","darkBlue","lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]
 // nel nome di questi colori si potrebbe anche mettere il nome della nota corrispondente, non serve ma se ci aiuta a livello di codice si può fare
 const barContainer = document.getElementById("bar");
+var result = [] // array con la sequenza creata man mano che aggiungo pezzi al board
 
+// un nuovo elemento nascosto del form per passare il risultato come parametro URL
+var hiddenField = document.createElement("input");
+hiddenField.setAttribute("type", "hidden");
+hiddenField.setAttribute("name", "result");
+document.getElementById("fPlayGame").appendChild(hiddenField);
 
 //boxes
 const boxesPerRow = 6;
@@ -213,7 +220,7 @@ function vert_box(box, dim1, dim2) {
   box.classList.add("box");
   box.style.width = dim1+"px";
   box.style.height = dim2+"px";
-  
+
 }
 
 //prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
@@ -230,6 +237,7 @@ function add_boxes(numRows, numBoxes, width, height) {
           let box = document.createElement("div");
           horiz_box(box, width, height);
           box.textContent = cntbox;
+          //box.id = cntbox;
           cntbox++;
           row.appendChild(box);
       }
@@ -237,6 +245,7 @@ function add_boxes(numRows, numBoxes, width, height) {
       let box = document.createElement("div");
       vert_box(box, width, height);
       box.textContent = cntbox;
+      //box.id = cntbox;
       cntbox++;
       row.appendChild(box);
   }
@@ -269,7 +278,7 @@ firstPainfulRender()
 //----------------------------------------------------CONTROLLER-------------------------------------------------
 
 function change_set() {
-  for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
+  for (let i = 0; i < setPieces.length; i++) { // For each element of the model, so of the bar
      barContainer.removeChild(setPieces[i].tile)
   }
   // svuotare setPieces
@@ -333,26 +342,33 @@ drop_box(boxes);
 
 
 // Dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare tramite l'id.
-// La plice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
+// La splice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
 // continui a funzionare tramite l'indice pieceNum preso dall'elemento "bar" tramite il drag
 function drop(ev) {
   if (ev.target.children.length === 0) {
     //controllo che la casella e la tessera siano entrambe orizzontali
     if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
+      //if(result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
+      //}else{
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");
       ev.target.appendChild(document.getElementById(data));
+      // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+      addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2);
       setPieces.splice(pieceNum, 1);
       ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
       ev.target.removeEventListener("drop", add_drop);
       ev.target.removeEventListener("dragover", add_prevent_drop);
       drop_box(boxes);
+      //}
     }
     //controllo che la casella e la tessera siano entrambe verticali
     else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");
       ev.target.appendChild(document.getElementById(data));
+      // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+      addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2);
       setPieces.splice(pieceNum, 1);
       ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
       ev.target.removeEventListener("drop", add_drop);
@@ -360,10 +376,19 @@ function drop(ev) {
       drop_box(boxes);
     }
   }
+
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+function addToSequence(grade1, grade2){
+  result.push(grade1);
+  result.push(grade2);
 
+  hiddenField.setAttribute("value", result.join('-'));
+  // in questo momento in result ci sono i "doppioni"
+}
+
+//document.write(result)
 
 
 // ----------------------------------------------------------- TIMER --------------------------------------------------

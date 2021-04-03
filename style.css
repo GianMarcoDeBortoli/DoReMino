@@ -313,7 +313,7 @@ div.form {
   background: limegreen;
   color: black;
   text-align: center;
-  width: 10%;
+  width: 17%;
   margin:0 1% 2% 0%;
   border-radius: 5px;
   padding: 1%;
@@ -329,6 +329,17 @@ div.form {
 
 #finishGame{
   float:right;
+  font-size: 100%;
+  width: 20%;
+  border: none;
+  position: relative;
+  text-align:center;
+  display: inline-block;
+  outline: none;
+  border-radius: 6px;
+  text-decoration: none;
+  font: normal normal 1.5em Monaco;
+  margin:0 1% 2% 0%;
 }
 
 #bar {

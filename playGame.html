@@ -15,14 +15,16 @@
 	<main class="grid-containerPlayGame">
 
 		<div class="theheaderPlayGame">
+		<form name="fPlayGame" id="fPlayGame" method="GET" action="endGame.html">
 			<!-- <h1>Domino</h1>
 			<h2>New Game</h2> -->
 			<div id="changeSet" class="button">Change Set</div>
 			<div id="timer"></div>
-			<div id="finishGame" class="button">Finish Game</div>
+			<input type="submit" id="finishGame" class="button" value="Finish Game">
 			<div id="bar"></div>
 			<div id="table"></div>
-		
+
+		</form>
 		</div>
 
 		<div class="thecontent">
@@ -34,7 +36,7 @@
 	    </div>
 
 	</main>
-	
+
 	<script type="text/javascript" src="playGame.js"></script>
 </body>
 
