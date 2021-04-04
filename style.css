@@ -37,7 +37,7 @@ body{
     "main main main main main";
   /*grid-gap: 0.5em;
   padding: 0.5em;*/
-  min-height:30%;
+  min-height:40%;
 }
 
 /* ---------------------------- END grid-containerPlayGame -------------------------------------- */
@@ -112,7 +112,7 @@ div.form {
     text-align: center;
 }
 
-.form input[type=submit], button {
+.form input[type=submit], input[type=button] {
     /*font-size: 100%;
     width: 30%;
     background-color: black;
@@ -122,7 +122,7 @@ div.form {
     border: none;
     border-radius: 0.4em;*/
     font-size: 100%;
-    width:400px;
+    width:500px;
     height:60px;
     border: none;
     margin: 3em 0 0.5em 3em;
@@ -153,10 +153,7 @@ div.form {
     text-decoration: none;
 }
 
-.form button {
-  margin: 2em 0 20px 15em;
-}
-.form input[type=submit]:hover, button:hover {
+.form input[type=submit]:hover, input[type=button]:hover {
     color: rgba(0, 0, 0, 0.1);
 }
 

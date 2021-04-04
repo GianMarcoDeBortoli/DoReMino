@@ -375,6 +375,7 @@ function drop(ev) {
     //controllo che la casella e la tessera siano entrambe verticali
     else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
       if(result[result.length-1]!=setPieces[pieceNum].grade1){
+        cartoonFeedback("color_match");
       }else{
         ev.target.textContent ="";
         ev.preventDefault();
