@@ -16,19 +16,25 @@ hiddenField.setAttribute("type", "hidden");
 hiddenField.setAttribute("name", "result");
 document.getElementById("fPlayGame").appendChild(hiddenField);
 
+//var hiddenField2 = document.createElement("input");
+
 //boxes
-const boxesPerRow = 6;
+const boxesPerRow = 9;
 const dim1 = 60;
 const dim2 = 120;
 const spaceBetweenBoxes = 5;
 
 //table
-const rows = 6;
+const rows = 3;
 const rowHeight = dim2 + 10; //10 is padding
 const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 20; //40 is padding
 const tableHeight = rows * rowHeight;
 
 let table = document.getElementById("table");
+
+//var cartoon = document.createElement("div");
+//cartoon.classList.add("cartoon");
+//document.getElementById("fPlayGame").appendChild(cartoon);
 
 
 //--------------------------------------------------------------------------------------------------------------------------
@@ -349,7 +355,9 @@ function drop(ev) {
     //controllo che la casella e la tessera siano entrambe orizzontali
     if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
       if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
+        cartoonFeedback("color_match");
       }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade2){
+        cartoonFeedback("color_match");
       }else{
       ev.target.textContent= "";
       ev.preventDefault();
@@ -374,12 +382,15 @@ function drop(ev) {
         ev.target.appendChild(document.getElementById(data));
         // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
         addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,0);
+        // passo 0 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
         setPieces.splice(pieceNum, 1);
         ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
         ev.target.removeEventListener("drop", add_drop);
         ev.target.removeEventListener("dragover", add_prevent_drop);
         drop_box(boxes);
       }
+    }else{
+      cartoonFeedback("wrong_rotation");
     }
   }
 
@@ -391,8 +402,24 @@ function addToSequence(grade1,grade2,id){
     result.push(grade1,grade2);
   else
     result.push(grade2,grade1);
-  hiddenField.setAttribute("value", result.join('-'));
+
+  hiddenField.setAttribute("value", result.join('_'));
   // in questo momento in result ci sono i "doppioni"
+}
+
+// questa funzione in base al parametro, che dipende dal tipo di feedback che devo dare,
+// fa comparire il fumetto con il commento
+function cartoonFeedback(feedback){
+  let cartoon = document.getElementById("cartoon");
+  cartoon.style.display = "inherit";
+  if(feedback=="color_match"){
+    cartoon.textContent = "Remember to match the color!";
+
+  }
+  if(feedback=="wrong_rotation"){
+    cartoon.textContent = "Remember you can rotate the tile!";
+  }
+  setTimeout(function(){cartoon.style.display="none"}, 2000);
 }
 
 
@@ -455,6 +482,10 @@ startTimer();
 function onTimesUp() {
   clearInterval(timerInterval);
   // qua devo scrivere il codice per fare la stessa cosa che faccio se clicco su Finish Game
+  //hiddenField2.setAttribute("type", "submit");
+  //hiddenField2.setAttribute("name", "end");
+  //document.getElementById("fPlayGame").appendChild(hiddenField2);
+  document.fPlayGame.submit();
 }
 
 function startTimer() {

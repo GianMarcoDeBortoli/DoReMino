@@ -244,6 +244,44 @@ div.form {
 
 /* ---------------------------- END form in NewGame -------------------------------------- */
 
+/* --------------------------------- cartoon PlayGame ------------------------------------- */
+.cartoon {
+  position: fixed;
+  padding: 3em 1em 3em 1em;
+  width:30%;
+  /*float:center;*/
+  /*display:inherit;*/
+  margin:0 18.5em 2em;
+  color:#000;
+  background:#f3961c; /* bg */
+  /* css3 */
+  /*background:-webkit-gradient(linear, 0 0, 0 100%, from(#AFEEEE), to(#E0FFFF));*/
+  background:-moz-linear-gradient(#00BFFF, #87CEFA);
+  background:-o-linear-gradient(#00BFFF, #87CEFA);
+  background:linear-gradient(#00BFFF, #87CEFA);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+  font: normal normal 1em Monaco;
+  display:none;
+}
+
+
+
+.cartoon:after {
+  content:"";
+  position:absolute;
+  bottom:-15px; /* valore = - border-top-width - border-bottom-width */
+  /*left:50px; /* posizionamento orizzontale */
+  border-width:15px 15px 0;
+  border-style:solid;
+  border-color:#87CEFA transparent;
+  /* FF3.0 fix */
+  display:block;
+  width:0;
+}
+/* --------------------------------- ENDcartoon PlayGame ------------------------------------- */
+
 /* --------------------------------- timer PlayGame ------------------------------------- */
 #timer {
   font-family: sans-serif;
@@ -252,6 +290,7 @@ div.form {
   place-items: center;
   float: right;
   display:block;
+  margin: 0 0 1% 0;
 }
 
 .base-timer {
@@ -346,7 +385,7 @@ div.form {
   background-color: lightgrey;
   padding:10px;
   border-radius: 5px;
-  width: 90%;
+  width: 95%;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
@@ -475,6 +514,7 @@ background-color: yellow;
   display: flex;
   background-color: grey;
   flex-direction: column;
+  margin: 1% 0 0 0;
 }
 
 .row {
