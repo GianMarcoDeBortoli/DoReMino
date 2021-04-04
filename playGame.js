@@ -237,7 +237,7 @@ function add_boxes(numRows, numBoxes, width, height) {
           let box = document.createElement("div");
           horiz_box(box, width, height);
           box.textContent = cntbox;
-          //box.id = cntbox;
+          box.id = cntbox;
           cntbox++;
           row.appendChild(box);
       }
@@ -245,7 +245,7 @@ function add_boxes(numRows, numBoxes, width, height) {
       let box = document.createElement("div");
       vert_box(box, width, height);
       box.textContent = cntbox;
-      //box.id = cntbox;
+      box.id = cntbox;
       cntbox++;
       row.appendChild(box);
   }
@@ -348,45 +348,53 @@ function drop(ev) {
   if (ev.target.children.length === 0) {
     //controllo che la casella e la tessera siano entrambe orizzontali
     if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
-      //if(result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
-      //}else{
+      if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
+      }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade2){
+      }else{
+      ev.target.textContent= "";
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");
       ev.target.appendChild(document.getElementById(data));
       // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
-      addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2);
+      addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,ev.target.id);
       setPieces.splice(pieceNum, 1);
       ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
       ev.target.removeEventListener("drop", add_drop);
       ev.target.removeEventListener("dragover", add_prevent_drop);
       drop_box(boxes);
-      //}
+      }
     }
     //controllo che la casella e la tessera siano entrambe verticali
     else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      ev.target.appendChild(document.getElementById(data));
-      // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
-      addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2);
-      setPieces.splice(pieceNum, 1);
-      ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-      ev.target.removeEventListener("drop", add_drop);
-      ev.target.removeEventListener("dragover", add_prevent_drop);
-      drop_box(boxes);
+      if(result[result.length-1]!=setPieces[pieceNum].grade1){
+      }else{
+        ev.target.textContent ="";
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+        // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+        addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,0);
+        setPieces.splice(pieceNum, 1);
+        ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
+        ev.target.removeEventListener("drop", add_drop);
+        ev.target.removeEventListener("dragover", add_prevent_drop);
+        drop_box(boxes);
+      }
     }
   }
 
 }
 
 // -------------------------------------------------------------------------------------------------------------------
-function addToSequence(grade1, grade2){
-  result.push(grade1);
-  result.push(grade2);
-
+function addToSequence(grade1,grade2,id){
+  if(Math.floor((id)/boxesPerRow)%2==0)
+    result.push(grade1,grade2);
+  else
+    result.push(grade2,grade1);
   hiddenField.setAttribute("value", result.join('-'));
   // in questo momento in result ci sono i "doppioni"
 }
+
 
 //document.write(result)
 
