@@ -37,7 +37,7 @@ let table = document.getElementById("table");
 //document.getElementById("fPlayGame").appendChild(cartoon);
 
 
-//--------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------END of MODEL--------------------------------------------------------------
 
 
 //-------------------------------------------TILES CREATION AND MANAGEMENT--------------------------------------------------
@@ -294,10 +294,10 @@ function change_set() {
 
 changeSet.onclick = change_set
 
-//---------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------
 
 
-// -------------------------------------------------DRAG and DROP------------------------------------------------
+// -------------------------------------------------DRAG and DROP----------------------------------------------------
 
 
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
@@ -382,8 +382,8 @@ function drop(ev) {
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
         // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
-        addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,0);
-        // passo 0 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
+        addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,1);
+        // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
         setPieces.splice(pieceNum, 1);
         ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
         ev.target.removeEventListener("drop", add_drop);
@@ -399,10 +399,16 @@ function drop(ev) {
 
 // -------------------------------------------------------------------------------------------------------------------
 function addToSequence(grade1,grade2,id){
-  if(Math.floor((id)/boxesPerRow)%2==0)
+  if(id==0){
     result.push(grade1,grade2);
-  else
-    result.push(grade2,grade1);
+  }else if(Math.floor((id)/boxesPerRow)%2==0){
+    //result.push(grade1,grade2);
+    result.push(grade2);
+  }else{
+    //result.push(grade2,grade1);
+    result.push(grade1);
+  }
+
 
   hiddenField.setAttribute("value", result.join('_'));
   // in questo momento in result ci sono i "doppioni"
@@ -427,7 +433,7 @@ function cartoonFeedback(feedback){
 //document.write(result)
 
 
-// ----------------------------------------------------------- TIMER --------------------------------------------------
+// ----------------------------------------------------------- TIMER ------------------------------------------------------
 
 
 const FULL_DASH_ARRAY = 283;
@@ -548,4 +554,4 @@ function setCircleDasharray() {
     .getElementById("base-timer-path-remaining")
     .setAttribute("stroke-dasharray", circleDasharray);
 }
-//---------------------------------END timer -------------------------------------
+//---------------------------------END timer ---------------------------------------------------------------------------

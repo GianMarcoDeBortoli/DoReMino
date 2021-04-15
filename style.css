@@ -105,7 +105,7 @@ margin:0 -20px -80px -20px;
 /* ---------------------------- form in NewGame -------------------------------------- */
 div.form {
     border: 0.2em solid lightgrey;
-    width: 80%;
+    width: 70%;
     margin: auto;
     padding: 3em 1em 3em 1em;
     border-radius: 0.4em; /* arrotondamento angoli */
@@ -122,14 +122,14 @@ div.form {
     border: none;
     border-radius: 0.4em;*/
     font-size: 100%;
-    width:500px;
-    height:60px;
+    width:60%;
+    height:70px;
     border: none;
     margin: 3em 0 0.5em 3em;
     position: relative;
-    z-index:99999;
+    /*z-index:99999;*/
     text-align:center;
-    display: inline-block;
+    /*display: inline-block;*/
     color: #f1f1f1;
     outline: none;
     background: #33bbff;
@@ -156,6 +156,7 @@ div.form {
 .form input[type=submit]:hover, input[type=button]:hover {
     color: rgba(0, 0, 0, 0.1);
 }
+
 
 
 .form label {
