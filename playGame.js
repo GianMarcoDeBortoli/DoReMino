@@ -1,22 +1,23 @@
-//------------------------------------------------------- MODEL-----------------------------------------------------------
+//------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
 var grades = []
 let tiles = document.querySelectorAll(".tile");
 var setPieces = [] // elenco dei tiles con associati i due gradi e l'angolazione
-let pieceNum = -1; //mi serve per togliere la tessera droppata dall'array setPieces
-//let  = 10; // mi serve per changeset che dipende dal numero di elementi in setPieces
+let pieceNum = -1; // I need this to remove the dropped tile from setPieces array
 const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen","darkBlue","lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]
-// nel nome di questi colori si potrebbe anche mettere il nome della nota corrispondente, non serve ma se ci aiuta a livello di codice si può fare
+// each color is associated to a note
+let colorsAvailable= []
+// for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
+// by selecting the colors in colors corresponding to the number present in grades
+let lowerGrades = 5;
 const barContainer = document.getElementById("bar");
-var result = [] // array con la sequenza creata man mano che aggiungo pezzi al board
+var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
-// un nuovo elemento nascosto del form per passare il risultato come parametro URL
+// a new element hidden in the form to pass the result as a URL parameter
 var hiddenField = document.createElement("input");
 hiddenField.setAttribute("type", "hidden");
 hiddenField.setAttribute("name", "result");
 document.getElementById("fPlayGame").appendChild(hiddenField);
-
-//var hiddenField2 = document.createElement("input");
 
 //boxes
 const boxesPerRow = 9;
@@ -32,58 +33,103 @@ const tableHeight = rows * rowHeight;
 
 let table = document.getElementById("table");
 
-//var cartoon = document.createElement("div");
-//cartoon.classList.add("cartoon");
-//document.getElementById("fPlayGame").appendChild(cartoon);
+// ------------ TIMER model ------------------
+const FULL_DASH_ARRAY = 283;
+const WARNING_THRESHOLD = 10;
+const ALERT_THRESHOLD = 5;
 
+const COLOR_CODES = {
+  info: {
+    color: "green"
+  },
+  warning: {
+    color: "orange",
+    threshold: WARNING_THRESHOLD
+  },
+  alert: {
+    color: "red",
+    threshold: ALERT_THRESHOLD
+  }
+};
 
-//-----------------------------------------------END of MODEL--------------------------------------------------------------
+const TIME_LIMIT = 120;
+let timePassed = 0;
+let timeLeft = TIME_LIMIT;
+let timerInterval = null;
+let remainingPathColor = COLOR_CODES.info.color;
 
+document.getElementById("timer").innerHTML = `
+<div class="base-timer">
+  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <g class="base-timer__circle">
+      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+      <path
+        id="base-timer-path-remaining"
+        stroke-dasharray="283"
+        class="base-timer__path-remaining ${remainingPathColor}"
+        d="
+          M 50, 50
+          m -45, 0
+          a 45,45 0 1,0 90,0
+          a 45,45 0 1,0 -90,0
+        "
+      ></path>
+    </g>
+  </svg>
+  <span id="base-timer-label" class="base-timer__label">${formatTime(
+    timeLeft
+  )}</span>
+</div>
+`;
+// ------------ END of TIMER model ------------------
 
-//-------------------------------------------TILES CREATION AND MANAGEMENT--------------------------------------------------
+//---------------------------------------------- END of MODEL --------------------------------------------------------------
+
+// is this model?
 
 // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
 // per accedere ai valori del dizionario si usa la get(key)
 function parseGetVars() {
-
   let params = new URLSearchParams(document.location.search.substring(1));
   let modal = params.get("mode");
   return modal;
-
 }
 
 let mode = parseGetVars();
 
-// Riempire grades in base al mode ricevuto da select dell'utente
-if(mode == "Ionian"){
-  grades = [-5,-3,-1,0,2,4,5,7,9,11,12]
-}else if(mode == "Dorian"){
-  grades = [-5,-3,-2,0,2,3,5,7,9,10,12]
-}else if(mode == "Phrygian"){
-  grades = [-5,-4,-2,0,1,3,5,7,8,10,12]
-}else if(mode == "Lydian"){
-  grades = [-5,-3,-1,0,2,4,6,7,9,11,12]
-}else if(mode == "Myxolydian"){
-  grades = [-5,-3,-2,0,2,4,5,7,9,10,12]
-}else if(mode == "Aeolian"){
-  grades = [-5,-4,-2,0,2,3,5,7,8,10,12]
-}else if(mode == "Locrian"){
-  grades = [-4,-2,0,1,3,5,6,8,10,12]
+// Filling grades according to the mode received by the select input in the form by the user
+switch(mode){
+  case "Ionian":
+    grades = [-5,-3,-1,0,2,4,5,7,9,11,12]
+    break;
+  case "Dorian":
+    grades = [-5,-3,-2,0,2,3,5,7,9,10,12]
+    break;
+  case "Phrygian":
+    grades = [-5,-4,-2,0,1,3,5,7,8,10,12]
+    break;
+  case "Lydian":
+    grades = [-5,-3,-1,0,2,4,6,7,9,11,12]
+  case "Myxolydian":
+    grades = [-5,-3,-2,0,2,4,5,7,9,10,12]
+  case "Aeolian":
+    grades = [-5,-4,-2,0,2,3,5,7,8,10,12]
+  case "Locrian":
+    grades = [-4,-2,0,1,3,5,6,8,10,12]
 }
 
+//----------------------------------------------- VIEW --------------------------------------------------------------
 
 // Creates a tile of the specified color
 function createTile(color1,color2,i) {
-
   let tile = document.createElement("div");
   tile.classList.add("tile_v");
   tile.id = i;   // L'id serve al drag
   tile.setAttribute("draggable", true)
   tile.addEventListener("dragstart",  function() {pieceNum = drag(event)})
 
-  // faccio due sottoclassi con la parte sopra e sotto
-  // che sono di due colori diversi
+  // I create two subclasses with the lower and upper part that are of two different colors
   const tileUpper = document.createElement("div");
   tileUpper.classList.add("tileUpper",color1);
   const tileLower = document.createElement("div");
@@ -92,19 +138,16 @@ function createTile(color1,color2,i) {
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
 
-  tile.addEventListener("dblclick", call_rotate);
+  tile.addEventListener("dblclick", call_rotate); // non so se questo sia giusto che sia nella view ?
 
   return tile
 
 }
 
-
 function createSet() {
-
-  let colorsAvailable= []
-  // per tutti i valori di grades, inserisco nei colori da utilizzare in questa partita, un sottogruppo di quelli disponibili, selezionando i colori in colors in base al numero presente in grades
   for(let i = 0; i < grades.length; i++){
-    colorsAvailable[i] = colors[grades[i]+5]; // for example -5 in grades becomes 0 in colors, because i want to use the position to access colors: colors[0] corresponds always to grade -5
+    colorsAvailable[i] = colors[grades[i]+lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
+    // because I want to use the position to access colors: colors[0] corresponds always to grade -5
   }
 
   for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
@@ -116,8 +159,8 @@ function createSet() {
     piece = {
       // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
       tile: tile,
-      grade1: number1-5,
-      grade2: number2-5,
+      grade1: number1-lowerGrades,
+      grade2: number2-lowerGrades,
       angle: 0,
     }
 
@@ -125,6 +168,86 @@ function createSet() {
   }
 }
 
+//---------------------------------------- CREATION of TABLE -----------------------------------------------------------
+//prende in argomento la const table, il numero di rows e l'altezza di una row.
+//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
+function add_rows(table, num, height) {
+  for (i = 0; i < num; i++) {
+      let row = document.createElement("div");
+      row.classList.add("row");
+      row.id = "row"+i;
+      row.style.height = height+"px";
+      if (i%2 == 0) {
+          row.style.flexFlow = "row wrap";
+      } else {
+          row.style.flexFlow = "row-reverse wrap";
+      }
+      table.appendChild(row);
+  }
+}
+
+//due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
+function horiz_box(box, dim1, dim2) {
+  box.classList.add("box");
+  box.style.width = dim2+"px";
+  box.style.height = dim1+"px";
+}
+
+function vert_box(box, dim1, dim2) {
+  box.classList.add("box");
+  box.style.width = dim1+"px";
+  box.style.height = dim2+"px";
+
+}
+
+//prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
+//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
+//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
+function add_boxes(numRows, numBoxes, width, height) {
+  let cntbox = 0;
+
+  for (i = 0; i < numRows; i++) {
+
+      let row = document.getElementById("row"+i);
+
+      for (j = 0; j < numBoxes-1; j++) {
+          let box = document.createElement("div");
+          horiz_box(box, width, height);
+          box.textContent = cntbox;
+          box.id = cntbox;
+          cntbox++;
+          row.appendChild(box);
+      }
+
+      let box = document.createElement("div");
+      vert_box(box, width, height);
+      box.textContent = cntbox;
+      box.id = cntbox;
+      cntbox++;
+      row.appendChild(box);
+  }
+}
+
+
+function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
+  table.style.width = tableWidth+"px";
+  table.style.height = tableHeight+"px";
+  add_rows(table, numRows, rowHeight);
+  add_boxes(numRows, numBoxes, width, height)
+}
+//---------------------------------------- END of CREATION of TABLE -----------------------------------------------------------
+
+// render
+function firstPainfulRender() {
+  createSet();
+  draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2);
+}
+//document.write(result)
+firstPainfulRender()
+//----------------------------------------------- END of VIEW --------------------------------------------------------------
+
+
+//----------------------------------------------- CONTROLLER --------------------------------------------------------------
 
 //funzione che calcola il nuovo angolo da dare al piece ruotato
 function iterate_angle(n) {
@@ -192,97 +315,6 @@ function call_rotate () {
   rotate(event);
 }
 
-//---------------------------------------------------------------------------------------------------------------
-
-
-//----------------------------------------CREATE TABLE-----------------------------------------------------------
-
-
-//prende in argomento la const table, il numero di rows e l'altezza di una row.
-//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
-function add_rows(table, num, height) {
-  for (i = 0; i < num; i++) {
-      let row = document.createElement("div");
-      row.classList.add("row");
-      row.id = "row"+i;
-      row.style.height = height+"px";
-      if (i%2 == 0) {
-          row.style.flexFlow = "row wrap";
-      } else {
-          row.style.flexFlow = "row-reverse wrap";
-      }
-      table.appendChild(row);
-  }
-}
-
-//due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
-function horiz_box(box, dim1, dim2) {
-  box.classList.add("box");
-  box.style.width = dim2+"px";
-  box.style.height = dim1+"px";
-}
-
-function vert_box(box, dim1, dim2) {
-  box.classList.add("box");
-  box.style.width = dim1+"px";
-  box.style.height = dim2+"px";
-
-}
-
-//prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
-//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
-//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
-function add_boxes(numRows, numBoxes, width, height) {
-  let cntbox = 0;
-
-  for (i = 0; i < numRows; i++) {
-
-      let row = document.getElementById("row"+i);
-
-      for (j = 0; j < numBoxes-1; j++) {
-          let box = document.createElement("div");
-          horiz_box(box, width, height);
-          box.textContent = cntbox;
-          box.id = cntbox;
-          cntbox++;
-          row.appendChild(box);
-      }
-
-      let box = document.createElement("div");
-      vert_box(box, width, height);
-      box.textContent = cntbox;
-      box.id = cntbox;
-      cntbox++;
-      row.appendChild(box);
-  }
-}
-
-
-function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
-  table.style.width = tableWidth+"px";
-  table.style.height = tableHeight+"px";
-  add_rows(table, numRows, rowHeight);
-  add_boxes(numRows, numBoxes, width, height)
-}
-
-
-//---------------------------------------------------------------------------------------------------------------
-
-
-//------------------------------------------------------RENDER---------------------------------------------------
-
-function firstPainfulRender() {
-  createSet();
-  draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2);
-}
-
-firstPainfulRender()
-
-//---------------------------------------------------------------------------------------------------------------
-
-
-//----------------------------------------------------CONTROLLER-------------------------------------------------
-
 function change_set() {
   for (let i = 0; i < setPieces.length; i++) { // For each element of the model, so of the bar
      barContainer.removeChild(setPieces[i].tile)
@@ -294,12 +326,7 @@ function change_set() {
 
 changeSet.onclick = change_set
 
-//-------------------------------------------------------------------------------------------------------------------
-
-
-// -------------------------------------------------DRAG and DROP----------------------------------------------------
-
-
+// ------------------------------------------------- DRAG and DROP --------------------------------
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
 let rowCollection = document.getElementById("table").children;
 let boxes = [];
@@ -345,7 +372,6 @@ function drop_box(array) {
   }
 }
 drop_box(boxes);
-
 
 // Dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare tramite l'id.
 // La splice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
@@ -397,7 +423,7 @@ function drop(ev) {
 
 }
 
-// -------------------------------------------------------------------------------------------------------------------
+// this function adds the tile
 function addToSequence(grade1,grade2,id){
   if(id==0){
     result.push(grade1,grade2);
@@ -408,7 +434,6 @@ function addToSequence(grade1,grade2,id){
     //result.push(grade2,grade1);
     result.push(grade1);
   }
-
 
   hiddenField.setAttribute("value", result.join('_'));
   // in questo momento in result ci sono i "doppioni"
@@ -428,64 +453,10 @@ function cartoonFeedback(feedback){
   }
   setTimeout(function(){cartoon.style.display="none"}, 2000);
 }
+//------------------------------------------- END of DRAG and DROP ---------------------------
 
-
-//document.write(result)
-
-
-// ----------------------------------------------------------- TIMER ------------------------------------------------------
-
-
-const FULL_DASH_ARRAY = 283;
-const WARNING_THRESHOLD = 10;
-const ALERT_THRESHOLD = 5;
-
-const COLOR_CODES = {
-  info: {
-    color: "green"
-  },
-  warning: {
-    color: "orange",
-    threshold: WARNING_THRESHOLD
-  },
-  alert: {
-    color: "red",
-    threshold: ALERT_THRESHOLD
-  }
-};
-
-const TIME_LIMIT = 120;
-let timePassed = 0;
-let timeLeft = TIME_LIMIT;
-let timerInterval = null;
-let remainingPathColor = COLOR_CODES.info.color;
-
-document.getElementById("timer").innerHTML = `
-<div class="base-timer">
-  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <g class="base-timer__circle">
-      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-      <path
-        id="base-timer-path-remaining"
-        stroke-dasharray="283"
-        class="base-timer__path-remaining ${remainingPathColor}"
-        d="
-          M 50, 50
-          m -45, 0
-          a 45,45 0 1,0 90,0
-          a 45,45 0 1,0 -90,0
-        "
-      ></path>
-    </g>
-  </svg>
-  <span id="base-timer-label" class="base-timer__label">${formatTime(
-    timeLeft
-  )}</span>
-</div>
-`;
-
+// ------------ TIMER controller ------------------
 startTimer();
-
 function onTimesUp() {
   clearInterval(timerInterval);
   // qua devo scrivere il codice per fare la stessa cosa che faccio se clicco su Finish Game
@@ -554,4 +525,5 @@ function setCircleDasharray() {
     .getElementById("base-timer-path-remaining")
     .setAttribute("stroke-dasharray", circleDasharray);
 }
-//---------------------------------END timer ---------------------------------------------------------------------------
+// ------------ END of TIMER controller ------------------
+//-----------------------------------------------END of CONTROLLER--------------------------------------------------------------
