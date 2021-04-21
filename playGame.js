@@ -9,7 +9,7 @@ const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "da
 let colorsAvailable= []
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
-let lowerGrades = 5;
+let lowerGrades = 5; //? nome
 const barContainer = document.getElementById("bar");
 var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
@@ -83,10 +83,6 @@ document.getElementById("timer").innerHTML = `
 `;
 // ------------ END of TIMER model ------------------
 
-//---------------------------------------------- END of MODEL --------------------------------------------------------------
-
-// is this model?
-
 // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
 // per accedere ai valori del dizionario si usa la get(key)
@@ -107,7 +103,7 @@ switch(mode){
     grades = [-5,-3,-2,0,2,3,5,7,9,10,12]
     break;
   case "Phrygian":
-    grades = [-5,-4,-2,0,1,3,5,7,8,10,12]
+    grades = [-4,-2,-0,1,3,5,7,8,10,12]
     break;
   case "Lydian":
     grades = [-5,-3,-1,0,2,4,6,7,9,11,12]
@@ -118,6 +114,8 @@ switch(mode){
   case "Locrian":
     grades = [-4,-2,0,1,3,5,6,8,10,12]
 }
+
+//---------------------------------------------- END of MODEL --------------------------------------------------------------
 
 //----------------------------------------------- VIEW --------------------------------------------------------------
 
@@ -243,11 +241,12 @@ function firstPainfulRender() {
   draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2);
 }
 //document.write(result)
-firstPainfulRender()
+
 //----------------------------------------------- END of VIEW --------------------------------------------------------------
 
 
 //----------------------------------------------- CONTROLLER --------------------------------------------------------------
+firstPainfulRender()
 
 //funzione che calcola il nuovo angolo da dare al piece ruotato
 function iterate_angle(n) {
