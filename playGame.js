@@ -1,3 +1,4 @@
+import * as timer from './timer';
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
 var grades = []
@@ -32,56 +33,6 @@ const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 20; //
 const tableHeight = rows * rowHeight;
 
 let table = document.getElementById("table");
-
-// ------------ TIMER model ------------------
-const FULL_DASH_ARRAY = 283;
-const WARNING_THRESHOLD = 10;
-const ALERT_THRESHOLD = 5;
-
-const COLOR_CODES = {
-  info: {
-    color: "green"
-  },
-  warning: {
-    color: "orange",
-    threshold: WARNING_THRESHOLD
-  },
-  alert: {
-    color: "red",
-    threshold: ALERT_THRESHOLD
-  }
-};
-
-const TIME_LIMIT = 120;
-let timePassed = 0;
-let timeLeft = TIME_LIMIT;
-let timerInterval = null;
-let remainingPathColor = COLOR_CODES.info.color;
-
-document.getElementById("timer").innerHTML = `
-<div class="base-timer">
-  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <g class="base-timer__circle">
-      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-      <path
-        id="base-timer-path-remaining"
-        stroke-dasharray="283"
-        class="base-timer__path-remaining ${remainingPathColor}"
-        d="
-          M 50, 50
-          m -45, 0
-          a 45,45 0 1,0 90,0
-          a 45,45 0 1,0 -90,0
-        "
-      ></path>
-    </g>
-  </svg>
-  <span id="base-timer-label" class="base-timer__label">${formatTime(
-    timeLeft
-  )}</span>
-</div>
-`;
-// ------------ END of TIMER model ------------------
 
 // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
@@ -154,7 +105,7 @@ function createSet() {
     //Math.floor() restituisce un numero intero arrotondato per difetto
     const tile = createTile(colorsAvailable[number1],colorsAvailable[number2],i) // Create actual tile of that two colors chosen in a randomic way
     barContainer.appendChild(tile) // Add it to the bar div
-    piece = {
+    let piece = {
       // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
       tile: tile,
       grade1: number1-lowerGrades,
@@ -170,7 +121,7 @@ function createSet() {
 //prende in argomento la const table, il numero di rows e l'altezza di una row.
 //crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
 function add_rows(table, num, height) {
-  for (i = 0; i < num; i++) {
+  for (let i = 0; i < num; i++) {
       let row = document.createElement("div");
       row.classList.add("row");
       row.id = "row"+i;
@@ -204,11 +155,11 @@ function vert_box(box, dim1, dim2) {
 function add_boxes(numRows, numBoxes, width, height) {
   let cntbox = 0;
 
-  for (i = 0; i < numRows; i++) {
+  for (let i = 0; i < numRows; i++) {
 
       let row = document.getElementById("row"+i);
 
-      for (j = 0; j < numBoxes-1; j++) {
+      for (let j = 0; j < numBoxes-1; j++) {
           let box = document.createElement("div");
           horiz_box(box, width, height);
           box.textContent = cntbox;
@@ -255,64 +206,66 @@ function iterate_angle(n) {
   return n;
 }
 
+function call_rotate () {
+  rotate(event);
+}
+
 //in ordine: trova l'indice della tessera all'interno di setPieces passando per la bar;
 //la if serve a permettere la la rotazione anche se l'evento avviene su upper o lower;
 //controlla l'angolo del piece su cui avviene l'evento per decidere come agire;
 //se serve, scambia di posto tileupper e tilelower e i due grade all'interno del piece;
 //infine modifica l'angolo del piece
-function rotate(event){
-  let i =  Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget)
-  if (event.target = event.currentTarget) {
+function rotate(ev){
+  let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
+  //if (ev.target == ev.currentTarget) {
     // at the beginning I have [grade1, grade2]
     if (setPieces[i].angle == 0) {
-      event.currentTarget.classList.remove("tile_v");
-      event.currentTarget.classList.add("tile_h");
+      ev.currentTarget.classList.remove("tile_v");
+      ev.currentTarget.classList.add("tile_h");
       //event.currentTarget.style.flexFlow = "row-reverse wrap"; //questa riga dovrebbe fare la stessa cosa delle seguenti sei
-      let tileUpper = event.currentTarget.firstElementChild;
-      let tileLower = event.currentTarget.lastElementChild;
-      while (event.currentTarget.firstChild) {
-        event.currentTarget.removeChild(event.currentTarget.lastChild);
+      let tileUpper = ev.currentTarget.firstElementChild;
+      let tileLower = ev.currentTarget.lastElementChild;
+      while (ev.currentTarget.firstChild) {
+        ev.currentTarget.removeChild(event.currentTarget.lastChild);
       }
-      event.currentTarget.appendChild(tileLower);
-      event.currentTarget.appendChild(tileUpper);
+      ev.currentTarget.appendChild(tileLower);
+      ev.currentTarget.appendChild(tileUpper);
       // I also want to swap grade1 and grade2 to have [grade2, grade1]
       let tempGrade = setPieces[i].grade1;
       setPieces[i].grade1 = setPieces[i].grade2;
       setPieces[i].grade2 = tempGrade;
     }
     if (setPieces[i].angle == 90) {
-      event.currentTarget.classList.remove("tile_h");
-      event.currentTarget.classList.add("tile_v");
+      ev.currentTarget.classList.remove("tile_h");
+      ev.currentTarget.classList.add("tile_v");
       // I still have [grade2, grade1]
     }
     if (setPieces[i].angle == 180) {
-      event.currentTarget.classList.remove("tile_v");
-      event.currentTarget.classList.add("tile_h");
-      let tileUpper = event.currentTarget.firstElementChild;
-      let tileLower = event.currentTarget.lastElementChild;
-      while (event.currentTarget.firstChild) {
-        event.currentTarget.removeChild(event.currentTarget.lastChild);
+      ev.currentTarget.classList.remove("tile_v");
+      ev.currentTarget.classList.add("tile_h");
+      let tileUpper = ev.currentTarget.firstElementChild;
+      let tileLower = ev.currentTarget.lastElementChild;
+      while (ev.currentTarget.firstChild) {
+        ev.currentTarget.removeChild(ev.currentTarget.lastChild);
       }
-      event.currentTarget.appendChild(tileLower);
-      event.currentTarget.appendChild(tileUpper);
+      ev.currentTarget.appendChild(tileLower);
+      ev.currentTarget.appendChild(tileUpper);
       // I again want to swap grade1 and grade2 to have [grade1, grade2]
       let tempGrade = setPieces[i].grade1;
       setPieces[i].grade1 = setPieces[i].grade2;
       setPieces[i].grade2 = tempGrade;
     }
     if (setPieces[i].angle == 270) {
-      event.currentTarget.classList.remove("tile_h");
-      event.currentTarget.classList.add("tile_v");
+      ev.currentTarget.classList.remove("tile_h");
+      ev.currentTarget.classList.add("tile_v");
     }
     setPieces[i].angle = iterate_angle(setPieces[i].angle);
     console.log(setPieces[i]);
-  }
+  //}
 }
 
 //funzione ausiliaria che chiama la rotate per gestire l'eventListener corrispondente
-function call_rotate () {
-  rotate(event);
-}
+
 
 function change_set() {
   for (let i = 0; i < setPieces.length; i++) { // For each element of the model, so of the bar
@@ -329,9 +282,9 @@ changeSet.onclick = change_set
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
 let rowCollection = document.getElementById("table").children;
 let boxes = [];
-for (i = 0; i < rows; i++) {
+for (let i = 0; i < rows; i++) {
     let rowChild = rowCollection[i].children;
-    for (j = 0; j < boxesPerRow; j++) {
+    for (let j = 0; j < boxesPerRow; j++) {
         boxes.push(rowChild[j]);
     }
 }
@@ -455,74 +408,6 @@ function cartoonFeedback(feedback){
 //------------------------------------------- END of DRAG and DROP ---------------------------
 
 // ------------ TIMER controller ------------------
-startTimer();
-function onTimesUp() {
-  clearInterval(timerInterval);
-  // qua devo scrivere il codice per fare la stessa cosa che faccio se clicco su Finish Game
-  //hiddenField2.setAttribute("type", "submit");
-  //hiddenField2.setAttribute("name", "end");
-  //document.getElementById("fPlayGame").appendChild(hiddenField2);
-  document.fPlayGame.submit();
-}
+timer.startTimer();
 
-function startTimer() {
-  timerInterval = setInterval(() => {
-    timePassed = timePassed += 1;
-    timeLeft = TIME_LIMIT - timePassed;
-    document.getElementById("base-timer-label").innerHTML = formatTime(
-      timeLeft
-    );
-    setCircleDasharray();
-    setRemainingPathColor(timeLeft);
-
-    if (timeLeft === 0) {
-      onTimesUp();
-    }
-  }, 1000);
-}
-
-function formatTime(time) {
-  const minutes = Math.floor(time / 60);
-  let seconds = time % 60;
-
-  if (seconds < 10) {
-    seconds = `0${seconds}`;
-  }
-
-  return `${minutes}:${seconds}`;
-}
-
-function setRemainingPathColor(timeLeft) {
-  const { alert, warning, info } = COLOR_CODES;
-  if (timeLeft <= alert.threshold) {
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.remove(warning.color);
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.add(alert.color);
-  } else if (timeLeft <= warning.threshold) {
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.remove(info.color);
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.add(warning.color);
-  }
-}
-
-function calculateTimeFraction() {
-  const rawTimeFraction = timeLeft / TIME_LIMIT;
-  return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
-}
-
-function setCircleDasharray() {
-  const circleDasharray = `${(
-    calculateTimeFraction() * FULL_DASH_ARRAY
-  ).toFixed(0)} 283`;
-  document
-    .getElementById("base-timer-path-remaining")
-    .setAttribute("stroke-dasharray", circleDasharray);
-}
-// ------------ END of TIMER controller ------------------
 //-----------------------------------------------END of CONTROLLER--------------------------------------------------------------

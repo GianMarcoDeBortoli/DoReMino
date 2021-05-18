@@ -1,0 +1,28 @@
+{
+  "name": "Demly",
+  "version": "1.0.0",
+  "main": "playGame.js",
+  "scripts": {
+    "dev": "parcel *.html",
+    "build": "parcel build *.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giemme13/Demly.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Giemme13/Demly/issues"
+  },
+  "homepage": "https://github.com/Giemme13/Demly#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "jquery": "^3.6.0"
+  },
+  "description": ""
+}
