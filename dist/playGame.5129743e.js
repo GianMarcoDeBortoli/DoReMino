@@ -254,12 +254,22 @@ var table = document.getElementById("table"); // function to get parameters from
 // per accedere ai valori del dizionario si usa la get(key)
 
 function parseGetVars() {
+  var res = [];
   var params = new URLSearchParams(document.location.search.substring(1));
   var modal = params.get("mode");
-  return modal;
+  var difficulty = params.get("difficulty");
+  res[0] = modal;
+  res[1] = difficulty;
+  console.log(res);
+  return res;
 }
 
-var mode = parseGetVars(); // Filling grades according to the mode received by the select input in the form by the user
+var params = parseGetVars();
+console.log(params);
+var mode = params[0];
+console.log(mode);
+var difficulty = params[1];
+console.log(difficulty); // Filling grades according to the mode received by the select input in the form by the user
 
 switch (mode) {
   case "Ionian":
@@ -673,7 +683,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50239" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49876" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

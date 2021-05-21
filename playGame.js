@@ -34,16 +34,28 @@ const tableHeight = rows * rowHeight;
 
 let table = document.getElementById("table");
 
+
 // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
 // per accedere ai valori del dizionario si usa la get(key)
 function parseGetVars() {
+  let res = [];
   let params = new URLSearchParams(document.location.search.substring(1));
   let modal = params.get("mode");
-  return modal;
+  let difficulty = params.get("difficulty");
+  res[0] = modal;
+  res[1] = difficulty;
+  console.log(res);
+  return res;
 }
 
-let mode = parseGetVars();
+let params = parseGetVars();
+console.log(params);
+let mode = params[0];
+console.log(mode);
+let difficulty = params[1];
+console.log(difficulty);
+
 
 // Filling grades according to the mode received by the select input in the form by the user
 switch(mode){
