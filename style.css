@@ -62,7 +62,7 @@ display:block;
 text-align:center;
 color: #f1f1f1;
 text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
-font: normal normal 100px Monaco;
+font: normal normal 100px Verdana;
 /*width:400px;
 /*float:center;*/
 margin:0;
@@ -75,7 +75,7 @@ display:block;
 text-align:center;
 color: #f1f1f1;
 text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
-font: normal normal 50px Monaco;
+font: normal normal 50px Verdana;
 /*width:400px;
 /*float:center;*/
 margin:0 -20px -80px -20px;
@@ -149,7 +149,7 @@ div.form {
     -ms-border-radius: 6px;
     -o-border-radius: 6px;
     border-radius: 6px;
-    font: normal normal 2em/1 Monaco;
+    font: normal normal 2em/1 Verdana;
     text-decoration: none;
 }
 
@@ -163,7 +163,7 @@ div.form {
     float:left;
     display: inline-block;
     width:20%;
-    font: normal normal 1.5em Monaco;
+    font: normal normal 1.5em Verdana;
 }
 
 /*.form select {
@@ -178,7 +178,7 @@ div.form {
 .custom-select {
   float:left;
   position: relative;
-  font: normal normal 1em Monaco;
+  font: normal normal 1em Verdana;
   display: inline-block;
   width:20%;
 }
@@ -260,7 +260,7 @@ div.form {
   -webkit-border-radius:10px;
   -moz-border-radius:10px;
   border-radius:10px;
-  font: normal normal 1em Monaco;
+  font: normal normal 1em Verdana;
   display:none;
 }
 
@@ -357,7 +357,7 @@ div.form {
   cursor: pointer;
   float: left;
   display:block;
-  font: normal normal 1.5em Monaco;
+  font: normal normal 1.5em Verdana;
 }
 
 .button:hover{
