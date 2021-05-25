@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "playGame.js",
   "scripts": {
-    "dev": "parcel StartGame.html",
-    "build": "parcel build StartGame.html"
+    "dev": "parcel *.html",
+    "build": "parcel build *.html"
   },
   "repository": {
     "type": "git",
