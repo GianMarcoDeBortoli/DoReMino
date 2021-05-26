@@ -219,7 +219,10 @@ function playNote() {
   var color = event.currentTarget.style.backgroundColor;
   var index = searchForNote[0].indexOf(color);
   var note = searchForNote[1][index];
-  synth.triggerAttackRelease(note, "8n");
+
+  if (event.shiftKey) {
+    synth.triggerAttackRelease(note, "8n");
+  }
 }
 },{}],"playGame.js":[function(require,module,exports) {
 "use strict";

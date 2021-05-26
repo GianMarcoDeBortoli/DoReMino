@@ -10,6 +10,7 @@ export function playNote() {
     let color = event.currentTarget.style.backgroundColor;
     let index = searchForNote[0].indexOf(color);
     let note = searchForNote[1][index];
-    
-    synth.triggerAttackRelease(note, "8n");
+    if (event.shiftKey) {
+        synth.triggerAttackRelease(note, "8n");
+    }
 }
