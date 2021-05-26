@@ -205,10 +205,28 @@ function setCircleDasharray() {
   var circleDasharray = "".concat((calculateTimeFraction() * FULL_DASH_ARRAY).toFixed(0), " 283");
   document.getElementById("base-timer-path-remaining").setAttribute("stroke-dasharray", circleDasharray);
 } // ------------ END of TIMER controller ------------------
+},{}],"sound.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.playNote = playNote;
+var searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
+var synth = new Tone.Synth().toDestination();
+
+function playNote() {
+  var color = event.currentTarget.style.backgroundColor;
+  var index = searchForNote[0].indexOf(color);
+  var note = searchForNote[1][index];
+  synth.triggerAttackRelease(note, "8n");
+}
 },{}],"playGame.js":[function(require,module,exports) {
 "use strict";
 
 var timer = _interopRequireWildcard(require("./timer"));
+
+var _sound = require("./sound");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -311,9 +329,13 @@ function createTile(color1, color2, i) {
   }); // I create two subclasses with the lower and upper part that are of two different colors
 
   var tileUpper = document.createElement("div");
-  tileUpper.classList.add("tileUpper", color1);
+  tileUpper.classList.add("tileUpper");
+  tileUpper.style.backgroundColor = color1;
+  tileUpper.addEventListener("click", _sound.playNote);
   var tileLower = document.createElement("div");
-  tileLower.classList.add("tileLower", color2);
+  tileLower.classList.add("tileLower");
+  tileLower.style.backgroundColor = color2;
+  tileLower.addEventListener("click", _sound.playNote);
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
   tile.addEventListener("dblclick", call_rotate); // non so se questo sia giusto che sia nella view ?
@@ -655,7 +677,7 @@ function cartoonFeedback(feedback) {
 
 
 timer.startTimer(); //-----------------------------------------------END of CONTROLLER--------------------------------------------------------------
-},{"./timer":"timer.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./timer":"timer.js","./sound":"sound.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -683,7 +705,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49948" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52145" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -859,5 +881,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","playGame.js"], null)
+},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","playGame.js"], null)
 //# sourceMappingURL=/playGame.5129743e.js.map

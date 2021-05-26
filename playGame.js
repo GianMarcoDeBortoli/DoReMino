@@ -1,4 +1,6 @@
 import * as timer from './timer';
+import {playNote} from './sound';
+
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
 var grades = []
@@ -92,9 +94,13 @@ function createTile(color1,color2,i) {
 
   // I create two subclasses with the lower and upper part that are of two different colors
   const tileUpper = document.createElement("div");
-  tileUpper.classList.add("tileUpper",color1);
+  tileUpper.classList.add("tileUpper");
+  tileUpper.style.backgroundColor = color1;
+  tileUpper.addEventListener("click", playNote);
   const tileLower = document.createElement("div");
-  tileLower.classList.add("tileLower",color2);
+  tileLower.classList.add("tileLower");
+  tileLower.style.backgroundColor = color2;
+  tileLower.addEventListener("click", playNote);
 
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
