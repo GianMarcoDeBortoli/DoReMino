@@ -1,5 +1,6 @@
 import * as timer from './timer';
 import {playNote} from './sound';
+import {draw_table} from './table';
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
@@ -105,7 +106,7 @@ function createTile(color1,color2,i) {
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
 
-  tile.addEventListener("dblclick", call_rotate); // non so se questo sia giusto che sia nella view ?
+  tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
 
   return tile
 
@@ -135,79 +136,11 @@ function createSet() {
   }
 }
 
-//---------------------------------------- CREATION of TABLE -----------------------------------------------------------
-//prende in argomento la const table, il numero di rows e l'altezza di una row.
-//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
-function add_rows(table, num, height) {
-  for (let i = 0; i < num; i++) {
-      let row = document.createElement("div");
-      row.classList.add("row");
-      row.id = "row"+i;
-      row.style.height = height+"px";
-      if (i%2 == 0) {
-          row.style.flexFlow = "row wrap";
-      } else {
-          row.style.flexFlow = "row-reverse wrap";
-      }
-      table.appendChild(row);
-  }
-}
 
-//due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
-function horiz_box(box, dim1, dim2) {
-  box.classList.add("box");
-  box.style.width = dim2+"px";
-  box.style.height = dim1+"px";
-}
-
-function vert_box(box, dim1, dim2) {
-  box.classList.add("box");
-  box.style.width = dim1+"px";
-  box.style.height = dim2+"px";
-
-}
-
-//prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
-//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
-//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
-function add_boxes(numRows, numBoxes, width, height) {
-  let cntbox = 0;
-
-  for (let i = 0; i < numRows; i++) {
-
-      let row = document.getElementById("row"+i);
-
-      for (let j = 0; j < numBoxes-1; j++) {
-          let box = document.createElement("div");
-          horiz_box(box, width, height);
-          box.textContent = cntbox;
-          box.id = cntbox;
-          cntbox++;
-          row.appendChild(box);
-      }
-
-      let box = document.createElement("div");
-      vert_box(box, width, height);
-      box.textContent = cntbox;
-      box.id = cntbox;
-      cntbox++;
-      row.appendChild(box);
-  }
-}
-
-
-function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
-  table.style.width = tableWidth+"px";
-  table.style.height = tableHeight+"px";
-  add_rows(table, numRows, rowHeight);
-  add_boxes(numRows, numBoxes, width, height)
-}
-//---------------------------------------- END of CREATION of TABLE -----------------------------------------------------------
-
-// render
+// RENDER
 function firstPainfulRender() {
   createSet();
-  draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2);
+  draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2); // take a look at table.js
 }
 //document.write(result)
 
@@ -224,65 +157,43 @@ function iterate_angle(n) {
   return n;
 }
 
-function call_rotate () {
-  rotate(event);
-}
-
-//in ordine: trova l'indice della tessera all'interno di setPieces passando per la bar;
-//la if serve a permettere la la rotazione anche se l'evento avviene su upper o lower;
-//controlla l'angolo del piece su cui avviene l'evento per decidere come agire;
-//se serve, scambia di posto tileupper e tilelower e i due grade all'interno del piece;
-//infine modifica l'angolo del piece
+// rotates the tile by 90° each time
 function rotate(ev){
   let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
-  //if (ev.target == ev.currentTarget) {
-    // at the beginning I have [grade1, grade2]
-    if (setPieces[i].angle == 0) {
-      ev.currentTarget.classList.remove("tile_v");
-      ev.currentTarget.classList.add("tile_h");
-      //event.currentTarget.style.flexFlow = "row-reverse wrap"; //questa riga dovrebbe fare la stessa cosa delle seguenti sei
-      let tileUpper = ev.currentTarget.firstElementChild;
-      let tileLower = ev.currentTarget.lastElementChild;
-      while (ev.currentTarget.firstChild) {
-        ev.currentTarget.removeChild(event.currentTarget.lastChild);
-      }
-      ev.currentTarget.appendChild(tileLower);
-      ev.currentTarget.appendChild(tileUpper);
-      // I also want to swap grade1 and grade2 to have [grade2, grade1]
-      let tempGrade = setPieces[i].grade1;
-      setPieces[i].grade1 = setPieces[i].grade2;
-      setPieces[i].grade2 = tempGrade;
-    }
-    if (setPieces[i].angle == 90) {
-      ev.currentTarget.classList.remove("tile_h");
-      ev.currentTarget.classList.add("tile_v");
-      // I still have [grade2, grade1]
-    }
-    if (setPieces[i].angle == 180) {
-      ev.currentTarget.classList.remove("tile_v");
-      ev.currentTarget.classList.add("tile_h");
-      let tileUpper = ev.currentTarget.firstElementChild;
-      let tileLower = ev.currentTarget.lastElementChild;
-      while (ev.currentTarget.firstChild) {
-        ev.currentTarget.removeChild(ev.currentTarget.lastChild);
-      }
-      ev.currentTarget.appendChild(tileLower);
-      ev.currentTarget.appendChild(tileUpper);
-      // I again want to swap grade1 and grade2 to have [grade1, grade2]
-      let tempGrade = setPieces[i].grade1;
-      setPieces[i].grade1 = setPieces[i].grade2;
-      setPieces[i].grade2 = tempGrade;
-    }
-    if (setPieces[i].angle == 270) {
-      ev.currentTarget.classList.remove("tile_h");
-      ev.currentTarget.classList.add("tile_v");
-    }
-    setPieces[i].angle = iterate_angle(setPieces[i].angle);
-    console.log(setPieces[i]);
-  //}
+  // at the beginning I have [grade1, grade2]
+  if (setPieces[i].angle == 0) {
+    ev.currentTarget.classList.remove("tile_v");
+    ev.currentTarget.classList.add("tile_h");
+    ev.currentTarget.style.flexFlow = "row-reverse wrap";
+    // I want to swap grade1 and grade2 to have [grade2, grade1]
+    let tempGrade = setPieces[i].grade1;
+    setPieces[i].grade1 = setPieces[i].grade2;
+    setPieces[i].grade2 = tempGrade;
+  }
+  if (setPieces[i].angle == 90) {
+    ev.currentTarget.classList.remove("tile_h");
+    ev.currentTarget.classList.add("tile_v");
+    ev.currentTarget.style.flexFlow = "column-reverse wrap";
+    // I still have [grade2, grade1]
+  }
+  if (setPieces[i].angle == 180) {
+    ev.currentTarget.classList.remove("tile_v");
+    ev.currentTarget.classList.add("tile_h");
+    ev.currentTarget.style.flexFlow = "row wrap";
+    // I want to swap to [grade1, grade2]
+    let tempGrade = setPieces[i].grade1;
+    setPieces[i].grade1 = setPieces[i].grade2;
+    setPieces[i].grade2 = tempGrade;
+  }
+  if (setPieces[i].angle == 270) {
+    ev.currentTarget.classList.remove("tile_h");
+    ev.currentTarget.classList.add("tile_v");
+    ev.currentTarget.style.flexFlow = "column wrap";
+    // I end up with [grade1, grade2]
+  }
+  setPieces[i].angle = iterate_angle(setPieces[i].angle);
+  console.log(setPieces[i]);
 }
-
-//funzione ausiliaria che chiama la rotate per gestire l'eventListener corrispondente
 
 
 function change_set() {
@@ -308,8 +219,7 @@ for (let i = 0; i < rows; i++) {
 }
 
 // Funzioni ausiliarie che permettono la cancellazione dell'eventiListener quando serve.
-function add_drop() {drop(event)};
-function add_prevent_drop() {prevent_drop(event)};
+
 
 // PreventDefault() impedisce che all'evento a cui è legato sia associata un'azione di default del browser.
 // Per esempio se in mozilla, per default, l'evento dragover aziona il drop siamo fregati.
@@ -334,8 +244,8 @@ function drop_box(array) {
       array[i-1].children[0].setAttribute("draggable", false);
     }
     if (array[i].children.length == 0) {
-      array[i].addEventListener("drop", add_drop);
-      array[i].addEventListener("dragover", add_prevent_drop);
+      array[i].addEventListener("drop", drop);
+      array[i].addEventListener("dragover", prevent_drop);
       break;
     }
     i++;
@@ -362,9 +272,9 @@ function drop(ev) {
       // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
       addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,ev.target.id);
       setPieces.splice(pieceNum, 1);
-      ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-      ev.target.removeEventListener("drop", add_drop);
-      ev.target.removeEventListener("dragover", add_prevent_drop);
+      ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+      ev.target.removeEventListener("drop", drop);
+      ev.target.removeEventListener("dragover", prevent_drop);
       drop_box(boxes);
       }
     }
@@ -381,16 +291,15 @@ function drop(ev) {
         addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,1);
         // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
         setPieces.splice(pieceNum, 1);
-        ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-        ev.target.removeEventListener("drop", add_drop);
-        ev.target.removeEventListener("dragover", add_prevent_drop);
+        ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+        ev.target.removeEventListener("drop", drop);
+        ev.target.removeEventListener("dragover", prevent_drop);
         drop_box(boxes);
       }
     }else{
       cartoonFeedback("wrong_rotation");
     }
   }
-
 }
 
 // this function adds the tile

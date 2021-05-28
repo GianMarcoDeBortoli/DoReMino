@@ -11,58 +11,60 @@
 </head>
 
 <body>
+
   <main class="grid-container">
 
     <div class="theheader">
-    <h1>D&ograve;ReMino</h1>
-		<!-- <img src="notes.png" alt="notes image"> -->
+      <!-- <h1><font transform="rotate(15deg)" color="#C0D6FF">D&ograve;</font><font color="#F3C9F5">Re</font>Mi<font color="black">no</font></h1> -->
+      <h1 class="title" style="display:inline-block; color:blue; transform:rotate(5deg)">D&ograve</h1>
+      <h1 class="title" style="display:inline-block; color:red; transform:rotate(-3deg)">Re</h1>
+      <h1 class="title" style="display:inline-block; color:yellow; transform:rotate(2deg)">Mi</h1>
+      <h1 class="title" style="display:inline-block; color:black; transform:rotate(4deg)">no</h1>
     </div>
 
     <div class="thecontent">
-        <noscript>
-					<p class="warning"> Attenzione: il tuo browser non supporta JavaScript o è disabilitato. Delle funzionalità della pagina potrebbero non agire correttamente. </p>
-			</noscript>
+      <noscript>
+        <p class="warning"> Attenzione: il tuo browser non supporta JavaScript o è disabilitato. Delle funzionalità della pagina potrebbero non agire correttamente. </p>
+      </noscript>
 
-			<div class="form">
-				<form name="fNewGame" method="GET" action="playGame.html">
+    <div class="form">
+      <form name="fNewGame" method="GET" action="playGame.html">
 
-					<!-- <label for="GameMode">Game mode:</label>
-          <select name="GameMode" onchange="">
-                      <option value="Simple" selected>Simple</option>
-                      <option value="Difficult">Difficult</option>
-          </select> -->
+            <!-- <label for="GameMode">Game mode:</label>
+      <select name="GameMode" onchange="">
+            <option value="Simple" selected>Simple</option>
+            <option value="Difficult">Difficult</option>
+      </select> -->
 
-          <label for="mode">modes:</label>
-					<div class="custom-select" style="width:200px;">
+        <label for="mode">modes:</label>
+        <div class="custom-select" style="width:200px;">
           <select name="mode" onchange="">
             <option value="Ionian" selected>Ionian</option>
             <option value="Dorian">Dorian</option>
-					  <option value="Phrygian">Phrygian</option>
-					  <option value="Lydian">Lydian</option>
-					  <option value="Myxolydian">Myxolydian</option>
-					  <option value="Aeolian">Aeolian</option>
-					  <option value="Locrian">Locrian</option>
-					  <option value="Ionian" >Ionian</option>
+            <option value="Phrygian">Phrygian</option>
+            <option value="Lydian">Lydian</option>
+            <option value="Myxolydian">Myxolydian</option>
+            <option value="Aeolian">Aeolian</option>
+            <option value="Locrian">Locrian</option>
+            <option value="Ionian" >Ionian</option>
           </select>
-					</div>
-					<label for="difficulty">difficulty:</label>
-					<div class="custom-select" style="width:200px;">
+        </div>
+        <label for="difficulty">difficulty:</label>
+        <div class="custom-select" style="width:200px;">
           <select name="difficulty" onchange="">
             <option value="easy" selected>amateur</option>
             <option value="expert">difficult</option>
-					 <option value="normal">amateur</option>
+            <option value="normal">amateur</option>
           </select>
-					</div>
-					<input type="submit" value="New Game">
-					<input type="button" onclick="redirectToRules()" value="How to Play">
+        </div>
+        <input type="submit" value="New Game">
+        <input id="rulesButton" type="button" value="How to Play">
 
-				</form>
+      </form>
 
-			</div> <!-- form -->
-
+    </div> <!-- form -->
 
     </div>
-
 
   </main>
 

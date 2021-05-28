@@ -118,11 +118,30 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"startGame.js":[function(require,module,exports) {
+var rulesButton = document.getElementById("rulesButton");
+rulesButton.addEventListener("click", redirectToRules);
+
 function redirectToRules() {
   location.replace("howToPlay.html");
 }
-/* ------------- elementi che servono per modificare CSS select mode ---------------*/
 
+var title = document.querySelectorAll(".title");
+console.log(title);
+title.forEach(function (element) {
+  return element.addEventListener("mouseover", function () {
+    var transformation = event.currentTarget.style.transform;
+    transformation = transformation + " scale(1.2, 1.2)";
+    event.currentTarget.style.transform = transformation;
+  });
+});
+title.forEach(function (element) {
+  return element.addEventListener("mouseleave", function () {
+    var transformation = event.currentTarget.style.transform;
+    transformation = transformation.split(" ");
+    event.currentTarget.style.transform = transformation[0];
+  });
+});
+/* ------------- elementi che servono per modificare CSS select mode ---------------*/
 
 var x, i, j, l, ll, selElmnt, a, b, c;
 /* Look for any elements with the class "custom-select": */
@@ -251,7 +270,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52145" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53823" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

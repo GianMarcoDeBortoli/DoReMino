@@ -1,11 +1,17 @@
+//----------------------------------------- GENERATION OF SOUND WHEN SHIFT+CLICK ON A TILE -----------------------------------------
+
+// matrix needed for the selection of the correct note based on the color of the half-tile
 const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred",
                        "darkgreen", "darkblue", "lawngreen", "darkslategray",
                        "darkorange", "turquoise", "yellow", "red", "slateblue",
                        "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], 
                        ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
+// creation of the synth and connection of it to the output speakers
 let synth = new Tone.Synth().toDestination();
 
+// the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+// finds the note correspondent to the index found, triggers the synth with that same note
 export function playNote() {
     let color = event.currentTarget.style.backgroundColor;
     let index = searchForNote[0].indexOf(color);

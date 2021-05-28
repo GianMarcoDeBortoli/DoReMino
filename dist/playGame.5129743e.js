@@ -212,8 +212,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.playNote = playNote;
-var searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
-var synth = new Tone.Synth().toDestination();
+//----------------------------------------- GENERATION OF SOUND WHEN SHIFT+CLICK ON A TILE -----------------------------------------
+// matrix needed for the selection of the correct note based on the color of the half-tile
+var searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // creation of the synth and connection of it to the output speakers
+
+var synth = new Tone.Synth().toDestination(); // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+// finds the note correspondent to the index found, triggers the synth with that same note
 
 function playNote() {
   var color = event.currentTarget.style.backgroundColor;
@@ -224,12 +228,89 @@ function playNote() {
     synth.triggerAttackRelease(note, "8n");
   }
 }
+},{}],"table.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.draw_table = draw_table;
+
+//---------------------------------------- CREATION of TABLE -----------------------------------------------------------
+//prende in argomento la const table, il numero di rows e l'altezza di una row.
+//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
+function add_rows(table, num, height) {
+  for (var i = 0; i < num; i++) {
+    var row = document.createElement("div");
+    row.classList.add("row");
+    row.id = "row" + i;
+    row.style.height = height + "px";
+
+    if (i % 2 == 0) {
+      row.style.flexFlow = "row wrap";
+    } else {
+      row.style.flexFlow = "row-reverse wrap";
+    }
+
+    table.appendChild(row);
+  }
+} //due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
+
+
+function horiz_box(box, dim1, dim2) {
+  box.classList.add("box");
+  box.style.width = dim2 + "px";
+  box.style.height = dim1 + "px";
+}
+
+function vert_box(box, dim1, dim2) {
+  box.classList.add("box");
+  box.style.width = dim1 + "px";
+  box.style.height = dim2 + "px";
+} //prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
+//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
+//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
+
+
+function add_boxes(numRows, numBoxes, width, height) {
+  var cntbox = 0;
+
+  for (var i = 0; i < numRows; i++) {
+    var row = document.getElementById("row" + i);
+
+    for (var j = 0; j < numBoxes - 1; j++) {
+      var _box = document.createElement("div");
+
+      horiz_box(_box, width, height);
+      _box.textContent = cntbox;
+      _box.id = cntbox;
+      cntbox++;
+      row.appendChild(_box);
+    }
+
+    var box = document.createElement("div");
+    vert_box(box, width, height);
+    box.textContent = cntbox;
+    box.id = cntbox;
+    cntbox++;
+    row.appendChild(box);
+  }
+}
+
+function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
+  table.style.width = tableWidth + "px";
+  table.style.height = tableHeight + "px";
+  add_rows(table, numRows, rowHeight);
+  add_boxes(numRows, numBoxes, width, height);
+}
 },{}],"playGame.js":[function(require,module,exports) {
 "use strict";
 
 var timer = _interopRequireWildcard(require("./timer"));
 
 var _sound = require("./sound");
+
+var _table = require("./table");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -341,7 +422,7 @@ function createTile(color1, color2, i) {
   tileLower.addEventListener("click", _sound.playNote);
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
-  tile.addEventListener("dblclick", call_rotate); // non so se questo sia giusto che sia nella view ?
+  tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
 
   return tile;
 }
@@ -370,81 +451,12 @@ function createSet() {
     };
     setPieces.push(piece);
   }
-} //---------------------------------------- CREATION of TABLE -----------------------------------------------------------
-//prende in argomento la const table, il numero di rows e l'altezza di una row.
-//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
-
-
-function add_rows(table, num, height) {
-  for (var i = 0; i < num; i++) {
-    var row = document.createElement("div");
-    row.classList.add("row");
-    row.id = "row" + i;
-    row.style.height = height + "px";
-
-    if (i % 2 == 0) {
-      row.style.flexFlow = "row wrap";
-    } else {
-      row.style.flexFlow = "row-reverse wrap";
-    }
-
-    table.appendChild(row);
-  }
-} //due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
-
-
-function horiz_box(box, dim1, dim2) {
-  box.classList.add("box");
-  box.style.width = dim2 + "px";
-  box.style.height = dim1 + "px";
-}
-
-function vert_box(box, dim1, dim2) {
-  box.classList.add("box");
-  box.style.width = dim1 + "px";
-  box.style.height = dim2 + "px";
-} //prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
-//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
-//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
-
-
-function add_boxes(numRows, numBoxes, width, height) {
-  var cntbox = 0;
-
-  for (var i = 0; i < numRows; i++) {
-    var row = document.getElementById("row" + i);
-
-    for (var j = 0; j < numBoxes - 1; j++) {
-      var _box = document.createElement("div");
-
-      horiz_box(_box, width, height);
-      _box.textContent = cntbox;
-      _box.id = cntbox;
-      cntbox++;
-      row.appendChild(_box);
-    }
-
-    var box = document.createElement("div");
-    vert_box(box, width, height);
-    box.textContent = cntbox;
-    box.id = cntbox;
-    cntbox++;
-    row.appendChild(box);
-  }
-}
-
-function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
-  table.style.width = tableWidth + "px";
-  table.style.height = tableHeight + "px";
-  add_rows(table, numRows, rowHeight);
-  add_boxes(numRows, numBoxes, width, height);
-} //---------------------------------------- END of CREATION of TABLE -----------------------------------------------------------
-// render
+} // RENDER
 
 
 function firstPainfulRender() {
   createSet();
-  draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2);
+  (0, _table.draw_table)(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2); // take a look at table.js
 } //document.write(result)
 //----------------------------------------------- END of VIEW --------------------------------------------------------------
 //----------------------------------------------- CONTROLLER --------------------------------------------------------------
@@ -456,34 +468,16 @@ function iterate_angle(n) {
   n += 90;
   n = n % 360;
   return n;
-}
-
-function call_rotate() {
-  rotate(event);
-} //in ordine: trova l'indice della tessera all'interno di setPieces passando per la bar;
-//la if serve a permettere la la rotazione anche se l'evento avviene su upper o lower;
-//controlla l'angolo del piece su cui avviene l'evento per decidere come agire;
-//se serve, scambia di posto tileupper e tilelower e i due grade all'interno del piece;
-//infine modifica l'angolo del piece
+} // rotates the tile by 90° each time
 
 
 function rotate(ev) {
-  var i = Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget); //if (ev.target == ev.currentTarget) {
-  // at the beginning I have [grade1, grade2]
+  var i = Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget); // at the beginning I have [grade1, grade2]
 
   if (setPieces[i].angle == 0) {
     ev.currentTarget.classList.remove("tile_v");
-    ev.currentTarget.classList.add("tile_h"); //event.currentTarget.style.flexFlow = "row-reverse wrap"; //questa riga dovrebbe fare la stessa cosa delle seguenti sei
-
-    var tileUpper = ev.currentTarget.firstElementChild;
-    var tileLower = ev.currentTarget.lastElementChild;
-
-    while (ev.currentTarget.firstChild) {
-      ev.currentTarget.removeChild(event.currentTarget.lastChild);
-    }
-
-    ev.currentTarget.appendChild(tileLower);
-    ev.currentTarget.appendChild(tileUpper); // I also want to swap grade1 and grade2 to have [grade2, grade1]
+    ev.currentTarget.classList.add("tile_h");
+    ev.currentTarget.style.flexFlow = "row-reverse wrap"; // I want to swap grade1 and grade2 to have [grade2, grade1]
 
     var tempGrade = setPieces[i].grade1;
     setPieces[i].grade1 = setPieces[i].grade2;
@@ -492,21 +486,14 @@ function rotate(ev) {
 
   if (setPieces[i].angle == 90) {
     ev.currentTarget.classList.remove("tile_h");
-    ev.currentTarget.classList.add("tile_v"); // I still have [grade2, grade1]
+    ev.currentTarget.classList.add("tile_v");
+    ev.currentTarget.style.flexFlow = "column-reverse wrap"; // I still have [grade2, grade1]
   }
 
   if (setPieces[i].angle == 180) {
     ev.currentTarget.classList.remove("tile_v");
     ev.currentTarget.classList.add("tile_h");
-    var _tileUpper = ev.currentTarget.firstElementChild;
-    var _tileLower = ev.currentTarget.lastElementChild;
-
-    while (ev.currentTarget.firstChild) {
-      ev.currentTarget.removeChild(ev.currentTarget.lastChild);
-    }
-
-    ev.currentTarget.appendChild(_tileLower);
-    ev.currentTarget.appendChild(_tileUpper); // I again want to swap grade1 and grade2 to have [grade1, grade2]
+    ev.currentTarget.style.flexFlow = "row wrap"; // I want to swap to [grade1, grade2]
 
     var _tempGrade = setPieces[i].grade1;
     setPieces[i].grade1 = setPieces[i].grade2;
@@ -516,12 +503,12 @@ function rotate(ev) {
   if (setPieces[i].angle == 270) {
     ev.currentTarget.classList.remove("tile_h");
     ev.currentTarget.classList.add("tile_v");
+    ev.currentTarget.style.flexFlow = "column wrap"; // I end up with [grade1, grade2]
   }
 
   setPieces[i].angle = iterate_angle(setPieces[i].angle);
-  console.log(setPieces[i]); //}
-} //funzione ausiliaria che chiama la rotate per gestire l'eventListener corrispondente
-
+  console.log(setPieces[i]);
+}
 
 function change_set() {
   for (var i = 0; i < setPieces.length; i++) {
@@ -547,20 +534,9 @@ for (var i = 0; i < rows; i++) {
     boxes.push(rowChild[j]);
   }
 } // Funzioni ausiliarie che permettono la cancellazione dell'eventiListener quando serve.
-
-
-function add_drop() {
-  drop(event);
-}
-
-;
-
-function add_prevent_drop() {
-  prevent_drop(event);
-}
-
-; // PreventDefault() impedisce che all'evento a cui è legato sia associata un'azione di default del browser.
+// PreventDefault() impedisce che all'evento a cui è legato sia associata un'azione di default del browser.
 // Per esempio se in mozilla, per default, l'evento dragover aziona il drop siamo fregati.
+
 
 function prevent_drop(ev) {
   ev.preventDefault();
@@ -585,8 +561,8 @@ function drop_box(array) {
     }
 
     if (array[i].children.length == 0) {
-      array[i].addEventListener("drop", add_drop);
-      array[i].addEventListener("dragover", add_prevent_drop);
+      array[i].addEventListener("drop", drop);
+      array[i].addEventListener("dragover", prevent_drop);
       break;
     }
 
@@ -614,9 +590,9 @@ function drop(ev) {
 
         addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2, ev.target.id);
         setPieces.splice(pieceNum, 1);
-        ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-        ev.target.removeEventListener("drop", add_drop);
-        ev.target.removeEventListener("dragover", add_prevent_drop);
+        ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+        ev.target.removeEventListener("drop", drop);
+        ev.target.removeEventListener("dragover", prevent_drop);
         drop_box(boxes);
       }
     } //controllo che la casella e la tessera siano entrambe verticali
@@ -632,9 +608,9 @@ function drop(ev) {
           addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2, 1); // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
 
           setPieces.splice(pieceNum, 1);
-          ev.target.firstElementChild.removeEventListener("dblclick", call_rotate);
-          ev.target.removeEventListener("drop", add_drop);
-          ev.target.removeEventListener("dragover", add_prevent_drop);
+          ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+          ev.target.removeEventListener("drop", drop);
+          ev.target.removeEventListener("dragover", prevent_drop);
           drop_box(boxes);
         }
       } else {
@@ -680,7 +656,7 @@ function cartoonFeedback(feedback) {
 
 
 timer.startTimer(); //-----------------------------------------------END of CONTROLLER--------------------------------------------------------------
-},{"./timer":"timer.js","./sound":"sound.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./timer":"timer.js","./sound":"sound.js","./table":"table.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -708,7 +684,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52145" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53823" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

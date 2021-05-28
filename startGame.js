@@ -1,6 +1,24 @@
+const rulesButton = document.getElementById("rulesButton");
+rulesButton.addEventListener("click", redirectToRules);
+
 function redirectToRules() {
-location.replace("howToPlay.html")
+  location.replace("howToPlay.html");
 }
+
+const title = document.querySelectorAll(".title");
+console.log(title);
+
+title.forEach(element => element.addEventListener("mouseover", function() {
+  let transformation = event.currentTarget.style.transform;
+  transformation = transformation+" scale(1.2, 1.2)";
+  event.currentTarget.style.transform = transformation;
+}))
+
+title.forEach(element => element.addEventListener("mouseleave", function() {
+  let transformation = event.currentTarget.style.transform;
+  transformation = transformation.split(" ")
+  event.currentTarget.style.transform = transformation[0];
+}))
 
 /* ------------- elementi che servono per modificare CSS select mode ---------------*/
 var x, i, j, l, ll, selElmnt, a, b, c;
