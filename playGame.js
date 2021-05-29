@@ -1,5 +1,5 @@
 import * as timer from './timer';
-import {playNote} from './sound';
+import {playNoteOnTile} from './sound';
 import {draw_table} from './table';
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
@@ -97,11 +97,11 @@ function createTile(color1,color2,i) {
   const tileUpper = document.createElement("div");
   tileUpper.classList.add("tileUpper");
   tileUpper.style.backgroundColor = color1;
-  tileUpper.addEventListener("click", playNote);
+  tileUpper.addEventListener("click", playNoteOnTile);
   const tileLower = document.createElement("div");
   tileLower.classList.add("tileLower");
   tileLower.style.backgroundColor = color2;
-  tileLower.addEventListener("click", playNote);
+  tileLower.addEventListener("click", playNoteOnTile);
 
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);

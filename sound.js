@@ -1,4 +1,18 @@
-//----------------------------------------- GENERATION OF SOUND WHEN SHIFT+CLICK ON A TILE -----------------------------------------
+// creation of the synth and connection of it to the output speakers
+const synth = new Tone.Synth().toDestination();
+const poly = new Tone.PolySynth().toDestination();
+const pluck = new Tone.PluckSynth().toDestination();
+
+//----------------------------------------- SOUND INSIDE STARTGAME ----------------------------------------
+export function playNoteOnHeader(index) {
+    if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");
+    else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");
+    else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");
+    else if (index == 3) synth.triggerAttackRelease("C4", "4n");
+}
+
+
+//----------------------------------------- SOUND INSIDE PLAYGAME -----------------------------------------
 
 // matrix needed for the selection of the correct note based on the color of the half-tile
 const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred",
@@ -7,12 +21,9 @@ const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "paleviolet
                        "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], 
                        ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
-// creation of the synth and connection of it to the output speakers
-let synth = new Tone.Synth().toDestination();
-
 // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
 // finds the note correspondent to the index found, triggers the synth with that same note
-export function playNote() {
+export function playNoteOnTile() {
     let color = event.currentTarget.style.backgroundColor;
     let index = searchForNote[0].indexOf(color);
     let note = searchForNote[1][index];

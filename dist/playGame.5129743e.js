@@ -125,10 +125,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.startTimer = startTimer;
 //------------------------- TIMER MODEL ------------------------------------------------
-var FULL_DASH_ARRAY = 283;
-var WARNING_THRESHOLD = 10;
-var ALERT_THRESHOLD = 5;
-var COLOR_CODES = {
+const FULL_DASH_ARRAY = 283;
+const WARNING_THRESHOLD = 10;
+const ALERT_THRESHOLD = 5;
+const COLOR_CODES = {
   info: {
     color: "green"
   },
@@ -141,11 +141,11 @@ var COLOR_CODES = {
     threshold: ALERT_THRESHOLD
   }
 };
-var TIME_LIMIT = 120;
-var timePassed = 0;
-var timeLeft = TIME_LIMIT;
-var timerInterval = null;
-var remainingPathColor = COLOR_CODES.info.color;
+const TIME_LIMIT = 120;
+let timePassed = 0;
+let timeLeft = TIME_LIMIT;
+let timerInterval = null;
+let remainingPathColor = COLOR_CODES.info.color;
 document.getElementById("timer").innerHTML = "\n<div class=\"base-timer\">\n  <svg class=\"base-timer__svg\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n    <g class=\"base-timer__circle\">\n      <circle class=\"base-timer__path-elapsed\" cx=\"50\" cy=\"50\" r=\"45\"></circle>\n      <path\n        id=\"base-timer-path-remaining\"\n        stroke-dasharray=\"283\"\n        class=\"base-timer__path-remaining ".concat(remainingPathColor, "\"\n        d=\"\n          M 50, 50\n          m -45, 0\n          a 45,45 0 1,0 90,0\n          a 45,45 0 1,0 -90,0\n        \"\n      ></path>\n    </g>\n  </svg>\n  <span id=\"base-timer-label\" class=\"base-timer__label\">").concat(formatTime(timeLeft), "</span>\n</div>\n"); //------------------------- END TIMER MODEL ------------------------------------------------
 
 function onTimesUp() {
@@ -158,7 +158,7 @@ function onTimesUp() {
 }
 
 function startTimer() {
-  timerInterval = setInterval(function () {
+  timerInterval = setInterval(() => {
     timePassed = timePassed += 1;
     timeLeft = TIME_LIMIT - timePassed;
     document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
@@ -172,8 +172,8 @@ function startTimer() {
 }
 
 function formatTime(time) {
-  var minutes = Math.floor(time / 60);
-  var seconds = time % 60;
+  const minutes = Math.floor(time / 60);
+  let seconds = time % 60;
 
   if (seconds < 10) {
     seconds = "0".concat(seconds);
@@ -183,9 +183,11 @@ function formatTime(time) {
 }
 
 function setRemainingPathColor(timeLeft) {
-  var alert = COLOR_CODES.alert,
-      warning = COLOR_CODES.warning,
-      info = COLOR_CODES.info;
+  const {
+    alert,
+    warning,
+    info
+  } = COLOR_CODES;
 
   if (timeLeft <= alert.threshold) {
     document.getElementById("base-timer-path-remaining").classList.remove(warning.color);
@@ -197,12 +199,12 @@ function setRemainingPathColor(timeLeft) {
 }
 
 function calculateTimeFraction() {
-  var rawTimeFraction = timeLeft / TIME_LIMIT;
+  const rawTimeFraction = timeLeft / TIME_LIMIT;
   return rawTimeFraction - 1 / TIME_LIMIT * (1 - rawTimeFraction);
 }
 
 function setCircleDasharray() {
-  var circleDasharray = "".concat((calculateTimeFraction() * FULL_DASH_ARRAY).toFixed(0), " 283");
+  const circleDasharray = "".concat((calculateTimeFraction() * FULL_DASH_ARRAY).toFixed(0), " 283");
   document.getElementById("base-timer-path-remaining").setAttribute("stroke-dasharray", circleDasharray);
 } // ------------ END of TIMER controller ------------------
 },{}],"sound.js":[function(require,module,exports) {
@@ -211,18 +213,26 @@ function setCircleDasharray() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.playNote = playNote;
-//----------------------------------------- GENERATION OF SOUND WHEN SHIFT+CLICK ON A TILE -----------------------------------------
-// matrix needed for the selection of the correct note based on the color of the half-tile
-var searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // creation of the synth and connection of it to the output speakers
+exports.playNoteOnHeader = playNoteOnHeader;
+exports.playNoteOnTile = playNoteOnTile;
+// creation of the synth and connection of it to the output speakers
+const synth = new Tone.Synth().toDestination();
+const poly = new Tone.PolySynth().toDestination();
+const pluck = new Tone.PluckSynth().toDestination(); //----------------------------------------- SOUND INSIDE STARTGAME ----------------------------------------
 
-var synth = new Tone.Synth().toDestination(); // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+function playNoteOnHeader(index) {
+  if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");else if (index == 3) synth.triggerAttackRelease("C4", "4n");
+} //----------------------------------------- SOUND INSIDE PLAYGAME -----------------------------------------
+// matrix needed for the selection of the correct note based on the color of the half-tile
+
+
+const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
 // finds the note correspondent to the index found, triggers the synth with that same note
 
-function playNote() {
-  var color = event.currentTarget.style.backgroundColor;
-  var index = searchForNote[0].indexOf(color);
-  var note = searchForNote[1][index];
+function playNoteOnTile() {
+  let color = event.currentTarget.style.backgroundColor;
+  let index = searchForNote[0].indexOf(color);
+  let note = searchForNote[1][index];
 
   if (event.shiftKey) {
     synth.triggerAttackRelease(note, "8n");
@@ -240,8 +250,8 @@ exports.draw_table = draw_table;
 //prende in argomento la const table, il numero di rows e l'altezza di una row.
 //crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
 function add_rows(table, num, height) {
-  for (var i = 0; i < num; i++) {
-    var row = document.createElement("div");
+  for (let i = 0; i < num; i++) {
+    let row = document.createElement("div");
     row.classList.add("row");
     row.id = "row" + i;
     row.style.height = height + "px";
@@ -273,22 +283,21 @@ function vert_box(box, dim1, dim2) {
 
 
 function add_boxes(numRows, numBoxes, width, height) {
-  var cntbox = 0;
+  let cntbox = 0;
 
-  for (var i = 0; i < numRows; i++) {
-    var row = document.getElementById("row" + i);
+  for (let i = 0; i < numRows; i++) {
+    let row = document.getElementById("row" + i);
 
-    for (var j = 0; j < numBoxes - 1; j++) {
-      var _box = document.createElement("div");
-
-      horiz_box(_box, width, height);
-      _box.textContent = cntbox;
-      _box.id = cntbox;
+    for (let j = 0; j < numBoxes - 1; j++) {
+      let box = document.createElement("div");
+      horiz_box(box, width, height);
+      box.textContent = cntbox;
+      box.id = cntbox;
       cntbox++;
-      row.appendChild(_box);
+      row.appendChild(box);
     }
 
-    var box = document.createElement("div");
+    let box = document.createElement("div");
     vert_box(box, width, height);
     box.textContent = cntbox;
     box.id = cntbox;
@@ -317,21 +326,21 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
-var modelLength = 10;
+const modelLength = 10;
 var grades = [];
-var tiles = document.querySelectorAll(".tile");
+let tiles = document.querySelectorAll(".tile");
 var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazione
 
-var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
+let pieceNum = -1; // I need this to remove the dropped tile from setPieces array
 
-var colors = ["darkSlateBlue", "darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen", "darkBlue", "lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]; // each color is associated to a note
+const colors = ["darkSlateBlue", "darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen", "darkBlue", "lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]; // each color is associated to a note
 
-var colorsAvailable = []; // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
+let colorsAvailable = []; // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
 
-var lowerGrades = 5; //? nome
+let lowerGrades = 5; //? nome
 
-var barContainer = document.getElementById("bar");
+const barContainer = document.getElementById("bar");
 var result = []; // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 // a new element hidden in the form to pass the result as a URL parameter
 
@@ -340,37 +349,37 @@ hiddenField.setAttribute("type", "hidden");
 hiddenField.setAttribute("name", "result");
 document.getElementById("fPlayGame").appendChild(hiddenField); //boxes
 
-var boxesPerRow = 9;
-var dim1 = 60;
-var dim2 = 120;
-var spaceBetweenBoxes = 5; //table
+const boxesPerRow = 9;
+const dim1 = 60;
+const dim2 = 120;
+const spaceBetweenBoxes = 5; //table
 
-var rows = 3;
-var rowHeight = dim2 + 10; //10 is padding
+const rows = 3;
+const rowHeight = dim2 + 10; //10 is padding
 
-var tableWidth = boxesPerRow * dim2 + (boxesPerRow - 1) * spaceBetweenBoxes + 20; //40 is padding
+const tableWidth = boxesPerRow * dim2 + (boxesPerRow - 1) * spaceBetweenBoxes + 20; //40 is padding
 
-var tableHeight = rows * rowHeight;
-var table = document.getElementById("table"); // function to get parameters from URL
+const tableHeight = rows * rowHeight;
+let table = document.getElementById("table"); // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
 // per accedere ai valori del dizionario si usa la get(key)
 
 function parseGetVars() {
-  var res = [];
-  var params = new URLSearchParams(document.location.search.substring(1));
-  var modal = params.get("mode");
-  var difficulty = params.get("difficulty");
+  let res = [];
+  let params = new URLSearchParams(document.location.search.substring(1));
+  let modal = params.get("mode");
+  let difficulty = params.get("difficulty");
   res[0] = modal;
   res[1] = difficulty;
   console.log(res);
   return res;
 }
 
-var params = parseGetVars();
+let params = parseGetVars();
 console.log(params);
-var mode = params[0];
+let mode = params[0];
 console.log(mode);
-var difficulty = params[1];
+let difficulty = params[1];
 console.log(difficulty); // Filling grades according to the mode received by the select input in the form by the user
 
 switch (mode) {
@@ -403,7 +412,7 @@ switch (mode) {
 
 
 function createTile(color1, color2, i) {
-  var tile = document.createElement("div");
+  let tile = document.createElement("div");
   tile.classList.add("tile_v");
   tile.id = i; // L'id serve al drag
 
@@ -412,14 +421,14 @@ function createTile(color1, color2, i) {
     pieceNum = drag(event);
   }); // I create two subclasses with the lower and upper part that are of two different colors
 
-  var tileUpper = document.createElement("div");
+  const tileUpper = document.createElement("div");
   tileUpper.classList.add("tileUpper");
   tileUpper.style.backgroundColor = color1;
-  tileUpper.addEventListener("click", _sound.playNote);
-  var tileLower = document.createElement("div");
+  tileUpper.addEventListener("click", _sound.playNoteOnTile);
+  const tileLower = document.createElement("div");
   tileLower.classList.add("tileLower");
   tileLower.style.backgroundColor = color2;
-  tileLower.addEventListener("click", _sound.playNote);
+  tileLower.addEventListener("click", _sound.playNoteOnTile);
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
   tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
@@ -428,21 +437,21 @@ function createTile(color1, color2, i) {
 }
 
 function createSet() {
-  for (var i = 0; i < grades.length; i++) {
+  for (let i = 0; i < grades.length; i++) {
     colorsAvailable[i] = colors[grades[i] + lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
     // because I want to use the position to access colors: colors[0] corresponds always to grade -5
   }
 
-  for (var _i = 0; _i < modelLength; _i++) {
+  for (let i = 0; i < modelLength; i++) {
     // For each element of the model, so of the bar
-    var number1 = Math.floor(Math.random() * colorsAvailable.length);
-    var number2 = Math.floor(Math.random() * colorsAvailable.length); //Math.floor() restituisce un numero intero arrotondato per difetto
+    const number1 = Math.floor(Math.random() * colorsAvailable.length);
+    const number2 = Math.floor(Math.random() * colorsAvailable.length); //Math.floor() restituisce un numero intero arrotondato per difetto
 
-    var tile = createTile(colorsAvailable[number1], colorsAvailable[number2], _i); // Create actual tile of that two colors chosen in a randomic way
+    const tile = createTile(colorsAvailable[number1], colorsAvailable[number2], i); // Create actual tile of that two colors chosen in a randomic way
 
     barContainer.appendChild(tile); // Add it to the bar div
 
-    var piece = {
+    let piece = {
       // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
       tile: tile,
       grade1: number1 - lowerGrades,
@@ -472,14 +481,14 @@ function iterate_angle(n) {
 
 
 function rotate(ev) {
-  var i = Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget); // at the beginning I have [grade1, grade2]
+  let i = Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget); // at the beginning I have [grade1, grade2]
 
   if (setPieces[i].angle == 0) {
     ev.currentTarget.classList.remove("tile_v");
     ev.currentTarget.classList.add("tile_h");
     ev.currentTarget.style.flexFlow = "row-reverse wrap"; // I want to swap grade1 and grade2 to have [grade2, grade1]
 
-    var tempGrade = setPieces[i].grade1;
+    let tempGrade = setPieces[i].grade1;
     setPieces[i].grade1 = setPieces[i].grade2;
     setPieces[i].grade2 = tempGrade;
   }
@@ -495,9 +504,9 @@ function rotate(ev) {
     ev.currentTarget.classList.add("tile_h");
     ev.currentTarget.style.flexFlow = "row wrap"; // I want to swap to [grade1, grade2]
 
-    var _tempGrade = setPieces[i].grade1;
+    let tempGrade = setPieces[i].grade1;
     setPieces[i].grade1 = setPieces[i].grade2;
-    setPieces[i].grade2 = _tempGrade;
+    setPieces[i].grade2 = tempGrade;
   }
 
   if (setPieces[i].angle == 270) {
@@ -511,7 +520,7 @@ function rotate(ev) {
 }
 
 function change_set() {
-  for (var i = 0; i < setPieces.length; i++) {
+  for (let i = 0; i < setPieces.length; i++) {
     // For each element of the model, so of the bar
     barContainer.removeChild(setPieces[i].tile);
   } // svuotare setPieces
@@ -524,13 +533,13 @@ function change_set() {
 changeSet.onclick = change_set; // ------------------------------------------------- DRAG and DROP --------------------------------
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
 
-var rowCollection = document.getElementById("table").children;
-var boxes = [];
+let rowCollection = document.getElementById("table").children;
+let boxes = [];
 
-for (var i = 0; i < rows; i++) {
-  var rowChild = rowCollection[i].children;
+for (let i = 0; i < rows; i++) {
+  let rowChild = rowCollection[i].children;
 
-  for (var j = 0; j < boxesPerRow; j++) {
+  for (let j = 0; j < boxesPerRow; j++) {
     boxes.push(rowChild[j]);
   }
 } // Funzioni ausiliarie che permettono la cancellazione dell'eventiListener quando serve.
@@ -546,14 +555,14 @@ function prevent_drop(ev) {
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
-  var i = Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget);
+  let i = Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget);
   return i;
 } // Assegna solamente al primo elemento senza figli dell'array dato gli eventListeners necessari a permettere il drop
 // al suo interno e toglie l'attributo draggable all'ultima tessera inserita.
 
 
 function drop_box(array) {
-  var i = 0;
+  let i = 0;
 
   while (array[i]) {
     if (array[i - 1]) {
@@ -637,7 +646,7 @@ function addToSequence(grade1, grade2, id) {
 
 
 function cartoonFeedback(feedback) {
-  var cartoon = document.getElementById("cartoon");
+  let cartoon = document.getElementById("cartoon");
   cartoon.style.display = "inherit";
 
   if (feedback == "color_match") {
@@ -684,7 +693,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53823" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63272" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

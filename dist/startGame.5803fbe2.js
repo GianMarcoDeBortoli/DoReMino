@@ -117,184 +117,79 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"sound.js":[function(require,module,exports) {
-"use strict";
+})({"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.playNoteOnHeader = playNoteOnHeader;
-exports.playNoteOnTile = playNoteOnTile;
-// creation of the synth and connection of it to the output speakers
-const synth = new Tone.Synth().toDestination();
-const poly = new Tone.PolySynth().toDestination();
-const pluck = new Tone.PluckSynth().toDestination(); //----------------------------------------- SOUND INSIDE STARTGAME ----------------------------------------
-
-function playNoteOnHeader(index) {
-  if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");else if (index == 3) synth.triggerAttackRelease("C4", "4n");
-} //----------------------------------------- SOUND INSIDE PLAYGAME -----------------------------------------
-// matrix needed for the selection of the correct note based on the color of the half-tile
-
-
-const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
-// finds the note correspondent to the index found, triggers the synth with that same note
-
-function playNoteOnTile() {
-  let color = event.currentTarget.style.backgroundColor;
-  let index = searchForNote[0].indexOf(color);
-  let note = searchForNote[1][index];
-
-  if (event.shiftKey) {
-    synth.triggerAttackRelease(note, "8n");
-  }
-}
-},{}],"startGame.js":[function(require,module,exports) {
-"use strict";
-
-var _sound = require("./sound");
-
-var _document$querySelect;
-
-const colors = ["#C0D6FF", "#F3C9F5", "#FFFFFF", "#000000", "#FF873C", "#F5FA5C", "#78FC83"];
-const rulesButton = document.getElementById("rulesButton");
-rulesButton.addEventListener("click", redirectToRules);
-
-function redirectToRules() {
-  location.replace("howToPlay.html");
-}
-
-const title = document.querySelectorAll(".title");
-(_document$querySelect = document.querySelector('#startAudio')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.addEventListener('click', async () => {
-  await Tone.start();
-  console.log('audio is ready');
-  let index = 0;
-
-  function showTitle() {
-    title[index].style.setProperty("opacity", "1.0");
-    (0, _sound.playNoteOnHeader)(index);
-    index++;
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
   }
 
-  let showing = setInterval(showTitle, 700);
-  setTimeout(function () {
-    clearInterval(showing), document.getElementById("startAudio").style.opacity = 0.0;
-  }, 2800);
-  title.forEach((element, index) => element.addEventListener("mouseover", function () {
-    let transformation = event.currentTarget.style.transform;
-    transformation = transformation + ' scale(1.2, 1.2)';
-    event.currentTarget.style.transform = transformation;
-    (0, _sound.playNoteOnHeader)(index);
-  }));
-  title.forEach(element => element.addEventListener("mouseleave", function () {
-    let transformation = event.currentTarget.style.transform;
-    transformation = transformation.split(" ");
-    event.currentTarget.style.transform = transformation[0];
-  }));
-}, {
-  once: true
-});
-/* ------------- elementi che servono per modificare CSS select mode ---------------*/
+  return bundleURL;
+}
 
-var x, i, j, l, ll, selElmnt, a, b, c;
-/* Look for any elements with the class "custom-select": */
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
 
-x = document.getElementsByClassName("custom-select");
-l = x.length;
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
 
-for (i = 0; i < l; i++) {
-  selElmnt = x[i].getElementsByTagName("select")[0];
-  ll = selElmnt.length;
-  /* For each element, create a new DIV that will act as the selected item: */
+  return '/';
+}
 
-  a = document.createElement("div");
-  a.setAttribute("class", "select-selected");
-  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-  x[i].appendChild(a);
-  /* For each element, create a new DIV that will contain the option list: */
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
 
-  b = document.createElement("div");
-  b.setAttribute("class", "select-items select-hide");
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
 
-  for (j = 1; j < ll; j++) {
-    /* For each option in the original select element,
-    create a new DIV that will act as an option item: */
-    c = document.createElement("DIV");
-    c.innerHTML = selElmnt.options[j].innerHTML;
-    c.addEventListener("click", function (e) {
-      /* When an item is clicked, update the original select box,
-      and the selected item: */
-      var y, i, k, s, h, sl, yl;
-      s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-      sl = s.length;
-      h = this.parentNode.previousSibling;
+function updateLink(link) {
+  var newLink = link.cloneNode();
 
-      for (i = 0; i < sl; i++) {
-        if (s.options[i].innerHTML == this.innerHTML) {
-          s.selectedIndex = i;
-          h.innerHTML = this.innerHTML;
-          y = this.parentNode.getElementsByClassName("same-as-selected");
-          yl = y.length;
+  newLink.onload = function () {
+    link.remove();
+  };
 
-          for (k = 0; k < yl; k++) {
-            y[k].removeAttribute("class");
-          }
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
 
-          this.setAttribute("class", "same-as-selected");
-          break;
-        }
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
       }
+    }
 
-      h.click();
-    });
-    b.appendChild(c);
-  }
-
-  x[i].appendChild(b);
-  a.addEventListener("click", function (e) {
-    /* When the select box is clicked, close any other select boxes,
-    and open/close the current select box: */
-    e.stopPropagation();
-    closeAllSelect(this);
-    this.nextSibling.classList.toggle("select-hide");
-    this.classList.toggle("select-arrow-active");
-  });
+    cssTimeout = null;
+  }, 50);
 }
 
-function closeAllSelect(elmnt) {
-  /* A function that will close all select boxes in the document,
-  except the current select box: */
-  var x,
-      y,
-      i,
-      xl,
-      yl,
-      arrNo = [];
-  x = document.getElementsByClassName("select-items");
-  y = document.getElementsByClassName("select-selected");
-  xl = x.length;
-  yl = y.length;
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"startGame.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
 
-  for (i = 0; i < yl; i++) {
-    if (elmnt == y[i]) {
-      arrNo.push(i);
-    } else {
-      y[i].classList.remove("select-arrow-active");
-    }
-  }
-
-  for (i = 0; i < xl; i++) {
-    if (arrNo.indexOf(i)) {
-      x[i].classList.add("select-hide");
-    }
-  }
-}
-/* If the user clicks anywhere outside the select box,
-then close all select boxes: */
-
-
-document.addEventListener("click", closeAllSelect);
-/* ------------- END elementi che servono per modificare CSS select mode ---------------*/
-},{"./sound":"sound.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -498,5 +393,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","startGame.js"], null)
-//# sourceMappingURL=/startGame.1c255ac1.js.map
+},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/startGame.5803fbe2.js.map

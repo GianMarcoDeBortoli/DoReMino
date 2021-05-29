@@ -1,0 +1,188 @@
+@media screen {
+
+    html,body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    body{
+      font-size: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        "header header header header header"
+        "main main main main main"
+        "main main main main main";
+    /*grid-gap: 0.5em;
+    padding: 0.5em;*/
+    min-height:100%;
+}
+
+.theheader{
+    background-color: #C0D6FF;
+    color: white;
+    grid-area: header;
+    padding: 0.1em;
+    text-align:center;
+    min-width: 30em;
+}
+
+.title {
+    display: inline-block;
+    opacity: 0.0;
+    transition: opacity 800ms, transform 300ms;
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 100px cursive;
+    margin: 0;
+}
+
+#startAudio {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: #78FC83;
+    color: #000000;
+    transition: opacity 1s;
+    transform: translate(-70px,-20px);
+}
+
+.thecontent {
+    grid-area: main;
+    padding:4% 5% 4% 5%;
+    min-width: 30em;
+}
+
+div.form {
+    border: 0.2em solid lightgrey;
+    width: 70%;
+    margin: auto;
+    padding: 3em 1em 3em 1em;
+    border-radius: 0.4em; /* arrotondamento angoli */
+    text-align: center;
+}
+
+.form input[type=submit], input[type=button] {
+    /*font-size: 100%;
+    width: 30%;
+    background-color: black;
+    color: white;
+    padding: 1em 1em;
+    margin: 0.8em 2em;
+    border: none;
+    border-radius: 0.4em;*/
+    font-size: 100%;
+    width:60%;
+    height:70px;
+    border: none;
+    margin: 3em 0 0.5em 3em;
+    position: relative;
+    /*z-index:99999;*/
+    text-align:center;
+    /*display: inline-block;*/
+    color: #f1f1f1;
+    outline: none;
+    background: #33bbff;
+    background: -moz-linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    background: -o-linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    background: -webkit-linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    background: linear-gradient(#1ab2ff, #4dc3ff), #33bbff;
+    text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+    box-shadow: inset 0 -1px 1px #66ccff, 0 8px 0 #0088cc, 0 10px 15px rgba(0, 0, 0, 0.35);
+    -moz-transition: all 100ms ease-in-out;
+    -o-transition: all 100ms ease-in-out;
+    -webkit-transition: all 100ms ease-in-out;
+    -ms-transition: all 100ms ease-in-out;
+    transition: all 100ms ease-in-out;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    font: normal normal 2em/1 Verdana;
+    text-decoration: none;
+}
+
+.form input[type=submit]:hover, input[type=button]:hover {
+    color: rgba(0, 0, 0, 0.1);
+}
+
+
+
+.form label {
+    float:left;
+    display: inline-block;
+    width:20%;
+    font: normal normal 1.5em Verdana;
+}
+
+.custom-select {
+    float:left;
+    position: relative;
+    font: normal normal 1em Verdana;
+    display: inline-block;
+    width:20%;
+}
+
+.custom-select select {
+    display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+    background-color: #33bbff;
+    /*border-radius: 0.4em; /* arrotondamento angoli */
+}
+
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,.select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+    position: absolute;
+    background-color: #33bbff;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+}
+
+/*# sourceMappingURL=/startGame.5803fbe2.css.map */
