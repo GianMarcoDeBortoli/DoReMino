@@ -1,4 +1,4 @@
-import { playNoteOnHeader } from "./sound";
+import { playNoteOnHeader } from "./modules/sound";
 
 const colors = ["#C0D6FF", "#F3C9F5", "#FFFFFF", "#000000", "#FF873C", "#F5FA5C", "#78FC83"]
 
@@ -6,39 +6,23 @@ const rulesButton = document.getElementById("rulesButton");
 rulesButton.addEventListener("click", redirectToRules);
 
 function redirectToRules() {
-  location.replace("howToPlay.html");
+  location.replace("rules.html");
 }
 
 const title = document.querySelectorAll(".title");
 
-document.querySelector('#startAudio')?.addEventListener('click', async () => {
-	await Tone.start()
-	console.log('audio is ready')
+title.forEach((element, index) => element.addEventListener("mouseover", function() {
+  let transformation = event.currentTarget.style.transform;
+  transformation = transformation+' scale(1.2, 1.2)';
+  event.currentTarget.style.transform = transformation;
+  playNoteOnHeader(index);
+}))
 
-  let index = 0;
-  function showTitle() {
-    title[index].style.setProperty("opacity", "1.0");
-    playNoteOnHeader(index);
-    index++;
-  }
-
-  let showing = setInterval(showTitle, 700);
-
-  setTimeout(function() {clearInterval(showing), document.getElementById("startAudio").style.opacity = 0.0}, 2800);
-
-  title.forEach((element, index) => element.addEventListener("mouseover", function() {
-    let transformation = event.currentTarget.style.transform;
-    transformation = transformation+' scale(1.2, 1.2)';
-    event.currentTarget.style.transform = transformation;
-    playNoteOnHeader(index);
-  }))
-  
-  title.forEach(element => element.addEventListener("mouseleave", function() {
-    let transformation = event.currentTarget.style.transform;
-    transformation = transformation.split(" ");
-    event.currentTarget.style.transform = transformation[0];
-  }))
-}, {once: true})
+title.forEach(element => element.addEventListener("mouseleave", function() {
+  let transformation = event.currentTarget.style.transform;
+  transformation = transformation.split(" ");
+  event.currentTarget.style.transform = transformation[0];
+}))
 
 /* ------------- elementi che servono per modificare CSS select mode ---------------*/
 var x, i, j, l, ll, selElmnt, a, b, c;

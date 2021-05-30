@@ -1,6 +1,6 @@
-import * as timer from './timer';
-import {playNoteOnTile} from './sound';
-import {draw_table} from './table';
+import * as timer from './modules/timer';
+import {playNoteOnTile} from './modules/sound';
+import {draw_table} from './modules/table';
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
@@ -322,7 +322,7 @@ function addToSequence(grade1,grade2,id){
 // fa comparire il fumetto con il commento
 function cartoonFeedback(feedback){
   let cartoon = document.getElementById("cartoon");
-  cartoon.style.display = "inherit";
+  cartoon.style.visibility = "visible";
   if(feedback=="color_match"){
     cartoon.textContent = "Remember to match the color!";
 
@@ -330,7 +330,7 @@ function cartoonFeedback(feedback){
   if(feedback=="wrong_rotation"){
     cartoon.textContent = "Remember you can rotate the tile!";
   }
-  setTimeout(function(){cartoon.style.display="none"}, 2000);
+  setTimeout(function(){cartoon.style.visibility="hidden"}, 2000);
 }
 //------------------------------------------- END of DRAG and DROP ---------------------------
 

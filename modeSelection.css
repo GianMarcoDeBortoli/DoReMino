@@ -1,0 +1,158 @@
+@media screen {
+
+    html,body,main {
+        height: 100%;
+        width: 100%;
+        background-color: #d8821131;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        user-select: none;
+    }
+    
+    body{
+        font-size: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+#theHeader{
+    background: linear-gradient(0.25turn, #1E6389, #e0f0d3, #71B775);
+    padding: 0 50px 0 50px;
+    width: auto;
+    height: auto;
+    border: 5px solid #263465;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    transition: transform 300ms;
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 100px cursive;
+    margin: 0;
+}
+
+.theContent {
+    width: 80%;
+}
+
+.form {
+    border: 0.2em solid #263465;
+    background-color: #9ed4a1;
+    width: 70%;
+    margin: auto;
+    padding: 3em 1em 3em 1em;
+    border-radius: 0.4em; /* arrotondamento angoli */
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-content: center;
+}
+
+.selectionContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form input[type=submit], input[type=button] {
+    width:60%;
+    height:70px;
+    border: none;
+    margin: 30px;
+    position: relative;
+    text-align:center;
+    color: #DADAF1;
+    outline: none;
+    border-radius: 6px;
+    font: normal normal 2em/1 Verdana;
+    text-decoration: none;
+    background: linear-gradient(#263465, #3a4980);
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    box-shadow: inset 0 -1px 1px #3d4f8f, 0 8px 0 #202c58, 0 10px 15px rgba(0, 0, 0, 0.35);
+    transition: all 100ms ease-in-out;
+}
+
+.form input[type=submit]:hover, input[type=button]:hover {
+    background: linear-gradient(#334175, #455281);
+    color: #ADC5EF;
+}
+
+.form label {
+    color: #263465;
+    text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+    display: inline-block;
+    width: 30%;
+    font: normal normal 1.5em Verdana;
+}
+
+.custom-select {
+    margin-right: 80px;
+    width: 200px;
+    position: relative;
+    font: normal normal 1em Verdana;
+    display: inline-block;
+    width:20%;
+}
+
+.custom-select select {
+    display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+    background-color: #263465;
+    border: 5px solid #2E938A;
+    border-radius: 3px;
+}
+
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+    position: absolute;
+    content: "";
+    top: 17px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #DADAF1 transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+    border-color: transparent transparent #DADAF1 transparent;
+    top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,.select-selected {
+    color: #DADAF1;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+    position: absolute;
+    background-color: #1E6389;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+}
