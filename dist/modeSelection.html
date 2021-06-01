@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="DFFGLS">
+	<meta name="description" content="Domino">
+	<link rel="icon" href="#"><!-- fav icon -->
+	<title>New Game</title>
+	<link rel="stylesheet" type="text/css" href="/modeSelection.c148111f.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.68/Tone.js"></script>
+	<script type="text/javascript" src="/modeSelection.a0864645.js" defer=""></script>
+<script src="/modeSelection.c148111f.js"></script></head>
+
+<body>
+
+  <main>
+
+    <div id="theHeader">      
+      <h1 class="title" style="color:#EF6559; transform:rotate(5deg)">D&ograve</h1>
+      <h1 class="title" style="color:#EA9A68; transform:rotate(-3deg)">Re</h1>
+      <h1 class="title" style="color:#DACC59; transform:rotate(2deg)">Mi</h1>
+      <h1 class="title" style="color:#000000; transform:rotate(4deg)">no</h1>
+    </div>
+
+    <div class="theContent">
+      <noscript>
+        <p class="warning"> Attenzione: il tuo browser non supporta JavaScript o è disabilitato. Delle funzionalità della pagina potrebbero non agire correttamente. </p>
+      </noscript>
+
+      <div class="form">
+        
+        <form name="fNewGame" method="GET" action="game.html">
+
+          <div class="selectionContainer">
+            <label for="mode"><strong>MODES:</strong></label>
+            <div class="custom-select">
+              <select name="mode" onchange="">
+                <option value="Ionian" selected="">Ionian</option>
+                <option value="Ionian">Ionian</option>
+                <option value="Dorian">Dorian</option>
+                <option value="Phrygian">Phrygian</option>
+                <option value="Lydian">Lydian</option>
+                <option value="Myxolydian">Myxolydian</option>
+                <option value="Aeolian">Aeolian</option>
+                <option value="Locrian">Locrian</option>
+              </select>
+            </div>
+    
+            <label for="difficulty"><strong>DIFFICULTY:</strong></label>
+            <div class="custom-select">
+              <select name="difficulty" onchange="">
+                <option value="easy" selected="">Amateur</option>
+                <option value="easy">Amateur</option>
+                <option value="expert">Expert</option>
+              </select>
+            </div>
+          </div>
+
+          <input type="submit" value="New Game">
+          <input id="rulesButton" type="button" value="How to Play">
+
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

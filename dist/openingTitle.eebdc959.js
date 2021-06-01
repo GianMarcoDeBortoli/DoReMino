@@ -117,79 +117,86 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"modules/sound.js":[function(require,module,exports) {
+"use strict";
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.playChordsOnHeader = playChordsOnHeader;
+exports.playNoteOnHeader = playNoteOnHeader;
+exports.playNoteOnTile = playNoteOnTile;
+// creation of the synth and connection of it to the output speakers
+const synth = new Tone.Synth().toDestination();
+const poly = new Tone.PolySynth().toDestination();
+const pluck = new Tone.PluckSynth().toDestination(); //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
+
+function playChordsOnHeader(index) {
+  if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");else if (index == 3) synth.triggerAttackRelease("C4", "4n");
+}
+
+function playNoteOnHeader(index) {
+  if (index == 0) synth.triggerAttackRelease("C4", "8n");else if (index == 1) synth.triggerAttackRelease("D4", "8n");else if (index == 2) synth.triggerAttackRelease("E4", "8n");
+} //----------------------------------------- SOUND INSIDE game.html ------------------------------------------------
+// matrix needed for the selection of the correct note based on the color of the half-tile
+
+
+const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+// finds the note correspondent to the index found, triggers the synth with that same note
+
+function playNoteOnTile() {
+  let color = event.currentTarget.style.backgroundColor;
+  let index = searchForNote[0].indexOf(color);
+  let note = searchForNote[1][index];
+
+  if (event.shiftKey) {
+    synth.triggerAttackRelease(note, "8n");
   }
+}
+},{}],"openingTitle.js":[function(require,module,exports) {
+"use strict";
 
-  return bundleURL;
+var _sound = require("./modules/sound");
+
+function redirectToModeSelection() {
+  location.replace("modeSelection.html");
 }
 
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+const title = document.querySelectorAll(".title");
+let indexTitle = 0;
 
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
+function showTitle() {
+  title[indexTitle].style.setProperty("opacity", "1.0");
+  (0, _sound.playChordsOnHeader)(indexTitle);
+  indexTitle++;
 }
 
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"style.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+const audioButton = document.querySelector('#startAudio');
+audioButton === null || audioButton === void 0 ? void 0 : audioButton.addEventListener('click', async () => {
+  await Tone.start();
+  console.log('audio is ready');
+  setTimeout(function () {
+    document.getElementById("startAudio").style.setProperty("opacity", "0.0");
+    setTimeout(function () {
+      document.querySelector("#content").classList.add("backgroundAnimation");
+      setTimeout(function () {
+        document.querySelector("#theHeader").style.setProperty("width", "60%");
+        document.querySelector("#theHeader").style.setProperty("height", "35%");
+        document.querySelector("#theHeader").style.setProperty("border", "5px solid #263465");
+        setTimeout(function () {
+          let showing = setInterval(showTitle, 700);
+          setTimeout(function () {
+            clearInterval(showing);
+          }, 2800);
+          setTimeout(redirectToModeSelection, 5000);
+        }, 2300);
+      }, 800);
+    }, 500);
+  }, 500);
+}, {
+  once: true
+});
+},{"./modules/sound":"modules/sound.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +400,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/style.e308ff8e.js.map
+},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","openingTitle.js"], null)
+//# sourceMappingURL=/openingTitle.eebdc959.js.map
