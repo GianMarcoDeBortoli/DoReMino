@@ -114,8 +114,13 @@ function createTile(color1,color2,i) {
 
 function createSet() {
   for(let i = 0; i < grades.length; i++){
-    colorsAvailable[i] = colors[grades[i]+lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
-    // because I want to use the position to access colors: colors[0] corresponds always to grade -5
+    //if(difficulty=="amateur"){
+      colorsAvailable[i] = colors[grades[i]+lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
+      // because I want to use the position to access colors: colors[0] corresponds always to grade -5
+    //}
+    //if(difficulty=="expert"){
+      //colorsAvailable[i] = "white";
+    //}
   }
 
   for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
