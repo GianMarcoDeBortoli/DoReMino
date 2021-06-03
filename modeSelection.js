@@ -1,12 +1,12 @@
-import { playNoteOnHeader } from "./modules/sound";
+import { playNoteOnHeader, playPluck, playMembrane } from "./modules/sound";
 
-const colors = ["#C0D6FF", "#F3C9F5", "#FFFFFF", "#000000", "#FF873C", "#F5FA5C", "#78FC83"]
 
 const rulesButton = document.getElementById("rulesButton");
 rulesButton.addEventListener("click", redirectToRules);
 
 function redirectToRules() {
-  location.replace("rules.html");
+  playMembrane();
+  setTimeout(function() {location.replace("rules.html")}, 700);
 }
 
 const title = document.querySelectorAll(".title");
@@ -77,6 +77,7 @@ for (i = 0; i < l; i++) {
     closeAllSelect(this);
     this.nextSibling.classList.toggle("select-hide");
     this.classList.toggle("select-arrow-active");
+    playPluck();
   });
 }
 

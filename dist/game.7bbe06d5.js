@@ -215,11 +215,20 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.playChordsOnHeader = playChordsOnHeader;
 exports.playNoteOnHeader = playNoteOnHeader;
+exports.playPluck = playPluck;
+exports.playMembrane = playMembrane;
+exports.errorSound = errorSound;
+exports.changeSetSound = changeSetSound;
 exports.playNoteOnTile = playNoteOnTile;
 // creation of the synth and connection of it to the output speakers
 const synth = new Tone.Synth().toDestination();
 const poly = new Tone.PolySynth().toDestination();
-const pluck = new Tone.PluckSynth().toDestination(); //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
+const pluck = new Tone.PluckSynth().toDestination();
+const membrane = new Tone.MembraneSynth().toDestination();
+const metal = new Tone.MetalSynth().toDestination();
+pluck.volume.value = -12;
+membrane.volume.value = -12;
+metal.volume.value = -12; //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
 
 function playChordsOnHeader(index) {
   if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");else if (index == 3) synth.triggerAttackRelease("C4", "4n");
@@ -227,15 +236,37 @@ function playChordsOnHeader(index) {
 
 function playNoteOnHeader(index) {
   if (index == 0) synth.triggerAttackRelease("C4", "8n");else if (index == 1) synth.triggerAttackRelease("D4", "8n");else if (index == 2) synth.triggerAttackRelease("E4", "8n");
+}
+
+function playPluck() {
+  pluck.triggerAttackRelease("C5", "16n");
+}
+
+function playMembrane() {
+  membrane.triggerAttackRelease("C4", "16n");
+}
+
+function errorSound() {
+  metal.triggerAttackRelease("C5", "32n");
+}
+
+function changeSetSound() {
+  let interval = setInterval(function () {
+    pluck.triggerAttackRelease("C6", "32n");
+  }, 40);
+  setTimeout(function () {
+    clearInterval(interval);
+  }, 300);
 } //----------------------------------------- SOUND INSIDE game.html ------------------------------------------------
 // matrix needed for the selection of the correct note based on the color of the half-tile
 
 
-const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+const searchForNote = [["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)", "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)", "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)", "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
 // finds the note correspondent to the index found, triggers the synth with that same note
 
 function playNoteOnTile() {
   let color = event.currentTarget.style.backgroundColor;
+  console.log(color);
   let index = searchForNote[0].indexOf(color);
   let note = searchForNote[1][index];
 
@@ -338,7 +369,7 @@ var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazion
 
 let pieceNum = -1; // I need this to remove the dropped tile from setPieces array
 
-const colors = ["darkSlateBlue", "darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen", "darkBlue", "lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]; // each color is associated to a note
+const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)", "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)", "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)", "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"]; // each color is associated to a note
 
 let colorsAvailable = []; // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
@@ -525,6 +556,8 @@ function rotate(ev) {
 }
 
 function change_set() {
+  (0, _sound.changeSetSound)();
+
   for (let i = 0; i < setPieces.length; i++) {
     // For each element of the model, so of the bar
     barContainer.removeChild(setPieces[i].tile);
@@ -651,6 +684,7 @@ function addToSequence(grade1, grade2, id) {
 
 
 function cartoonFeedback(feedback) {
+  (0, _sound.errorSound)();
   let cartoon = document.getElementById("cartoon");
   cartoon.style.visibility = "visible";
 
@@ -698,7 +732,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60462" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49349" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
