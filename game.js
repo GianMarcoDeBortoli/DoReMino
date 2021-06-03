@@ -2,6 +2,11 @@ import * as timer from './modules/timer';
 import {playNoteOnTile} from './modules/sound';
 import {draw_table} from './modules/table';
 
+
+window.onbeforeunload = function() {
+    return "Are you sure you want to leave?";
+}
+
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
 var grades = []
@@ -103,8 +108,16 @@ function createTile(color1,color2,i) {
   tileLower.style.backgroundColor = color2;
   tileLower.addEventListener("click", playNoteOnTile);
 
+
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
+
+  /*if(difficulty=="expert"){
+    tileUpper.style.opacity="0.5";
+    tileLower.style.opacity="0.5";
+  }
+  tile.opacity="0";*/
+
 
   tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
 
@@ -118,9 +131,12 @@ function createSet() {
       colorsAvailable[i] = colors[grades[i]+lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
       // because I want to use the position to access colors: colors[0] corresponds always to grade -5
     //}
-    //if(difficulty=="expert"){
+    /*if(difficulty=="expert"){
       //colorsAvailable[i] = "white";
-    //}
+      for(let i=0; i<colorsAvailable.length; i++){
+        colorsAvailable[i].style.opacity="1";
+      }
+    }*/
   }
 
   for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
@@ -139,6 +155,7 @@ function createSet() {
 
     setPieces.push(piece)
   }
+
 }
 
 

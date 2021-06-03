@@ -36,3 +36,4 @@ export function playNoteOnTile() {
         synth.triggerAttackRelease(note, "8n");
     }
 }
+
