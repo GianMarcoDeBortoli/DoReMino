@@ -49,9 +49,9 @@ const searchForNote = [["rgb(11, 191, 140)","rgb(165, 29, 54)", "rgb(167, 200, 2
 
 // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
 // finds the note correspondent to the index found, triggers the synth with that same note
-export function playNoteOnTile() {
+function playNoteOnTile() {
     let color = event.currentTarget.style.backgroundColor;
-    console.log(color);
+    console.log(setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)]);
     let index = searchForNote[0].indexOf(color);
     let note = searchForNote[1][index];
     if (event.shiftKey) {

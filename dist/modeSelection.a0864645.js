@@ -129,7 +129,6 @@ exports.playPluck = playPluck;
 exports.playMembrane = playMembrane;
 exports.errorSound = errorSound;
 exports.changeSetSound = changeSetSound;
-exports.playNoteOnTile = playNoteOnTile;
 // creation of the synth and connection of it to the output speakers
 const synth = new Tone.Synth().toDestination();
 const poly = new Tone.PolySynth().toDestination();
@@ -176,7 +175,7 @@ const searchForNote = [["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 
 
 function playNoteOnTile() {
   let color = event.currentTarget.style.backgroundColor;
-  console.log(color);
+  console.log(setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)]);
   let index = searchForNote[0].indexOf(color);
   let note = searchForNote[1][index];
 
@@ -341,7 +340,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61593" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50880" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

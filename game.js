@@ -1,22 +1,69 @@
 import * as timer from './modules/timer';
-import {errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
+import {errorSound/* , playNoteOnTile */, changeSetSound} from './modules/sound';
 import {draw_table} from './modules/table';
+
+var table = document.getElementById("table");
+
+const synth = new Tone.Synth().toDestination();
+// matrix needed for the selection of the correct note based on the color of the half-tile
+const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12], 
+                       ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
+
+// the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+// finds the note correspondent to the index found, triggers the synth with that same note
+function playNoteOnUpperTile() {
+  if (event.shiftKey) {
+    let grade;
+    if (event.currentTarget.parentNode.parentNode.id === "bar") {
+      grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade1;
+    }
+    else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
+      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
+    }
+    console.log(grade);
+    let index = searchForNote[0].indexOf(grade);
+    let note = searchForNote[1][index];
+    console.log(note);
+  
+    synth.triggerAttackRelease(note, "8n");
+  }
+}
+
+function playNoteOnLowerTile() {
+  if (event.shiftKey) {
+    let grade;
+    if (event.currentTarget.parentNode.parentNode.id === "bar") {
+      grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade2;
+    }
+    else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
+      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
+    }
+    console.log(grade);
+    let index = searchForNote[0].indexOf(grade);
+    let note = searchForNote[1][index];
+    console.log(note);
+  
+    synth.triggerAttackRelease(note, "8n");
+  }
+}
+
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
 var grades = []
-let tiles = document.querySelectorAll(".tile");
-var setPieces = [] // elenco dei tiles con associati i due gradi e l'angolazione
-let pieceNum = -1; // I need this to remove the dropped tile from setPieces array
-const colors = ["rgb(11, 191, 140)","rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
-                "rgb(135, 28, 235)","rgb(56, 5, 242)","rgb(253, 105, 19)", "rgb(12, 242, 27)",
+var tiles = document.querySelectorAll(".tile");
+var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazione
+var setBoxes = [];
+var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
+const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
+                "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)",
                 "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)",
                 "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"]
 // each color is associated to a note
-let colorsAvailable= []
+var colorsAvailable= []
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
-let lowerGrades = 5; //? nome
+var lowerGrades = 5; //? nome
 const barContainer = document.getElementById("bar");
 var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
@@ -38,7 +85,7 @@ const rowHeight = dim2 + 10; //10 is padding
 const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 20; //40 is padding
 const tableHeight = rows * rowHeight;
 
-let table = document.getElementById("table");
+
 
 
 // function to get parameters from URL
@@ -55,11 +102,11 @@ function parseGetVars() {
   return res;
 }
 
-let params = parseGetVars();
+var params = parseGetVars();
 console.log(params);
-let mode = params[0];
+var mode = params[0];
 console.log(mode);
-let difficulty = params[1];
+var difficulty = params[1];
 console.log(difficulty);
 
 
@@ -99,12 +146,22 @@ function createTile(color1,color2,i) {
   // I create two subclasses with the lower and upper part that are of two different colors
   const tileUpper = document.createElement("div");
   tileUpper.classList.add("tileUpper");
-  tileUpper.style.backgroundColor = color1;
-  tileUpper.addEventListener("click", playNoteOnTile);
+  if (difficulty == "expert") {
+    tileUpper.style.backgroundColor = "rgb(159, 93, 44)";
+  }
+  else if (difficulty == "amateur") {
+    tileUpper.style.backgroundColor = color1;
+  }
+  tileUpper.addEventListener("click", playNoteOnUpperTile);
   const tileLower = document.createElement("div");
   tileLower.classList.add("tileLower");
-  tileLower.style.backgroundColor = color2;
-  tileLower.addEventListener("click", playNoteOnTile);
+  if (difficulty == "expert") {
+    tileLower.style.backgroundColor = "rgb(159, 93, 44)";
+  }
+  else if (difficulty == "amateur") {
+    tileLower.style.backgroundColor = color2;
+  }
+  tileLower.addEventListener("click", playNoteOnLowerTile);
 
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
@@ -116,27 +173,23 @@ function createTile(color1,color2,i) {
 }
 
 function createSet() {
-  for(let i = 0; i < grades.length; i++){
-    //if(difficulty=="amateur"){
-      colorsAvailable[i] = colors[grades[i]+lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
-      // because I want to use the position to access colors: colors[0] corresponds always to grade -5
-    //}
-    //if(difficulty=="expert"){
-      //colorsAvailable[i] = "white";
-    //}
-  }
-
+  
   for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
-    const number1 = Math.floor(Math.random() * colorsAvailable.length)
-    const number2 = Math.floor(Math.random() * colorsAvailable.length)
+    let index1 = Math.floor(Math.random() * grades.length);
+    let grade1 = grades[index1];
+    let color1 = colors[grade1+lowerGrades];
+
+    let index2 = Math.floor(Math.random() * grades.length);
+    let grade2 = grades[index2];
+    let color2 = colors[grade2+lowerGrades];
     //Math.floor() restituisce un numero intero arrotondato per difetto
-    const tile = createTile(colorsAvailable[number1],colorsAvailable[number2],i) // Create actual tile of that two colors chosen in a randomic way
+    const tile = createTile(color1,color2,i) // Create actual tile of that two colors chosen in a randomic way
     barContainer.appendChild(tile) // Add it to the bar div
     let piece = {
       // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
       tile: tile,
-      grade1: number1-lowerGrades,
-      grade2: number2-lowerGrades,
+      grade1: grade1,
+      grade2: grade2,
       angle: 0,
     }
 
@@ -214,7 +267,7 @@ function change_set() {
   createSet()
 }
 
-changeSet.onclick = change_set
+changeSet.onclick = change_set;
 
 // ------------------------------------------------- DRAG and DROP --------------------------------
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
@@ -280,11 +333,13 @@ function drop(ev) {
       ev.target.appendChild(document.getElementById(data));
       // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
       addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,ev.target.id);
-      setPieces.splice(pieceNum, 1);
+      setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
       ev.target.firstElementChild.removeEventListener("dblclick", rotate);
       ev.target.removeEventListener("drop", drop);
       ev.target.removeEventListener("dragover", prevent_drop);
       drop_box(boxes);
+      console.log(setPieces);
+      console.log(setBoxes);
       }
     }
     //controllo che la casella e la tessera siano entrambe verticali
@@ -299,11 +354,13 @@ function drop(ev) {
         // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
         addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,1);
         // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
-        setPieces.splice(pieceNum, 1);
+        setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
         ev.target.firstElementChild.removeEventListener("dblclick", rotate);
         ev.target.removeEventListener("drop", drop);
         ev.target.removeEventListener("dragover", prevent_drop);
         drop_box(boxes);
+        console.log(setPieces);
+        console.log(setBoxes);
       }
     }else{
       cartoonFeedback("wrong_rotation");
