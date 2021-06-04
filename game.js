@@ -2,6 +2,11 @@ import * as timer from './modules/timer';
 import {errorSound/* , playNoteOnTile */, changeSetSound} from './modules/sound';
 import {draw_table} from './modules/table';
 
+
+window.onbeforeunload = function() {
+    return "Are you sure you want to leave?";
+}
+
 var table = document.getElementById("table");
 
 const synth = new Tone.Synth().toDestination();
@@ -13,14 +18,14 @@ const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
 // finds the note correspondent to the index found, triggers the synth with that same note
 function playNoteOnUpperTile() {
   if (event.shiftKey) {
-    let grade;
     if (event.currentTarget.parentNode.parentNode.id === "bar") {
+    let grade;
       grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade1;
     }
     else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
       grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
-    }
     console.log(grade);
+    }
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
     console.log(note);
@@ -28,12 +33,12 @@ function playNoteOnUpperTile() {
     synth.triggerAttackRelease(note, "8n");
   }
 }
-
 function playNoteOnLowerTile() {
+
   if (event.shiftKey) {
     let grade;
-    if (event.currentTarget.parentNode.parentNode.id === "bar") {
       grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade2;
+    if (event.currentTarget.parentNode.parentNode.id === "bar") {
     }
     else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
       grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
@@ -163,8 +168,16 @@ function createTile(color1,color2,i) {
   }
   tileLower.addEventListener("click", playNoteOnLowerTile);
 
+
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
+
+  /*if(difficulty=="expert"){
+    tileUpper.style.opacity="0.5";
+    tileLower.style.opacity="0.5";
+  }
+  tile.opacity="0";*/
+
 
   tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
 
@@ -195,6 +208,7 @@ function createSet() {
 
     setPieces.push(piece)
   }
+
 }
 
 
