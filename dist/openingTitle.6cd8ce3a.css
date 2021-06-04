@@ -15,7 +15,7 @@
     height: 130px;
     width: 130px;
     margin: 0;
-    background-image: radial-gradient(ellipse, #EA9A68 40%, black 73%);
+    background-image: radial-gradient(ellipse, rgb(204, 163, 156), black 73%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,11 +32,11 @@
 }
 
 #theHeader{
-    background: linear-gradient(#1E6389, #e0f0d3, #71B775);
+    background: linear-gradient(rgb(151,157, 166), rgb(112, 94, 120), rgb(129, 47, 51));
     width: 0;
     height: 0;
     border-radius: 20px;
-    border: 0px solid #263465;
+    border: 0px solid rgb(109, 41, 44);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,16 +48,16 @@
     position: absolute;
     height: 100px;
     width: 100px;
-    border-color: rgb(124, 66, 66);
+    border-color: rgb(129, 47, 51);
     border-radius: 50%;
-    background-color: #FFFFFF;
-    color: #FFFFFF;
+    background-color: rgb(242, 242, 242);
+    color: rgb(242, 242, 242);
     transition: opacity 1.2s cubic-bezier(0.69, 0.07, 0.18, 0.99), background-color 1s;
     z-index: +1;
     cursor: pointer;
 }
 #startAudio:hover {
-    background-color: #2E938A;
+    background-color: rgb(74, 108, 247);
 }
 
 .title {

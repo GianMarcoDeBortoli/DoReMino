@@ -1,5 +1,5 @@
 import * as timer from './modules/timer';
-import {playNoteOnTile} from './modules/sound';
+import {errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
 import {draw_table} from './modules/table';
 
 
@@ -13,7 +13,10 @@ var grades = []
 let tiles = document.querySelectorAll(".tile");
 var setPieces = [] // elenco dei tiles con associati i due gradi e l'angolazione
 let pieceNum = -1; // I need this to remove the dropped tile from setPieces array
-const colors = ["darkSlateBlue","darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen","darkBlue","lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]
+const colors = ["rgb(11, 191, 140)","rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
+                "rgb(135, 28, 235)","rgb(56, 5, 242)","rgb(253, 105, 19)", "rgb(12, 242, 27)",
+                "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)",
+                "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"]
 // each color is associated to a note
 let colorsAvailable= []
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
@@ -219,6 +222,7 @@ function rotate(ev){
 
 
 function change_set() {
+  changeSetSound();
   for (let i = 0; i < setPieces.length; i++) { // For each element of the model, so of the bar
      barContainer.removeChild(setPieces[i].tile)
   }
@@ -343,6 +347,7 @@ function addToSequence(grade1,grade2,id){
 // questa funzione in base al parametro, che dipende dal tipo di feedback che devo dare,
 // fa comparire il fumetto con il commento
 function cartoonFeedback(feedback){
+  errorSound();
   let cartoon = document.getElementById("cartoon");
   cartoon.style.visibility = "visible";
   if(feedback=="color_match"){
