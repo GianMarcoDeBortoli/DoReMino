@@ -474,8 +474,13 @@ function createTile(color1, color2, i) {
 
 function createSet() {
   for (let i = 0; i < grades.length; i++) {
+    //if(difficulty=="amateur"){
     colorsAvailable[i] = colors[grades[i] + lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
     // because I want to use the position to access colors: colors[0] corresponds always to grade -5
+    //}
+    //if(difficulty=="expert"){
+    //colorsAvailable[i] = "white";
+    //}
   }
 
   for (let i = 0; i < modelLength; i++) {
@@ -732,7 +737,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49349" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61593" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
