@@ -247,13 +247,12 @@
     color: rgb(38, 52, 101);
     border-radius: 3px;
     border: 1px dotted rgb(38, 52, 101);
-    box-sizing: border-box;      
     text-align: center;
     line-height: 60px;
+    box-sizing: border-box;      
 }
 
 /* --------------------------------------------------  END TABLE ------------------------------------------------------ */
 
 }
   /* ----------------------------------------------- END @media screen -------------------------------------------------- */
-  
