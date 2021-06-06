@@ -4,7 +4,7 @@
     html,body,main {
         height: 100%;
         width: 100%;
-        background-color: rgb(204, 163, 156);
+        background-color: #d8821131;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -24,9 +24,9 @@
     padding: 30px 20px 30px 20px;
     width:auto;
     margin:0 18.5em 2em;
-    color:#F2F2F2;
-    background:rgb(129, 47, 51);
-    border: 2px solid rgb(129, 47, 51);
+    color:#000;
+    background:#EF6559;
+    border: 2px solid black;
     border-radius:10px;
     font: normal normal 1em Verdana;
     visibility: hidden;
@@ -38,7 +38,7 @@
     bottom:-15px;
     border-width:15px 15px 0;
     border-style:solid;
-    border-color:rgb(129, 47, 51) transparent;
+    border-color:#EF6559 transparent;
     display:block;
     width:0;
 }
@@ -113,6 +113,7 @@
 #fPlayGame {
     height: 100%;
     width: 100%;
+    background-color: #d8821131;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -127,8 +128,8 @@
 }
 
 .button {
-    color: #F2F2F2;
-    background: linear-gradient(rgb(38, 52, 101), #3a4980);
+    color: #DADAF1;
+    background: linear-gradient(#263465, #3a4980);
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
     box-shadow: inset 0 -1px 1px #3d4f8f, 0 8px 0 #202c58, 0 10px 15px rgba(0, 0, 0, 0.35);
     text-align: center;
@@ -143,8 +144,8 @@
 }
 
 .button:hover{
-    background: linear-gradient(#334175, #455281);
-    color: #a3ffeb;
+    background: linear-gradient(#354272, #4d5881);
+    color: #ADC5EF;
 }
 
 #finishGame{
@@ -163,7 +164,7 @@
 }
 
 #bar {
-    background-color: #EBE2FF;
+    background-color: #DADAF1;
     padding:10px;
     border-radius: 8px;
     height: 130px;
@@ -179,7 +180,7 @@
     width: 60px;
     height: 120px;
     border-radius: 5px;
-    background-color: rgb(0, 0, 0);
+    background-color: black;
     cursor: pointer;
     display: flex;
     flex-flow: column wrap;
@@ -192,7 +193,7 @@
     width: 120px;
     height: 60px;
     border-radius: 5px;
-    background-color: rgb(0, 0, 0);
+    background-color: black;
     cursor: pointer;
     display: flex;
     flex-flow: row wrap;
@@ -225,7 +226,7 @@
 /* ---------------------------------------------------- TABLE --------------------------------------------------- */
 #table {
     display: flex;
-    background-color: #EBE2FF;
+    background-color: #DADAF1;
     border: 3px solid black;
     border-radius: 10px;
     flex-direction: column;
@@ -233,7 +234,7 @@
 }
 
 .row {
-    background-color: #EBE2FF;
+    background-color: #DADAF1;
     display: flex;
     border-radius: 10px;
     width: auto;
@@ -243,13 +244,11 @@
 }
 
 .box {
-    background-color: #F3F0FF;
-    color: rgb(38, 52, 101);
+    background-color: #e4e4f0;
+    color: black;
     border-radius: 3px;
-    border: 1px dotted rgb(38, 52, 101);
-    text-align: center;
-    line-height: 60px;
-    box-sizing: border-box;      
+    border: 1px dotted black;
+    box-sizing: border-box;
 }
 
 /* --------------------------------------------------  END TABLE ------------------------------------------------------ */

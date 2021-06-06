@@ -215,19 +215,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.playChordsOnHeader = playChordsOnHeader;
 exports.playNoteOnHeader = playNoteOnHeader;
+<<<<<<< Updated upstream
 exports.playPluck = playPluck;
 exports.playMembrane = playMembrane;
 exports.errorSound = errorSound;
 exports.changeSetSound = changeSetSound;
+=======
+exports.playNoteOnTile = playNoteOnTile;
+>>>>>>> Stashed changes
 // creation of the synth and connection of it to the output speakers
 const synth = new Tone.Synth().toDestination();
 const poly = new Tone.PolySynth().toDestination();
-const pluck = new Tone.PluckSynth().toDestination();
-const membrane = new Tone.MembraneSynth().toDestination();
-const metal = new Tone.MetalSynth().toDestination();
-pluck.volume.value = -12;
-membrane.volume.value = -12;
-metal.volume.value = -12; //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
+const pluck = new Tone.PluckSynth().toDestination(); //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
 
 function playChordsOnHeader(index) {
   if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");else if (index == 3) synth.triggerAttackRelease("C4", "4n");
@@ -235,37 +234,19 @@ function playChordsOnHeader(index) {
 
 function playNoteOnHeader(index) {
   if (index == 0) synth.triggerAttackRelease("C4", "8n");else if (index == 1) synth.triggerAttackRelease("D4", "8n");else if (index == 2) synth.triggerAttackRelease("E4", "8n");
-}
-
-function playPluck() {
-  pluck.triggerAttackRelease("C5", "16n");
-}
-
-function playMembrane() {
-  membrane.triggerAttackRelease("C4", "16n");
-}
-
-function errorSound() {
-  metal.triggerAttackRelease("C5", "32n");
-}
-
-function changeSetSound() {
-  let interval = setInterval(function () {
-    pluck.triggerAttackRelease("C6", "32n");
-  }, 40);
-  setTimeout(function () {
-    clearInterval(interval);
-  }, 300);
 } //----------------------------------------- SOUND INSIDE game.html ------------------------------------------------
 // matrix needed for the selection of the correct note based on the color of the half-tile
 
 
-const searchForNote = [["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)", "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)", "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)", "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
 // finds the note correspondent to the index found, triggers the synth with that same note
 
 function playNoteOnTile() {
   let color = event.currentTarget.style.backgroundColor;
+<<<<<<< Updated upstream
   console.log(setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)]);
+=======
+>>>>>>> Stashed changes
   let index = searchForNote[0].indexOf(color);
   let note = searchForNote[1][index];
 
@@ -360,6 +341,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+<<<<<<< Updated upstream
 var table = document.getElementById("table");
 const synth = new Tone.Synth().toDestination(); // matrix needed for the selection of the correct note based on the color of the half-tile
 
@@ -401,6 +383,11 @@ function playNoteOnLowerTile() {
     synth.triggerAttackRelease(note, "8n");
   }
 } //------------------------------------------------------- MODEL -----------------------------------------------------------
+=======
+window.onbeforeunload = function () {
+  return "Are you sure you want to leave?";
+}; //------------------------------------------------------- MODEL -----------------------------------------------------------
+>>>>>>> Stashed changes
 
 
 const modelLength = 10;
@@ -411,7 +398,7 @@ var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazion
 var setBoxes = [];
 var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
 
-const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)", "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)", "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)", "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"]; // each color is associated to a note
+const colors = ["darkSlateBlue", "darkGoldenRod", "darkRed", "paleVioletRed", "darkGreen", "darkBlue", "lawnGreen", "darkSlateGray", "darkOrange", "turquoise", "yellow", "red", "slateBlue", "goldenRod", "fireBrick", "lightPink", "forestGreen", "blue"]; // each color is associated to a note
 
 var colorsAvailable = []; // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
@@ -520,12 +507,35 @@ function createTile(color1, color2, i) {
   tileLower.addEventListener("click", playNoteOnLowerTile);
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
+  /*if(difficulty=="expert"){
+    tileUpper.style.opacity="0.5";
+    tileLower.style.opacity="0.5";
+  }
+  tile.opacity="0";*/
+
   tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
 
   return tile;
 }
 
 function createSet() {
+<<<<<<< Updated upstream
+=======
+  for (let i = 0; i < grades.length; i++) {
+    //if(difficulty=="amateur"){
+    colorsAvailable[i] = colors[grades[i] + lowerGrades]; // for example lowerGrades=5 (as in our case) in grades, becomes 0 in colors,
+    // because I want to use the position to access colors: colors[0] corresponds always to grade -5
+    //}
+
+    /*if(difficulty=="expert"){
+      //colorsAvailable[i] = "white";
+      for(let i=0; i<colorsAvailable.length; i++){
+        colorsAvailable[i].style.opacity="1";
+      }
+    }*/
+  }
+
+>>>>>>> Stashed changes
   for (let i = 0; i < modelLength; i++) {
     // For each element of the model, so of the bar
     let index1 = Math.floor(Math.random() * grades.length);
@@ -608,8 +618,6 @@ function rotate(ev) {
 }
 
 function change_set() {
-  (0, _sound.changeSetSound)();
-
   for (let i = 0; i < setPieces.length; i++) {
     // For each element of the model, so of the bar
     barContainer.removeChild(setPieces[i].tile);
@@ -740,7 +748,6 @@ function addToSequence(grade1, grade2, id) {
 
 
 function cartoonFeedback(feedback) {
-  (0, _sound.errorSound)();
   let cartoon = document.getElementById("cartoon");
   cartoon.style.visibility = "visible";
 
@@ -760,7 +767,7 @@ function cartoonFeedback(feedback) {
 
 
 timer.startTimer(); //-----------------------------------------------END of CONTROLLER--------------------------------------------------------------
-},{"./modules/timer":"modules/timer.js","./modules/sound":"modules/sound.js","./modules/table":"modules/table.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./modules/timer":"modules/timer.js","./modules/sound":"modules/sound.js","./modules/table":"modules/table.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -788,7 +795,11 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+<<<<<<< Updated upstream
   var ws = new WebSocket(protocol + '://' + hostname + ':' + "50880" + '/');
+=======
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49702" + '/');
+>>>>>>> Stashed changes
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -964,5 +975,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","game.js"], null)
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","game.js"], null)
 //# sourceMappingURL=/game.7bbe06d5.js.map
