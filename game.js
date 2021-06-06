@@ -1,5 +1,5 @@
 import * as timer from './modules/timer';
-import {errorSound/* , playNoteOnTile */, changeSetSound} from './modules/sound';
+import {errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
 import {draw_table} from './modules/table';
 
 
@@ -11,7 +11,7 @@ var table = document.getElementById("table");
 
 const synth = new Tone.Synth().toDestination();
 // matrix needed for the selection of the correct note based on the color of the half-tile
-const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12], 
+const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
                        ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
@@ -29,7 +29,7 @@ function playNoteOnUpperTile() {
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
     console.log(note);
-  
+
     synth.triggerAttackRelease(note, "8n");
   }
 }
@@ -47,7 +47,7 @@ function playNoteOnLowerTile() {
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
     console.log(note);
-  
+
     synth.triggerAttackRelease(note, "8n");
   }
 }
@@ -186,7 +186,7 @@ function createTile(color1,color2,i) {
 }
 
 function createSet() {
-  
+
   for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
     let index1 = Math.floor(Math.random() * grades.length);
     let grade1 = grades[index1];
@@ -282,6 +282,12 @@ function change_set() {
 }
 
 changeSet.onclick = change_set;
+
+function play_melody(){
+  
+}
+
+playMelody.onclick = play_melody;
 
 // ------------------------------------------------- DRAG and DROP --------------------------------
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
@@ -415,7 +421,6 @@ function cartoonFeedback(feedback){
 }
 //------------------------------------------- END of DRAG and DROP ---------------------------
 
-// ------------ TIMER controller ------------------
+// ------------ TIMER controller ---------------------------------------------
 timer.startTimer();
-
 //-----------------------------------------------END of CONTROLLER--------------------------------------------------------------

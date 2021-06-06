@@ -68,7 +68,7 @@ export function startTimer() {
     setRemainingPathColor(timeLeft);
 
     if (timeLeft === 0) {
-      /* onTimesUp(); */
+      onTimesUp();
     }
   }, 1000);
 }
