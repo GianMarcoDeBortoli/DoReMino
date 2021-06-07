@@ -4,7 +4,7 @@
     html,body,main {
         height: 100%;
         width: 100%;
-        background-color: #d8821131;
+        background-color: rgb(204, 163, 156);
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -24,9 +24,9 @@
     padding: 30px 20px 30px 20px;
     width:auto;
     margin:0 18.5em 2em;
-    color:#000;
-    background:#EF6559;
-    border: 2px solid black;
+    color:#F2F2F2;
+    background:rgb(129, 47, 51);
+    border: 2px solid rgb(129, 47, 51);
     border-radius:10px;
     font: normal normal 1em Verdana;
     visibility: hidden;
@@ -38,11 +38,55 @@
     bottom:-15px;
     border-width:15px 15px 0;
     border-style:solid;
-    border-color:#EF6559 transparent;
+    border-color:rgb(129, 47, 51) transparent;
     display:block;
     width:0;
 }
-/* --------------------------------------------- ENDcartoon PlayGame ---------------------------------------- */
+/* --------------------------------------------- END cartoon PlayGame ---------------------------------------- */
+
+/* --------------------------------------------- play button PlayGame ---------------------------------------- */
+.buttonPlay:hover{
+    background: linear-gradient(#334175, #455281);
+    color: #a3ffeb;
+}
+/* Basic red round button properties */
+.buttonPlay {
+  place-items: center;
+  float: left;
+  display:block;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 35px;
+  background-color: rgb(129, 47, 51);
+  color: white;
+  cursor: pointer;
+  /* Hide the text 'play', which is present in the HTML document for accessibility */
+  font-size: 0;
+  margin: 1% 1% 1% 1%;
+}
+
+/* Properties for the pseudo-element that almost every button will need.
+   You can just merge it into the style below if you are only going to have
+   the play button. */
+.buttonPlay::before {
+  content: "";
+  display: block;
+  position: absolute;
+}
+
+/* Play button properties using CSS shape */
+.buttonPlay::before {
+  width: 0;
+  height: 0;
+  border-bottom: 20px solid transparent;
+  border-top: 20px solid transparent;
+  border-left: 28px solid white;
+  top: 10px;
+  left: 20px;
+}
+
+/* --------------------------------------------- END play button PlayGame ------------------------------------- */
 
 /* ------------------------------------------------ timer PlayGame ------------------------------------------ */
 #timer {
@@ -52,7 +96,7 @@
     place-items: center;
     float: right;
     display:block;
-    margin: 0 0 1% 0;
+    margin: 0 2% 1% 0;
 }
 
 .base-timer {
@@ -113,28 +157,32 @@
 #fPlayGame {
     height: 100%;
     width: 100%;
-    background-color: #d8821131;
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    padding: 30px 0 0 0;
+    padding: 1% 0 0 1%;
     user-select: none;
 }
 
 #buttonsContainer {
-    width: 1300px;
-    height: auto;
+    width: 100%;
+    height: 100%;
+}
+
+#tableContainer {
+    width: 100%;
+    height: 100%;
 }
 
 .button {
-    color: #DADAF1;
-    background: linear-gradient(#263465, #3a4980);
+    color: #F2F2F2;
+    background: linear-gradient(rgb(38, 52, 101), #3a4980);
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
     box-shadow: inset 0 -1px 1px #3d4f8f, 0 8px 0 #202c58, 0 10px 15px rgba(0, 0, 0, 0.35);
     text-align: center;
     width: 17%;
-    margin:0 1% 2% 0%;
+    margin:0 1% 2% 2%;
     border-radius: 5px;
     padding: 1%;
     cursor: pointer;
@@ -144,8 +192,8 @@
 }
 
 .button:hover{
-    background: linear-gradient(#354272, #4d5881);
-    color: #ADC5EF;
+    background: linear-gradient(#334175, #455281);
+    color: #a3ffeb;
 }
 
 #finishGame{
@@ -164,12 +212,12 @@
 }
 
 #bar {
-    background-color: #DADAF1;
-    padding:10px;
+    background-color: #EBE2FF;
+    padding:1%;
     border-radius: 8px;
-    height: 130px;
-    min-height: 130px;
-    width: 1300px;
+    /**height: 130px;
+    min-height: 130px;**/
+    width: 90%;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
@@ -225,8 +273,9 @@
 
 /* ---------------------------------------------------- TABLE --------------------------------------------------- */
 #table {
+    float: left;
     display: flex;
-    background-color: #DADAF1;
+    background-color: #EBE2FF;
     border: 3px solid black;
     border-radius: 10px;
     flex-direction: column;
@@ -234,7 +283,7 @@
 }
 
 .row {
-    background-color: #DADAF1;
+    background-color: #EBE2FF;
     display: flex;
     border-radius: 10px;
     width: auto;
@@ -244,10 +293,12 @@
 }
 
 .box {
-    background-color: #e4e4f0;
-    color: black;
+    background-color: #F3F0FF;
+    color: rgb(38, 52, 101);
     border-radius: 3px;
-    border: 1px dotted black;
+    border: 1px dotted rgb(38, 52, 101);
+    text-align: center;
+    line-height: 60px;
     box-sizing: border-box;
 }
 

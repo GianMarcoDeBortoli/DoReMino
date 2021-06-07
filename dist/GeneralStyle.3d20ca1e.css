@@ -34,6 +34,21 @@
     font: normal normal 100px cursive;
     margin: 0;
 }
+.titleNoSound{
+    transition: transform 300ms;
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 70px cursive;
+    display: flex;
+    flex-direction: column;
+}
+    
+h2 {
+    transition: transform 300ms;
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 40px cursive;
+    margin: 30% 5% 0 5%;   
+    display:block;
+}
 
 .theContent {
     width: 80%;
@@ -157,3 +172,49 @@
 }
 
 }
+
+/* --------------------------------------------- play button PlayGame ---------------------------------------- */
+.buttonPlay:hover{
+    background: linear-gradient(#334175, #455281);
+    color: #a3ffeb;
+}
+/* Basic red round button properties */
+.buttonPlay {
+  place-items: center;
+  float: left;
+  display:block;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 35px;
+  background-color: rgb(129, 47, 51);
+  color: white;
+  cursor: pointer;
+  /* Hide the text 'play', which is present in the HTML document for accessibility */
+  font-size: 0;
+  margin: 1% 1% 1% 1%;
+}
+
+/* Properties for the pseudo-element that almost every button will need.
+   You can just merge it into the style below if you are only going to have
+   the play button. */
+.buttonPlay::before {
+  content: "";
+  display: block;
+  position: absolute;
+}
+
+/* Play button properties using CSS shape */
+.buttonPlay::before {
+  width: 0;
+  height: 0;
+  border-bottom: 20px solid transparent;
+  border-top: 20px solid transparent;
+  border-left: 28px solid white;
+  top: 10px;
+  left: 20px;
+}
+
+/* --------------------------------------------- END play button PlayGame ------------------------------------- */
+
+/*# sourceMappingURL=/GeneralStyle.3d20ca1e.css.map */

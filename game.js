@@ -134,12 +134,6 @@ function createTile(color1,color2,i) {
   tile.appendChild(tileUpper);
   tile.appendChild(tileLower);
 
-  /*if(difficulty=="expert"){
-    tileUpper.style.opacity="0.5";
-    tileLower.style.opacity="0.5";
-  }
-  tile.opacity="0";*/
-
 
   tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
 
@@ -282,7 +276,22 @@ function change_set() {
 changeSet.onclick = change_set;
 
 function play_melody(){
-  
+  let time = 0;
+  const now = Tone.now()
+      for(let i=0 ; i<setBoxes.length; i++){
+          let grade1 = setBoxes[i].grade1;
+
+          let index = searchForNote[0].indexOf(grade1);
+          let note = searchForNote[1][index];
+          synth.triggerAttackRelease(note, "8n", now + time);
+          time += 0.5;
+      }
+      // I also take grade2 for the last element of the set
+      let grade2 = setBoxes[setBoxes.length-1].grade2;
+
+      let index = searchForNote[0].indexOf(grade2);
+      let note = searchForNote[1][index];
+      synth.triggerAttackRelease(note, "8n", now + time);
 }
 
 playMelody.onclick = play_melody;
@@ -555,7 +564,6 @@ function addToSequence(grade1,grade2,id){
   }
 
   hiddenField.setAttribute("value", result.join('_'));
-  // in questo momento in result ci sono i "doppioni"
 }
 
 // questa funzione in base al parametro, che dipende dal tipo di feedback che devo dare,

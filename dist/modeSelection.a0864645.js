@@ -125,18 +125,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.playChordsOnHeader = playChordsOnHeader;
 exports.playNoteOnHeader = playNoteOnHeader;
-<<<<<<< Updated upstream
 exports.playPluck = playPluck;
 exports.playMembrane = playMembrane;
 exports.errorSound = errorSound;
 exports.changeSetSound = changeSetSound;
-=======
-exports.playNoteOnTile = playNoteOnTile;
->>>>>>> Stashed changes
 // creation of the synth and connection of it to the output speakers
 const synth = new Tone.Synth().toDestination();
 const poly = new Tone.PolySynth().toDestination();
-const pluck = new Tone.PluckSynth().toDestination(); //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
+const pluck = new Tone.PluckSynth().toDestination();
+const membrane = new Tone.MembraneSynth().toDestination();
+const metal = new Tone.MetalSynth().toDestination();
+pluck.volume.value = -12;
+membrane.volume.value = -12;
+metal.volume.value = -12; //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
 
 function playChordsOnHeader(index) {
   if (index == 0) poly.triggerAttackRelease(["C4", "G4"], "8n");else if (index == 1) poly.triggerAttackRelease(["D4", "F4"], "8n");else if (index == 2) poly.triggerAttackRelease(["B3", "E4", "G4"], "8n");else if (index == 3) synth.triggerAttackRelease("C4", "4n");
@@ -144,19 +145,37 @@ function playChordsOnHeader(index) {
 
 function playNoteOnHeader(index) {
   if (index == 0) synth.triggerAttackRelease("C4", "8n");else if (index == 1) synth.triggerAttackRelease("D4", "8n");else if (index == 2) synth.triggerAttackRelease("E4", "8n");
+}
+
+function playPluck() {
+  pluck.triggerAttackRelease("C5", "16n");
+}
+
+function playMembrane() {
+  membrane.triggerAttackRelease("C4", "16n");
+}
+
+function errorSound() {
+  metal.triggerAttackRelease("C5", "32n");
+}
+
+function changeSetSound() {
+  let interval = setInterval(function () {
+    pluck.triggerAttackRelease("C6", "32n");
+  }, 40);
+  setTimeout(function () {
+    clearInterval(interval);
+  }, 300);
 } //----------------------------------------- SOUND INSIDE game.html ------------------------------------------------
 // matrix needed for the selection of the correct note based on the color of the half-tile
 
 
-const searchForNote = [["darkslateblue", "darkgoldenrod", "darkred", "palevioletred", "darkgreen", "darkblue", "lawngreen", "darkslategray", "darkorange", "turquoise", "yellow", "red", "slateblue", "goldenrod", "firebrick", "lightpink", "forestgreen", "blue"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+const searchForNote = [["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)", "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)", "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)", "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"], ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]]; // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
 // finds the note correspondent to the index found, triggers the synth with that same note
 
 function playNoteOnTile() {
   let color = event.currentTarget.style.backgroundColor;
-<<<<<<< Updated upstream
   console.log(setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)]);
-=======
->>>>>>> Stashed changes
   let index = searchForNote[0].indexOf(color);
   let note = searchForNote[1][index];
 
@@ -169,12 +188,14 @@ function playNoteOnTile() {
 
 var _sound = require("./modules/sound");
 
-const colors = ["#C0D6FF", "#F3C9F5", "#FFFFFF", "#000000", "#FF873C", "#F5FA5C", "#78FC83"];
 const rulesButton = document.getElementById("rulesButton");
 rulesButton.addEventListener("click", redirectToRules);
 
 function redirectToRules() {
-  location.replace("rules.html");
+  (0, _sound.playMembrane)();
+  setTimeout(function () {
+    location.replace("rules.html");
+  }, 700);
 }
 
 const title = document.querySelectorAll(".title");
@@ -253,6 +274,7 @@ for (i = 0; i < l; i++) {
     closeAllSelect(this);
     this.nextSibling.classList.toggle("select-hide");
     this.classList.toggle("select-arrow-active");
+    (0, _sound.playPluck)();
   });
 }
 
@@ -318,11 +340,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-<<<<<<< Updated upstream
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50880" + '/');
-=======
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49702" + '/');
->>>>>>> Stashed changes
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49633" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
