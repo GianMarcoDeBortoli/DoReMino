@@ -41,17 +41,17 @@
     display: flex;
     flex-direction: column;
 }
-    
+
 h2 {
     transition: transform 300ms;
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
     font: normal normal 40px cursive;
-    margin: 30% 5% 0 5%;   
+    margin: 30% 5% 0 5%;
     display:block;
 }
 
 .theContent {
-    width: 80%;
+    width: 100%;
 }
 
 .form {
@@ -173,7 +173,7 @@ h2 {
 
 }
 
-/* --------------------------------------------- play button PlayGame ---------------------------------------- */
+/* --------------------------------------------- play button score ---------------------------------------- */
 .buttonPlay:hover{
     background: linear-gradient(#334175, #455281);
     color: #a3ffeb;
@@ -195,17 +195,11 @@ h2 {
   margin: 1% 1% 1% 1%;
 }
 
-/* Properties for the pseudo-element that almost every button will need.
-   You can just merge it into the style below if you are only going to have
-   the play button. */
+/* Play button properties using CSS shape */
 .buttonPlay::before {
   content: "";
   display: block;
   position: absolute;
-}
-
-/* Play button properties using CSS shape */
-.buttonPlay::before {
   width: 0;
   height: 0;
   border-bottom: 20px solid transparent;
@@ -215,4 +209,82 @@ h2 {
   left: 20px;
 }
 
-/* --------------------------------------------- END play button PlayGame ------------------------------------- */
+/* --------------------------------------------- END play button score ------------------------------------- */
+
+/* --------------------------------------------- domino effect score ------------------------------------- */
+.dominoEffect {
+    display: flex;
+    justify-content: space-between;
+}
+.dominos {
+  text-align: center;
+  background-color: trasparent;
+  max-width: 80%;
+  position: relative;
+  list-style: none;
+  display: block;
+}
+.dominos .domino {
+  display: inline-block;
+  list-style: none;
+  transform: rotate(-90deg);
+  width: 100px;
+  height: 50px;
+  margin-bottom: 0.25em;
+  margin-left: -3.05em;
+  color: #777;
+  background-color: #444;
+  line-height: 3em;
+  text-transform: uppercase;
+  text-align: center;
+  animation: topple 1s ease-in 1 alternate;
+  animation-fill-mode: forwards;
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+@keyframes topple {
+  0% {
+    background-color: #444;
+    color: black;
+  }
+  4% {
+    background-color: #eea;
+    color: black;
+    transform: rotate(-90deg);
+    box-shadow: 0 0 1em #fe2;
+  }
+  42% {
+    margin-left: .5em;
+    margin-right: 0em;
+    box-shadow: none;
+  }
+  100% {
+    transform: rotate(0deg);
+    color: black;
+    background-color: white;
+    margin: 0;
+    margin-bottom: .25em;
+  }
+}
+/* --------------------------------------------- END domino effect score ------------------------------------- */
+
+/* ------------------------------------------------------------------ bar score ------------------------------ */
+#myProgress {
+  width: 50%;
+  background-color: grey;
+  margin: 10% 0 0 25%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#myBar {
+  width: 1%;
+  height: 50px;
+  background-color: red;
+  text-align: center; /* To center it horizontally*/
+  line-height: 50px; /* To center it vertically */
+  color: black;
+}
+/* ------------------------------------------------------------------ END bar score -------------------------- */

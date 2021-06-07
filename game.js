@@ -23,7 +23,7 @@ const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "
 var colorsAvailable= []
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
-var lowerGrades = 5; //? nome
+var lowerGrades = 5; 
 const barContainer = document.getElementById("bar");
 var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
@@ -274,25 +274,6 @@ function change_set() {
 }
 
 changeSet.onclick = change_set;
-
-/*function play_melody(){
-  let time = 0;
-  const now = Tone.now()
-      for(let i=0 ; i<setBoxes.length; i++){
-          let grade1 = setBoxes[i].grade1;
-
-          let index = searchForNote[0].indexOf(grade1);
-          let note = searchForNote[1][index];
-          synth.triggerAttackRelease(note, "8n", now + time);
-          time += 0.5;
-      }
-      // I also take grade2 for the last element of the set
-      let grade2 = setBoxes[setBoxes.length-1].grade2;
-
-      let index = searchForNote[0].indexOf(grade2);
-      let note = searchForNote[1][index];
-      synth.triggerAttackRelease(note, "8n", now + time);
-}*/
 
 playMelody.onclick = function() {
   play_melody(result);
