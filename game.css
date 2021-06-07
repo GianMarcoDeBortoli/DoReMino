@@ -61,22 +61,14 @@
   background-color: rgb(129, 47, 51);
   color: white;
   cursor: pointer;
-  /* Hide the text 'play', which is present in the HTML document for accessibility */
-  font-size: 0;
-  margin: 1% 1% 1% 1%;
-}
-
-/* Properties for the pseudo-element that almost every button will need.
-   You can just merge it into the style below if you are only going to have
-   the play button. */
-.buttonPlay::before {
-  content: "";
-  display: block;
-  position: absolute;
+  margin: 1% 1% 1% 2%;
 }
 
 /* Play button properties using CSS shape */
 .buttonPlay::before {
+  content: "";
+  display: block;
+  position: absolute;
   width: 0;
   height: 0;
   border-bottom: 20px solid transparent;
@@ -161,7 +153,7 @@
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    padding: 1% 0 0 1%;
+    padding: 1%;
     user-select: none;
 }
 
@@ -192,6 +184,7 @@
     float: left;
     display:block;
     font: normal normal 1.5em Verdana;
+    margin:2%;
 }
 
 .button:hover{
@@ -211,7 +204,6 @@
     border-radius: 6px;
     text-decoration: none;
     font: normal normal 1.5em Verdana;
-    margin:0 1% 2% 0%;
 }
 
 #bar {

@@ -1,5 +1,5 @@
 // creation of the synth and connection of it to the output speakers
-const synth = new Tone.Synth().toDestination();
+export const synth = new Tone.Synth().toDestination();
 const poly = new Tone.PolySynth().toDestination();
 const pluck = new Tone.PluckSynth().toDestination();
 const membrane = new Tone.MembraneSynth().toDestination();
@@ -7,6 +7,9 @@ const metal = new Tone.MetalSynth().toDestination();
 pluck.volume.value = -12;
 membrane.volume.value = -12;
 metal.volume.value = -12;
+
+export const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
+                       ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
 export function playChordsOnHeader(index) {
@@ -39,10 +42,22 @@ export function changeSetSound() {
     setTimeout(function () {clearInterval(interval)}, 300);
 }
 
+export function play_melody(result){
+  console.log(Tone.Context.state);
+  let time = 0;
+  const now = Tone.now()
+      for(let i=0 ; i<result.length; i++){
+          let grade = result[i];
+          let index = searchForNote[0].indexOf(grade);
+          let note = searchForNote[1][index];
+          synth.triggerAttackRelease(note, "8n", now + time);
+          time += 0.5;
+      }
+}
 //----------------------------------------- SOUND INSIDE game.html ------------------------------------------------
 
 // matrix needed for the selection of the correct note based on the color of the half-tile
-const searchForNote = [["rgb(11, 191, 140)","rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
+/*const searchForNote = [["rgb(11, 191, 140)","rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
                         "rgb(135, 28, 235)","rgb(56, 5, 242)","rgb(253, 105, 19)", "rgb(12, 242, 27)",
                         "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)",
                         "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"],
@@ -58,4 +73,4 @@ function playNoteOnTile() {
     if (event.shiftKey) {
         synth.triggerAttackRelease(note, "8n");
     }
-}
+}*/

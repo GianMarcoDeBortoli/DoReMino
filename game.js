@@ -1,5 +1,5 @@
 import * as timer from './modules/timer';
-import {errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
+import {play_melody, synth, searchForNote, errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
 import {draw_table} from './modules/table';
 
 
@@ -50,9 +50,9 @@ const table = document.getElementById("table");
 const copySpace = document.getElementById("copySpace");
 
 //sound on tiles
-const synth = new Tone.Synth().toDestination();
-const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
-                       ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
+//const synth = new Tone.Synth().toDestination();
+//const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
+          //             ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 
 // function to get parameters from URL
@@ -275,7 +275,7 @@ function change_set() {
 
 changeSet.onclick = change_set;
 
-function play_melody(){
+/*function play_melody(){
   let time = 0;
   const now = Tone.now()
       for(let i=0 ; i<setBoxes.length; i++){
@@ -292,9 +292,11 @@ function play_melody(){
       let index = searchForNote[0].indexOf(grade2);
       let note = searchForNote[1][index];
       synth.triggerAttackRelease(note, "8n", now + time);
-}
+}*/
 
-playMelody.onclick = play_melody;
+playMelody.onclick = function() {
+  play_melody(result);
+}
 
 
 // the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
@@ -427,9 +429,9 @@ function drop(ev) {
     if (pieceNum == 11) {
       if (ev.target.style.width == dim2+"px" && (setCopy[0].angle == 90 || setCopy[0].angle == 270)) {
         if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setCopy[0].grade1){
-          cartoonFeedback("color_match");
+          cartoonFeedback("Remember to match the color!");
         }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setCopy[0].grade2){
-          cartoonFeedback("color_match");
+          cartoonFeedback("Remember to match the color!");
         }else{
         ev.target.textContent= "";
         ev.preventDefault();
@@ -453,7 +455,7 @@ function drop(ev) {
       //controllo che la casella e la tessera siano entrambe verticali
       else if (ev.target.style.width == dim1+"px" && (setCopy[0].angle == 0 || setCopy[0].angle == 180)) {
         if(result[result.length-1]!=setCopy[0].grade1){
-          cartoonFeedback("color_match");
+          cartoonFeedback("Remember to match the color!");
         }else{
           ev.target.textContent ="";
           ev.preventDefault();
@@ -475,16 +477,16 @@ function drop(ev) {
           console.log(setCopy);
         }
       }else{
-        cartoonFeedback("wrong_rotation");
+        cartoonFeedback("Remember you can rotate the tile!");
       }
     }
 
     else {
       if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
         if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
-          cartoonFeedback("color_match");
+          cartoonFeedback("Remember to match the color!");
         }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade2){
-          cartoonFeedback("color_match");
+          cartoonFeedback("Remember to match the color!");
         }else{
         ev.target.textContent= "";
         ev.preventDefault();
@@ -507,7 +509,7 @@ function drop(ev) {
       //controllo che la casella e la tessera siano entrambe verticali
       else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
         if(result[result.length-1]!=setPieces[pieceNum].grade1){
-          cartoonFeedback("color_match");
+          cartoonFeedback("Remember to match the color!");
         }else{
           ev.target.textContent ="";
           ev.preventDefault();
@@ -528,14 +530,14 @@ function drop(ev) {
           console.log(setCopy);
         }
       }else{
-        cartoonFeedback("wrong_rotation");
+        cartoonFeedback("Remember you can rotate the tile!");
       }
     }
   }
 }
 
 function copy() {
-  if (event.ctrlKey) {
+  if (event.altKey) {
     if (copySpace.children.length == 0) {
       setCopy.push(setBoxes[event.currentTarget.parentNode.id]);
       let copyTile = event.currentTarget.cloneNode(true);
@@ -572,13 +574,8 @@ function cartoonFeedback(feedback){
   errorSound();
   let cartoon = document.getElementById("cartoon");
   cartoon.style.visibility = "visible";
-  if(feedback=="color_match"){
-    cartoon.textContent = "Remember to match the color!";
+  cartoon.textContent = feedback;
 
-  }
-  if(feedback=="wrong_rotation"){
-    cartoon.textContent = "Remember you can rotate the tile!";
-  }
   setTimeout(function(){cartoon.style.visibility="hidden"}, 2000);
 }
 //------------------------------------------- END of DRAG and DROP ---------------------------
