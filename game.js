@@ -34,7 +34,7 @@ hiddenField.setAttribute("name", "result");
 document.getElementById("fPlayGame").appendChild(hiddenField);
 
 //boxes
-const boxesPerRow = 9;
+const boxesPerRow = 8;
 const dim1 = 60;
 const dim2 = 120;
 const spaceBetweenBoxes = 5;
@@ -51,7 +51,7 @@ const copySpace = document.getElementById("copySpace");
 
 //sound on tiles
 const synth = new Tone.Synth().toDestination();
-const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12], 
+const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
                        ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 
@@ -329,7 +329,7 @@ function playNoteOnUpperTile() {
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
     console.log(note);
-  
+
     synth.triggerAttackRelease(note, "8n");
   }
 }
@@ -364,7 +364,7 @@ function playNoteOnLowerTile() {
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
     console.log(note);
-  
+
     synth.triggerAttackRelease(note, "8n");
   }
 }

@@ -81,7 +81,7 @@
   height: 0;
   border-bottom: 20px solid transparent;
   border-top: 20px solid transparent;
-  border-left: 28px solid white;
+  border-left: 26px solid white;
   top: 10px;
   left: 20px;
 }
@@ -306,12 +306,12 @@
 }
 
 #copySpace {
-    height: 200px;
-    width: 200px;
+    height: 40%;
+    width: 15%;
     background-color: #EBE2FF;
     border: 3px solid black;
     border-radius: 10px;
-    margin: 20px;
+    margin: 1% 2% 1% 1%;
     display: flex;
     justify-content: center;
     align-items: center;
