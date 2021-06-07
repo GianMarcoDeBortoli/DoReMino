@@ -7,56 +7,10 @@ window.onbeforeunload = function() {
     return "Are you sure you want to leave?";
 }
 
-var table = document.getElementById("table");
-
-const synth = new Tone.Synth().toDestination();
-// matrix needed for the selection of the correct note based on the color of the half-tile
-const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
-                       ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
-
-// the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
-// finds the note correspondent to the index found, triggers the synth with that same note
-function playNoteOnUpperTile() {
-  if (event.shiftKey) {
-    if (event.currentTarget.parentNode.parentNode.id === "bar") {
-    let grade;
-      grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade1;
-    }
-    else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
-      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
-    console.log(grade);
-    }
-    let index = searchForNote[0].indexOf(grade);
-    let note = searchForNote[1][index];
-    console.log(note);
-
-    synth.triggerAttackRelease(note, "8n");
-  }
-}
-function playNoteOnLowerTile() {
-
-  if (event.shiftKey) {
-    let grade;
-      grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade2;
-    if (event.currentTarget.parentNode.parentNode.id === "bar") {
-    }
-    else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
-      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
-    }
-    console.log(grade);
-    let index = searchForNote[0].indexOf(grade);
-    let note = searchForNote[1][index];
-    console.log(note);
-
-    synth.triggerAttackRelease(note, "8n");
-  }
-}
-
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10
-var grades = []
-var tiles = document.querySelectorAll(".tile");
+var grades = [];
 var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazione
 var setBoxes = [];
 var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
@@ -89,7 +43,13 @@ const rows = 3;
 const rowHeight = dim2 + 10; //10 is padding
 const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 20; //40 is padding
 const tableHeight = rows * rowHeight;
+const table = document.getElementById("table");
 
+//sound on tiles
+const synth = new Tone.Synth().toDestination();
+// matrix needed for the selection of the correct note based on the grade
+const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
+                       ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 
 
@@ -289,6 +249,65 @@ function play_melody(){
 
 playMelody.onclick = play_melody;
 
+
+// the function goes into the target of the click event and lookes for the color, finds the index of the color inside the array of colors,
+// finds the note correspondent to the index found, triggers the synth with that same note
+function playNoteOnUpperTile() {
+  if (event.shiftKey) {
+    let grade;
+
+    if (event.currentTarget.parentNode.parentNode.id === "bar") {
+      let angle = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].angle;
+      if (angle == 0 || angle == 270)
+        grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade1;
+      else if (angle == 90 || angle == 180)
+        grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade2;
+    }
+    else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
+      let angle = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].angle;
+      if (angle == 0 || angle == 270)
+        grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
+      else if (angle == 90 || angle == 180)
+      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
+    }
+
+    console.log(grade);
+    let index = searchForNote[0].indexOf(grade);
+    let note = searchForNote[1][index];
+    console.log(note);
+  
+    synth.triggerAttackRelease(note, "8n");
+  }
+}
+
+function playNoteOnLowerTile() {
+  if (event.shiftKey) {
+    let grade;
+
+    if (event.currentTarget.parentNode.parentNode.id === "bar") {
+      let angle = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].angle;
+      if (angle == 0 || angle == 270)
+        grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade2;
+      else if (angle == 90 || angle == 180)
+        grade = setPieces[Array.from(event.currentTarget.parentNode.parentNode.children).indexOf(event.currentTarget.parentNode)].grade1;
+    }
+    else if (event.currentTarget.parentNode.parentNode.parentNode.parentNode.id === "table") {
+      let angle = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].angle;
+      if (angle == 0 || angle == 270)
+        grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
+      else if (angle == 90 || angle == 180)
+      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
+    }
+
+    console.log(grade);
+    let index = searchForNote[0].indexOf(grade);
+    let note = searchForNote[1][index];
+    console.log(note);
+  
+    synth.triggerAttackRelease(note, "8n");
+  }
+}
+
 // ------------------------------------------------- DRAG and DROP --------------------------------
 // Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
 let rowCollection = document.getElementById("table").children;
@@ -299,8 +318,6 @@ for (let i = 0; i < rows; i++) {
         boxes.push(rowChild[j]);
     }
 }
-
-// Funzioni ausiliarie che permettono la cancellazione dell'eventiListener quando serve.
 
 
 // PreventDefault() impedisce che all'evento a cui è legato sia associata un'azione di default del browser.
