@@ -12,7 +12,8 @@ window.onbeforeunload = function() {
 const modelLength = 10
 var grades = [];
 var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazione
-var setBoxes = [];
+var setBoxes = []; //elenco dei tiles all'interno dei "box" con associati i due gradi e l'angolazione
+var setCopy = []; //tile contenuto in copySpace con associati i due gradi e l'angolazione
 var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
 const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
                 "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)",
@@ -45,12 +46,13 @@ const tableWidth = boxesPerRow*dim2 + (boxesPerRow-1)*spaceBetweenBoxes + 20; //
 const tableHeight = rows * rowHeight;
 const table = document.getElementById("table");
 
+//copyspace
+const copySpace = document.getElementById("copySpace");
+
 //sound on tiles
 const synth = new Tone.Synth().toDestination();
-// matrix needed for the selection of the correct note based on the grade
-const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
+const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12], 
                        ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
-
 
 
 // function to get parameters from URL
@@ -231,6 +233,42 @@ function rotate(ev){
 }
 
 
+function rotateCopy(ev) {
+  if (setCopy[0].angle == 0) {
+    ev.currentTarget.classList.remove("tile_v");
+    ev.currentTarget.classList.add("tile_h");
+    ev.currentTarget.style.flexFlow = "row-reverse wrap";
+    // I want to swap grade1 and grade2 to have [grade2, grade1]
+    let tempGrade = setCopy[0].grade1;
+    setCopy[0].grade1 = setCopy[0].grade2;
+    setCopy[0].grade2 = tempGrade;
+  }
+  if (setCopy[0].angle == 90) {
+    ev.currentTarget.classList.remove("tile_h");
+    ev.currentTarget.classList.add("tile_v");
+    ev.currentTarget.style.flexFlow = "column-reverse wrap";
+    // I still have [grade2, grade1]
+  }
+  if (setCopy[0].angle == 180) {
+    ev.currentTarget.classList.remove("tile_v");
+    ev.currentTarget.classList.add("tile_h");
+    ev.currentTarget.style.flexFlow = "row wrap";
+    // I want to swap to [grade1, grade2]
+    let tempGrade = setCopy[0].grade1;
+    setCopy[0].grade1 = setCopy[0].grade2;
+    setCopy[0].grade2 = tempGrade;
+  }
+  if (setCopy[0].angle == 270) {
+    ev.currentTarget.classList.remove("tile_h");
+    ev.currentTarget.classList.add("tile_v");
+    ev.currentTarget.style.flexFlow = "column wrap";
+    // I end up with [grade1, grade2]
+  }
+  setCopy[0].angle = iterate_angle(setCopy[0].angle);
+  console.log(setCopy);
+}
+
+
 function change_set() {
   changeSetSound();
   for (let i = 0; i < setPieces.length; i++) { // For each element of the model, so of the bar
@@ -270,6 +308,13 @@ function playNoteOnUpperTile() {
       else if (angle == 90 || angle == 180)
       grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
     }
+    else if (event.currentTarget.parentNode.parentNode.id ==="copySpace") {
+      let angle = setCopy[0].angle;
+      if (angle == 0 || angle == 270)
+        grade = setCopy[0].grade1;
+      else if (angle == 90 || angle == 180)
+        grade = setCopy[0].grade2;
+    }
 
     console.log(grade);
     let index = searchForNote[0].indexOf(grade);
@@ -296,7 +341,14 @@ function playNoteOnLowerTile() {
       if (angle == 0 || angle == 270)
         grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade2;
       else if (angle == 90 || angle == 180)
-      grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
+        grade = setBoxes[boxes.indexOf(event.currentTarget.parentNode.parentNode)].grade1;
+    }
+    else if (event.currentTarget.parentNode.parentNode.id === "copySpace") {
+      let angle = setCopy[0].angle;
+      if (angle == 0 || angle == 270)
+        grade = setCopy[0].grade2;
+      else if (angle == 90 || angle == 180)
+        grade = setCopy[0].grade1;
     }
 
     console.log(grade);
@@ -330,8 +382,12 @@ function prevent_drop(ev) {
 // Inoltre, draggando una tessera, raccoglie l'indice della stessa passando per il parent "bar"
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
-  let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
-  return i;
+  if (ev.target.id == "11")
+    return 11;
+  if (ev.target.id != "11") {
+    let i =  Array.from(ev.currentTarget.parentNode.children).indexOf(ev.currentTarget)
+    return i;
+  }
 }
 
 // Assegna solamente al primo elemento senza figli dell'array dato gli eventListeners necessari a permettere il drop
@@ -356,51 +412,132 @@ drop_box(boxes);
 // La splice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
 // continui a funzionare tramite l'indice pieceNum preso dall'elemento "bar" tramite il drag
 function drop(ev) {
+
   if (ev.target.children.length === 0) {
     //controllo che la casella e la tessera siano entrambe orizzontali
-    if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
-      if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
-        cartoonFeedback("color_match");
-      }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade2){
-        cartoonFeedback("color_match");
+    if (pieceNum == 11) {
+      if (ev.target.style.width == dim2+"px" && (setCopy[0].angle == 90 || setCopy[0].angle == 270)) {
+        if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setCopy[0].grade1){
+          cartoonFeedback("color_match");
+        }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setCopy[0].grade2){
+          cartoonFeedback("color_match");
+        }else{
+        ev.target.textContent= "";
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(setCopy[0].tile);
+        // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+        addToSequence(setCopy[0].grade1, setCopy[0].grade2,ev.target.id);
+        setBoxes.push(setCopy.pop());
+        ev.target.firstElementChild.removeEventListener("dblclick", rotateCopy);
+        ev.target.removeEventListener("drop", drop);
+        ev.target.removeEventListener("dragover", prevent_drop);
+        ev.target.firstElementChild.addEventListener("click", copy);
+        ev.target.firstElementChild.removeAttribute("id");
+        copySpace.removeChild;
+        drop_box(boxes);
+        console.log(setPieces);
+        console.log(setBoxes);
+        console.log(setCopy);
+        }
+      }
+      //controllo che la casella e la tessera siano entrambe verticali
+      else if (ev.target.style.width == dim1+"px" && (setCopy[0].angle == 0 || setCopy[0].angle == 180)) {
+        if(result[result.length-1]!=setCopy[0].grade1){
+          cartoonFeedback("color_match");
+        }else{
+          ev.target.textContent ="";
+          ev.preventDefault();
+          var data = ev.dataTransfer.getData("text");
+          ev.target.appendChild(setCopy[0].tile);
+          // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+          addToSequence(setCopy[0].grade1, setCopy[0].grade2,1);
+          // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
+          setBoxes.push(setCopy.pop());
+          ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+          ev.target.removeEventListener("drop", drop);
+          ev.target.removeEventListener("dragover", prevent_drop);
+          ev.target.firstElementChild.addEventListener("click", copy);
+          ev.target.firstElementChild.removeAttribute("id");
+          copySpace.removeChild
+          drop_box(boxes);
+          console.log(setPieces);
+          console.log(setBoxes);
+          console.log(setCopy);
+        }
       }else{
-      ev.target.textContent= "";
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      ev.target.appendChild(document.getElementById(data));
-      // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
-      addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,ev.target.id);
-      setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
-      ev.target.firstElementChild.removeEventListener("dblclick", rotate);
-      ev.target.removeEventListener("drop", drop);
-      ev.target.removeEventListener("dragover", prevent_drop);
-      drop_box(boxes);
-      console.log(setPieces);
-      console.log(setBoxes);
+        cartoonFeedback("wrong_rotation");
       }
     }
-    //controllo che la casella e la tessera siano entrambe verticali
-    else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
-      if(result[result.length-1]!=setPieces[pieceNum].grade1){
-        cartoonFeedback("color_match");
-      }else{
-        ev.target.textContent ="";
+
+    else {
+      if (ev.target.style.width == dim2+"px" && (setPieces[pieceNum].angle == 90 || setPieces[pieceNum].angle == 270)) {
+        if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade1){
+          cartoonFeedback("color_match");
+        }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setPieces[pieceNum].grade2){
+          cartoonFeedback("color_match");
+        }else{
+        ev.target.textContent= "";
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
         // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
-        addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,1);
-        // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
+        addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,ev.target.id);
         setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
         ev.target.firstElementChild.removeEventListener("dblclick", rotate);
         ev.target.removeEventListener("drop", drop);
         ev.target.removeEventListener("dragover", prevent_drop);
+        ev.target.firstElementChild.addEventListener("click", copy);
+        ev.target.firstElementChild.removeAttribute("id");
         drop_box(boxes);
         console.log(setPieces);
         console.log(setBoxes);
+        console.log(setCopy);
+        }
       }
-    }else{
-      cartoonFeedback("wrong_rotation");
+      //controllo che la casella e la tessera siano entrambe verticali
+      else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
+        if(result[result.length-1]!=setPieces[pieceNum].grade1){
+          cartoonFeedback("color_match");
+        }else{
+          ev.target.textContent ="";
+          ev.preventDefault();
+          var data = ev.dataTransfer.getData("text");
+          ev.target.appendChild(document.getElementById(data));
+          // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+          addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,1);
+          // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
+          setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
+          ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+          ev.target.removeEventListener("drop", drop);
+          ev.target.removeEventListener("dragover", prevent_drop);
+          ev.target.firstElementChild.addEventListener("click", copy);
+          ev.target.firstElementChild.removeAttribute("id");
+          drop_box(boxes);
+          console.log(setPieces);
+          console.log(setBoxes);
+          console.log(setCopy);
+        }
+      }else{
+        cartoonFeedback("wrong_rotation");
+      }
+    }
+  }
+}
+
+function copy() {
+  if (event.ctrlKey) {
+    if (copySpace.children.length == 0) {
+      setCopy.push(setBoxes[event.currentTarget.parentNode.id]);
+      let copyTile = event.currentTarget.cloneNode(true);
+      setCopy[0].tile = copyTile;
+      copyTile.setAttribute("id", "11");
+      copyTile.addEventListener("dblclick", rotateCopy);
+      copyTile.setAttribute("draggable", true)
+      copyTile.addEventListener("dragstart", function() {pieceNum = drag(event)});
+      copyTile.firstElementChild.addEventListener("click", playNoteOnUpperTile);
+      copyTile.lastElementChild.addEventListener("click", playNoteOnLowerTile);
+      copySpace.appendChild(copyTile);
     }
   }
 }
