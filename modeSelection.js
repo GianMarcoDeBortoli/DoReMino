@@ -12,16 +12,12 @@ function redirectToRules() {
 const title = document.querySelectorAll(".title");
 
 title.forEach((element, index) => element.addEventListener("mouseover", function() {
-  let transformation = event.currentTarget.style.transform;
-  transformation = transformation+' scale(1.2, 1.2)';
-  event.currentTarget.style.transform = transformation;
+  event.currentTarget.style.setProperty("transform", 'scale(1.2, 1.2)');
   playNoteOnHeader(index);
 }))
 
 title.forEach(element => element.addEventListener("mouseleave", function() {
-  let transformation = event.currentTarget.style.transform;
-  transformation = transformation.split(" ");
-  event.currentTarget.style.transform = transformation[0];
+  event.currentTarget.style.setProperty("transform", '');
 }))
 
 /* ------------- elementi che servono per modificare CSS select mode ---------------*/

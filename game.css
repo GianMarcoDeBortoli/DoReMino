@@ -46,9 +46,10 @@
 
 /* --------------------------------------------- play button PlayGame ---------------------------------------- */
 .buttonPlay:hover{
-    background: linear-gradient(#334175, #455281);
-    color: #a3ffeb;
+    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
+    box-shadow: 0 0 7px #f75f5fd0;
 }
+
 /* Basic red round button properties */
 .buttonPlay {
   place-items: center;
@@ -59,9 +60,10 @@
   height: 60px;
   border-radius: 35px;
   background-color: rgb(129, 47, 51);
-  color: white;
   cursor: pointer;
-  margin: 1% 1% 1% 2%;
+  /* Hide the text 'play', which is present in the HTML document for accessibility */
+  font-size: 0;
+  margin: 1.2% 0% 1% 2%;
 }
 
 /* Play button properties using CSS shape */
@@ -73,10 +75,15 @@
   height: 0;
   border-bottom: 20px solid transparent;
   border-top: 20px solid transparent;
-  border-left: 26px solid white;
+  border-left: 26px solid #F2F2F2;
   top: 10px;
   left: 20px;
 }
+
+/* 
+.buttonPlay::before:hover {
+    border-left: 26px solid #a3ffeb;
+} */
 
 /* --------------------------------------------- END play button PlayGame ------------------------------------- */
 
@@ -153,28 +160,28 @@
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    padding: 1%;
+    padding: 1% 0 1% 0;
     user-select: none;
 }
 
 #buttonsContainer {
-    width: 100%;
+    width: 95%;
     height: 100%;
 }
 
 #tableContainer {
-    width: 100%;
+    width: 95%;
     height: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .button {
     color: #F2F2F2;
-    background: linear-gradient(rgb(38, 52, 101), #3a4980);
+    background: linear-gradient(#112d92, #4e68c5);
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    box-shadow: inset 0 -1px 1px #3d4f8f, 0 8px 0 #202c58, 0 10px 15px rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 10px 15px rgba(67, 211, 255, 0);
     text-align: center;
     width: 17%;
     margin:0 1% 2% 2%;
@@ -188,7 +195,8 @@
 }
 
 .button:hover{
-    background: linear-gradient(#334175, #455281);
+    background: linear-gradient(#183fca, #5976e0);
+    box-shadow: inset 0 -1px 1px #969ce9, 0 8px 0 #1836a1, 0 10px 15px #a3ffebe5;
     color: #a3ffeb;
 }
 
@@ -274,7 +282,7 @@
     border: 3px solid black;
     border-radius: 10px;
     flex-direction: column;
-    margin: 1% 0 0 0;
+    margin-top: 1%;
 }
 
 .row {

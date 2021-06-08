@@ -28,7 +28,7 @@ audioButton?.addEventListener('click', async () => {
             setTimeout(function() {
                 document.querySelector("#theHeader").style.setProperty("width", "60%");
                 document.querySelector("#theHeader").style.setProperty("height", "35%");
-                document.querySelector("#theHeader").style.setProperty("border", "5px solid rgb(109, 41, 44)");
+                document.querySelector("#theHeader").style.setProperty("border", "0.4em solid rgb(109, 41, 44)");
                 setTimeout(function() {
                     let showing = setInterval(showTitle, 700);
                     setTimeout(function() {clearInterval(showing)}, 2800);

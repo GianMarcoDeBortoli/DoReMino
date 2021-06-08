@@ -37,9 +37,10 @@ console.log(result);
 
 //----------------------------------------------- VIEW ---------------------------------------------------------------------
 
-playMelody.onclick = function() {
+const playMelody = document.getElementById("playMelody");
+playMelody.addEventListener("click", function() {
   play_melody(result);
-}
+})
 
 function play_melody(result){
   let time = 0.5;

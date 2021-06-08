@@ -17,13 +17,20 @@
     }
 
 
-#theHeader{
-    background: linear-gradient(rgb(151,157, 166), rgb(112, 94, 120), rgb(129, 47, 51));
+.theHeader{
+    background: linear-gradient(#EFDCE9, #FFA59E, #CD4137);
     padding: 0 50px 0 50px;
     width: auto;
     height: auto;
-    border: 5px solid rgb(109, 41, 44);
-    border-radius: 20px;
+    border: 0.4em solid rgb(109, 41, 44);
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.titleContainer {
     display: flex;
     flex-direction: row;
 }
@@ -31,23 +38,34 @@
 .title {
     transition: transform 300ms;
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 100px cursive;
-    margin: 0;
+    font: normal normal 70px "Lucida Handwriting", Cursive;
+    font-variant: small-caps;
+    margin: 20px 0 20px 0;
 }
+
 .titleNoSound{
-    transition: transform 300ms;
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 70px cursive;
-    display: flex;
-    flex-direction: column;
+    font: normal normal 70px "Lucida Handwriting", Cursive;
+    font-variant: small-caps;
+    margin: 20px 0 0 0;
 }
 
 h2 {
-    transition: transform 300ms;
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 40px cursive;
-    margin: 30% 5% 0 5%;
-    display:block;
+    font: normal normal 40px Verdana;
+    color: rgb(80, 22, 25);
+    margin: 0;
+}
+
+h4 {
+    margin: 1.33em 0 0.5em 0;
+    font-family:cursive;
+}
+
+p {
+    margin: 1em 0 0 0;
+    font-family:cursive;
+    font-size: 90%;
 }
 
 .theContent {
@@ -55,17 +73,25 @@ h2 {
 }
 
 .form {
-    border: 0.2em solid rgb(38, 52, 101);
-    background: linear-gradient(rgb(151,157, 166), rgb(104, 120, 140), rgb(58, 73, 128));
+    border: 0.4em solid rgb(38, 52, 101);
+    background: linear-gradient(#F3F0FF, #E0E2FF, #6581BE);
     width: 70%;
     margin: auto;
     padding: 3em 1em 3em 1em;
-    border-radius: 0.4em; /* arrotondamento angoli */
+    border-radius: 1em;
     text-align: center;
     display: flex;
     justify-content: space-around;
     flex-direction: column;
     align-content: center;
+}
+
+#rulesForm {
+    align-items: center;
+    width: 75%;
+    padding: 1em 2em 1em 2em;
+    text-align: justify;
+    justify-content: space-between;
 }
 
 .selectionContainer {
@@ -86,23 +112,31 @@ h2 {
     border-radius: 6px;
     font: normal normal 2em/1 Verdana;
     text-decoration: none;
-    background: linear-gradient(rgb(38, 52, 101), #3a4980);
+    background: linear-gradient(#112d92, #4e68c5);
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    box-shadow: inset 0 -1px 1px #3d4f8f, 0 8px 0 #202c58, 0 10px 15px rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 10px 15px rgba(67, 211, 255, 0);
     transition: all 100ms ease-in-out;
 }
 
+#backToModeSelectionButton {
+    width: 30%;
+    height: 40px;
+    font: normal normal 1em/1 Verdana;
+    margin: 30px 0 0 0;
+}
+
 .form input[type=submit]:hover, input[type=button]:hover {
-    background: linear-gradient(#334175, #455281);
+    background: linear-gradient(#183fca, #5976e0);
+    box-shadow: inset 0 -1px 1px #969ce9, 0 8px 0 #1836a1, 0 10px 15px #a3ffebe5;
     color: #a3ffeb;
 }
 
 .form label {
-    color: rgb(38, 52, 101);
+    color: rgb(17, 47, 155);
     text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
     display: inline-block;
     width: 25%;
-    font: normal normal 1.5em Verdana;
+    font: normal normal 2em Verdana;
 }
 
 .custom-select {
@@ -111,7 +145,7 @@ h2 {
     position: relative;
     font: normal normal 1em Verdana;
     display: inline-block;
-    width:40%;
+    width: 20%;
     margin: 0 5% 5% 1%;
 }
 
@@ -120,8 +154,8 @@ h2 {
 }
 
 .select-selected {
-    background-color: rgb(38, 52, 101);
-    border-radius: 3px;
+    background-color: #112d92;
+    border-radius: 0.4em;
 }
 
 
@@ -155,7 +189,8 @@ h2 {
 /* Style items (options): */
 .select-items {
     position: absolute;
-    background-color: rgb(53, 73, 145);
+    background-color: #4e68c5;
+    border-radius: 0.4em;
     top: 100%;
     left: 0;
     right: 0;
@@ -175,9 +210,10 @@ h2 {
 
 /* --------------------------------------------- play button score ---------------------------------------- */
 .buttonPlay:hover{
-    background: linear-gradient(#334175, #455281);
-    color: #a3ffeb;
+    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
+    box-shadow: 0 0 7px #f75f5fd0;
 }
+
 /* Basic red round button properties */
 .buttonPlay {
   place-items: center;
@@ -188,7 +224,6 @@ h2 {
   height: 60px;
   border-radius: 35px;
   background-color: rgb(129, 47, 51);
-  color: white;
   cursor: pointer;
   /* Hide the text 'play', which is present in the HTML document for accessibility */
   font-size: 0;
