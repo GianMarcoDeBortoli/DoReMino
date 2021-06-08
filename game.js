@@ -3,13 +3,23 @@ import {play_melody, synth, searchForNote, errorSound, playNoteOnTile, changeSet
 import {draw_table} from './modules/table';
 
 
-window.onbeforeunload = function() {
+/*window.onbeforeunload = function() {
     return "Are you sure you want to leave?";
+}*/
+
+window.addEventListener('beforeunload', askToReload);
+
+function askToReload(e) {
+  e.preventDefault();
+  e.returnValue = '';
 }
 
+/*document.getElementById("fPlayGame").onclick = function() {
+window.removeEventListener('beforeunload', askToReload);
+}*/
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
-const modelLength = 10
+const modelLength = 10;
 var grades = [];
 var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazione
 var setBoxes = []; //elenco dei tiles all'interno dei "box" con associati i due gradi e l'angolazione
@@ -23,7 +33,7 @@ const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "
 var colorsAvailable= []
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
-var lowerGrades = 5; 
+var lowerGrades = 5;
 const barContainer = document.getElementById("bar");
 var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
@@ -563,4 +573,4 @@ function cartoonFeedback(feedback){
 
 // ------------ TIMER controller ---------------------------------------------
 timer.startTimer();
-//-----------------------------------------------END of CONTROLLER--------------------------------------------------------------
+//-----------------------------------------------END of CONTROLLER-----------------------------------------------------
