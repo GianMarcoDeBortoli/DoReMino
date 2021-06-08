@@ -323,3 +323,34 @@ p {
   color: black;
 }
 /* ------------------------------------------------------------------ END bar score -------------------------- */
+
+/* ----------------------------------------------------------- PROS & CONS ----------------------------------- */
+
+.prosconsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 77%;
+    height: 30%;
+}
+
+.tips {
+    width: 45%;
+    height: 100%;
+    border: 0.4em solid black;
+    border-radius: 1em;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 1em;
+    font-family:cursive;
+}
+
+#pros {
+    background-color: rgba(30, 180, 30, 0.726);
+    border-color: rgb(9, 66, 9);
+}
+
+#cons {
+    background-color: rgba(214, 50, 50, 0.808);
+    border-color: rgb(78, 11, 11);
+}
