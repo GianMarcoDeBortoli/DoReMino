@@ -124,6 +124,7 @@ function createTile(color1,color2,i) {
   else if (difficulty == "normal") {
     tileLower.style.backgroundColor = color2;
   }
+  
   tileLower.addEventListener("click", playNoteOnLowerTile);
 
 

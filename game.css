@@ -316,8 +316,10 @@
 }
 
 #commands {
-    height: 35%;
-    width: 77%;
+    max-width: 170px;
+    min-width: 170px;
+    max-height: 170px;
+    min-height: 170px;
     background-color: #f6f85bd7;
     border: 0.5px solid black;
     transform: rotate(3deg);
@@ -329,6 +331,7 @@
     padding-top: 10%;
     line-height: 250%;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
+    box-sizing: border-box;
 }
 
 }
