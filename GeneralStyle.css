@@ -212,7 +212,7 @@ h2 {
 
 .rulesContainer .goToButton {
     width: 30%;
-    height: 30px;
+    height: 90%;
     font: normal normal 1em Verdana;
     margin: 0;
 }
@@ -235,24 +235,24 @@ p {
 #demoForm {
     align-items: center;
     width: 75%;
-    padding: 1em;
+    height: 80%;
+    padding: 2em 1em 2em 1em;
     text-align: justify;
     justify-content: space-between;
 }
 
 #backToRules {
     width: 30%;
-    height: 30px;
+    height: 10%;
     font: normal normal 1em Verdana;
-    margin: 4% 2% 1% 2%;
+    margin: 0 0 0.3em 0;
 }
 
 /* ---------------------------------------------------- SCORE PLAY MELODY BUTTON --------------------------------------------------- */
 
 #scoreForm {
     align-items: center;
-    /* min-height: 400px; */
-    height: 60%;
+    height: 80%;
     justify-content: space-between;
     padding: 1em 1em 0.5em 1em;
 }
@@ -381,13 +381,12 @@ p {
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
-    height: 30%;
+    height: 33%;
 }
 
 .postIt {
-    max-width: 400px;
-    max-height: 150px;
-    min-height: 100%;
+    width: 45%;
+    height: 100%;
     border: 0.5px solid black;
     padding: 1em;
     box-sizing: border-box;
