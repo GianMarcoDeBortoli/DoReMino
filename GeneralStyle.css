@@ -11,17 +11,16 @@
         user-select: none;
     }
 
-    body{
-        font-size: 100%;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+
+.theContent {
+    width: 100%;
+}
 
 
+/* ----------------------------------------------------------- TITLE --------------------------------------------------------- */
 .theHeader{
     background: linear-gradient(#EFDCE9, #FFA59E, #CD4137);
     padding: 0 50px 0 50px;
-    width: auto;
-    height: auto;
     border: 0.4em solid rgb(109, 41, 44);
     border-radius: 1em;
     display: flex;
@@ -45,32 +44,20 @@
 
 .titleNoSound{
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 70px "Lucida Handwriting", Cursive;
+    font: normal normal 50px "Lucida Handwriting", Cursive;
     font-variant: small-caps;
-    margin: 20px 0 0 0;
+    margin: 20px 0 -10px 0;
 }
 
 h2 {
     text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 40px Verdana;
+    font: normal normal 30px Verdana;
     color: rgb(80, 22, 25);
-    margin: 0;
+    margin: 0 0 10px 0;
 }
 
-h4 {
-    margin: 1.33em 0 0.5em 0;
-    font-family:cursive;
-}
 
-p {
-    margin: 1em 0 0 0;
-    font-family:cursive;
-    font-size: 90%;
-}
-
-.theContent {
-    width: 100%;
-}
+/* ----------------------------------------------------------- FORM ------------------------------------------------------- */
 
 .form {
     border: 0.4em solid rgb(38, 52, 101);
@@ -86,19 +73,21 @@ p {
     align-content: center;
 }
 
-#rulesForm {
-    align-items: center;
-    width: 75%;
-    padding: 1em 2em 1em 2em;
-    text-align: justify;
-    justify-content: space-between;
-}
-
 .selectionContainer {
     display: flex;
     justify-content: space-between;
 }
 
+/* ----------------- LABELS "mode", "difficulty" ----------------- */
+.form label {
+    color: rgb(17, 47, 155);
+    text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+    display: inline-block;
+    width: 25%;
+    font: normal normal 2em Verdana;
+}
+
+/* ---- BUTTONS "new game", "how to play", "back to the game" ---- */
 .form input[type=submit], input[type=button] {
     cursor: pointer;
     width:60%;
@@ -118,27 +107,13 @@ p {
     transition: all 100ms ease-in-out;
 }
 
-#backToModeSelectionButton {
-    width: 30%;
-    height: 40px;
-    font: normal normal 1em/1 Verdana;
-    margin: 30px 0 0 0;
-}
-
 .form input[type=submit]:hover, input[type=button]:hover {
     background: linear-gradient(#183fca, #5976e0);
     box-shadow: inset 0 -1px 1px #969ce9, 0 8px 0 #1836a1, 0 10px 15px #a3ffebe5;
     color: #a3ffeb;
 }
 
-.form label {
-    color: rgb(17, 47, 155);
-    text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
-    display: inline-block;
-    width: 25%;
-    font: normal normal 2em Verdana;
-}
-
+/* ------------------------ DROP DOWN MENUS ---------------------- */
 .custom-select {
     margin-right: 80px;
     width: 200px;
@@ -206,15 +181,41 @@ p {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+
+/* ------------------------------------------------------------- RULES FORM ------------------------------------------------------ */
+
+#rulesForm {
+    align-items: center;
+    width: 75%;
+    padding: 1em 2em 2em 2em;
+    text-align: justify;
+    justify-content: space-between;
 }
 
-/* --------------------------------------------- play button score ---------------------------------------- */
-.buttonPlay:hover{
-    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
-    box-shadow: 0 0 7px #f75f5fd0;
+#backToModeSelectionButton {
+    width: 30%;
+    height: 40px;
+    font: normal normal 1em Verdana;
+    margin: 0;
 }
 
-/* Basic red round button properties */
+
+/* ------------------------------------------------------------- RULES TEXT ------------------------------------------------------- */
+
+h4 {
+    margin: 0.5em 0 0.3em 0;
+    font-family:cursive;
+}
+
+p {
+    margin: 1em 0 0 0;
+    font-family:cursive;
+    font-size: 90%;
+}
+
+
+/* ---------------------------------------------------- SCORE PLAY MELODY BUTTON --------------------------------------------------- */
+
 .buttonPlay {
   place-items: center;
   float: left;
@@ -225,12 +226,15 @@ p {
   border-radius: 35px;
   background-color: rgb(129, 47, 51);
   cursor: pointer;
-  /* Hide the text 'play', which is present in the HTML document for accessibility */
-  font-size: 0;
+  font-size: 0;  /* Hide the text 'play', which is present in the HTML document for accessibility */
   margin: 1% 1% 1% 1%;
 }
 
-/* Play button properties using CSS shape */
+.buttonPlay:hover{
+    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
+    box-shadow: 0 0 7px #f75f5fd0;
+}
+
 .buttonPlay::before {
   content: "";
   display: block;
@@ -244,9 +248,9 @@ p {
   left: 20px;
 }
 
-/* --------------------------------------------- END play button score ------------------------------------- */
 
-/* --------------------------------------------- domino effect score ------------------------------------- */
+/* -------------------------------------------------------- DOMINO EFFECT SCORE --------------------------------------------------- */
+
 .dominoEffect {
     display: flex;
     justify-content: space-between;
@@ -267,7 +271,7 @@ p {
   height: 50px;
   margin-bottom: 0.25em;
   margin-left: -3.05em;
-  color: #777;
+  color: transparent;
   background-color: #444;
   line-height: 3em;
   text-transform: uppercase;
@@ -280,15 +284,9 @@ p {
 }
 
 @keyframes topple {
-  0% {
-    background-color: #444;
-    color: black;
-  }
   4% {
-    background-color: #eea;
-    color: black;
     transform: rotate(-90deg);
-    box-shadow: 0 0 1em #fe2;
+    box-shadow: 0 0 1em #c9b0ffab;
   }
   42% {
     margin-left: .5em;
@@ -298,14 +296,15 @@ p {
   100% {
     transform: rotate(0deg);
     color: black;
-    background-color: white;
+    background-color: #EBE2FF;
     margin: 0;
     margin-bottom: .25em;
   }
 }
-/* --------------------------------------------- END domino effect score ------------------------------------- */
 
-/* ------------------------------------------------------------------ bar score ------------------------------ */
+
+/* ------------------------------------------------------------- BAR SCORE ------------------------------------------------------ */
+
 #myProgress {
   width: 50%;
   background-color: grey;
@@ -322,9 +321,9 @@ p {
   line-height: 50px; /* To center it vertically */
   color: black;
 }
-/* ------------------------------------------------------------------ END bar score -------------------------- */
 
-/* ----------------------------------------------------------- PROS & CONS ----------------------------------- */
+
+/* ------------------------------------------------------------ PROS & CONS ------------------------------------------------------ */
 
 .prosconsContainer {
     display: flex;
@@ -353,4 +352,6 @@ p {
 #cons {
     background-color: rgba(214, 50, 50, 0.808);
     border-color: rgb(78, 11, 11);
+}
+
 }

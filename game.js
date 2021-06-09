@@ -457,7 +457,7 @@ function drop(ev) {
           addToSequence(setCopy[0].grade1, setCopy[0].grade2,1);
           // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
           setBoxes.push(setCopy.pop());
-          ev.target.firstElementChild.removeEventListener("dblclick", rotate);
+          ev.target.firstElementChild.removeEventListener("dblclick", rotateCopy);
           ev.target.removeEventListener("drop", drop);
           ev.target.removeEventListener("dragover", prevent_drop);
           ev.target.firstElementChild.addEventListener("click", copy);

@@ -1,4 +1,4 @@
-/* --------------------------------------------- inizio @media screen ----------------------------------------- */
+/* ----------------------------------------------------- @media screen ------------------------------------------------ */
 @media screen {
 
     html,body,main {
@@ -11,14 +11,61 @@
         flex-direction: column;
         user-select: none;
     }
-    body{
-        font-size: 100%;
-        font-family: Arial, Helvetica, sans-serif;
-    }
 
 
 
-/* --------------------------------------------- CARTOON game ------------------------------------------- */
+/* ------------------------------------------------------------ FORM  --------------------------------------------------------- */
+
+#fPlayGame {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    padding: 1% 0 1% 0;
+    user-select: none;
+}
+
+
+/* ------------------------------------------------------- BUTTONS CONTAINER --------------------------------------------------- */
+
+#buttonsContainer {
+    width: 95%;
+    height: 100%;
+}
+
+/* ------- BUTTONS "change set", "finish game" ------- */
+.button {
+    color: #F2F2F2;
+    background: linear-gradient(#112d92, #4e68c5);
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 10px 15px rgba(67, 211, 255, 0);
+    text-align: center;
+    width: 17%;
+    margin:0 1% 2% 2%;
+    border-radius: 5px;
+    padding: 1%;
+    cursor: pointer;
+    float: left;
+    display:block;
+    font: normal normal 1.5em Verdana;
+    margin:2%;
+}
+
+.button:hover{
+    background: linear-gradient(#183fca, #5976e0);
+    box-shadow: inset 0 -1px 1px #969ce9, 0 8px 0 #1836a1, 0 10px 15px #a3ffebe5;
+    color: #a3ffeb;
+}
+
+#finishGame{
+    width: 20%;
+    float:right;
+    border: none;
+}
+
+/* --------------------- CARTOON --------------------- */
 .cartoon {
     position: fixed;
     padding: 30px 20px 30px 20px;
@@ -42,52 +89,9 @@
     display:block;
     width:0;
 }
-/* --------------------------------------------- END cartoon PlayGame ---------------------------------------- */
 
-/* --------------------------------------------- play button PlayGame ---------------------------------------- */
-.buttonPlay:hover{
-    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
-    box-shadow: 0 0 7px #f75f5fd0;
-}
 
-/* Basic red round button properties */
-.buttonPlay {
-  place-items: center;
-  float: left;
-  display:block;
-  position: relative;
-  width: 60px;
-  height: 60px;
-  border-radius: 35px;
-  background-color: rgb(129, 47, 51);
-  cursor: pointer;
-  /* Hide the text 'play', which is present in the HTML document for accessibility */
-  font-size: 0;
-  margin: 1.2% 0% 1% 2%;
-}
-
-/* Play button properties using CSS shape */
-.buttonPlay::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-bottom: 20px solid transparent;
-  border-top: 20px solid transparent;
-  border-left: 26px solid #F2F2F2;
-  top: 10px;
-  left: 20px;
-}
-
-/* 
-.buttonPlay::before:hover {
-    border-left: 26px solid #a3ffeb;
-} */
-
-/* --------------------------------------------- END play button PlayGame ------------------------------------- */
-
-/* ------------------------------------------------ timer PlayGame ------------------------------------------ */
+/* ----------------------- TIMER --------------------- */
 #timer {
     font-family: sans-serif;
     color: black;
@@ -150,76 +154,14 @@
     justify-content: center;
     font-size: 30px;
 }
-/* ------------------------------------------------ END timer PlayGame ---------------------------------------- */
 
-/* ----------------------------------------------- bar content PlayGame --------------------------------------- */
-#fPlayGame {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-direction: column;
-    padding: 1% 0 1% 0;
-    user-select: none;
-}
 
-#buttonsContainer {
-    width: 95%;
-    height: 100%;
-}
-
-#tableContainer {
-    width: 95%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-.button {
-    color: #F2F2F2;
-    background: linear-gradient(#112d92, #4e68c5);
-    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 10px 15px rgba(67, 211, 255, 0);
-    text-align: center;
-    width: 17%;
-    margin:0 1% 2% 2%;
-    border-radius: 5px;
-    padding: 1%;
-    cursor: pointer;
-    float: left;
-    display:block;
-    font: normal normal 1.5em Verdana;
-    margin:2%;
-}
-
-.button:hover{
-    background: linear-gradient(#183fca, #5976e0);
-    box-shadow: inset 0 -1px 1px #969ce9, 0 8px 0 #1836a1, 0 10px 15px #a3ffebe5;
-    color: #a3ffeb;
-}
-
-#finishGame{
-    float:right;
-    font-size: 100%;
-    width: 20%;
-    border: none;
-    position: relative;
-    text-align:center;
-    display: inline-block;
-    outline: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font: normal normal 1.5em Verdana;
-}
+/* --------------------------------------------------- TILES CONTAINER AND TILES ------------------------------------------------- */
 
 #bar {
     background-color: #EBE2FF;
     padding:1%;
-    border-radius: 8px;
-    /**height: 130px;
-    min-height: 130px;**/
+    border-radius: 0.7em;
     width: 90%;
     display: flex;
     flex-flow: row wrap;
@@ -272,7 +214,49 @@
     border: 2px solid black;
 }
 
-/* ------------------------------------------ END bar content PlayGame ------------------------------------------ */
+/* ------------------------------------------------------- PLAY MELODY BUTTON ------------------------------------------------ */
+
+.buttonPlay {
+  place-items: center;
+  float: left;
+  display:block;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 35px;
+  background-color: rgb(129, 47, 51);
+  cursor: pointer;
+  font-size: 0;   /* Hide the text 'play', which is present in the HTML document for accessibility */
+  margin: 1.2% 0% 1% 2%;
+}
+
+.buttonPlay:hover{
+    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
+    box-shadow: 0 0 7px #f75f5fd0;
+}
+
+.buttonPlay::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 20px solid transparent;
+  border-top: 20px solid transparent;
+  border-left: 26px solid #F2F2F2;
+  top: 10px;
+  left: 20px;
+}
+
+
+#tableContainer {
+    width: 95%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 
 /* ---------------------------------------------------- TABLE --------------------------------------------------- */
 #table {
@@ -306,8 +290,8 @@
 }
 
 #copySpace {
-    height: 40%;
-    width: 15%;
+    height: 45%;
+    width: 90%;
     background-color: #EBE2FF;
     border: 3px solid black;
     border-radius: 10px;
@@ -315,6 +299,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#commandContainer {
+    padding-top: 1%;
+    width:20%;  
+    height:100%;
+    display:flex; 
+    flex-direction:column; 
+    justify-content:space-between; 
+    align-items:center;
 }
 
 /* --------------------------------------------------  END TABLE ------------------------------------------------------ */
