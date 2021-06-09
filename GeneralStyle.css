@@ -14,6 +14,10 @@
 
 .theContent {
     width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -63,6 +67,7 @@ h2 {
     border: 0.4em solid rgb(38, 52, 101);
     background: linear-gradient(#F3F0FF, #E0E2FF, #6581BE);
     width: 70%;
+    height: 70%;
     margin: auto;
     padding: 3em 1em 3em 1em;
     border-radius: 1em;
@@ -191,6 +196,7 @@ h2 {
 #rulesForm {
     align-items: center;
     width: 75%;
+    height: 75%;
     padding: 1em 2em 2em 2em;
     text-align: justify;
     justify-content: space-between;
@@ -243,6 +249,15 @@ p {
 
 /* ---------------------------------------------------- SCORE PLAY MELODY BUTTON --------------------------------------------------- */
 
+#scoreForm {
+    align-items: center;
+    /* min-height: 400px; */
+    height: 60%;
+    justify-content: space-between;
+    padding: 1em 1em 0.5em 1em;
+}
+
+/* ------------ SCORE BUTTON play melody ----------- */
 .buttonPlay {
   place-items: center;
   float: left;
@@ -276,9 +291,10 @@ p {
 }
 
 
-/* -------------------------------------------------------- DOMINO EFFECT SCORE --------------------------------------------------- */
+/* -------------------- SCORE DOMINO EFFECT --------------------- */
 
 .dominoEffect {
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -296,13 +312,13 @@ p {
   display: inline-block;
   list-style: none;
   transform: rotate(-90deg);
-  width: 100px;
-  height: 50px;
+  width: 75px;
+  height: 35px;
   margin-bottom: 0.75em;
-  margin-left: -3.05em;
+  margin-left: -2.55em;
   color: transparent;
   background-color: #444;
-  line-height: 3em;
+  line-height: 2em;
   text-transform: uppercase;
   text-align: center;
   animation: topple 1s ease-in 1 alternate;
@@ -335,55 +351,67 @@ p {
 }
 
 
-/* ------------------------------------------------------------- BAR SCORE ------------------------------------------------------ */
+/* -------------------- SCORE bar ---------------------- */
 
 #myProgress {
   width: 50%;
   background-color: grey;
-  margin: 10% 0 0 25%;
+  position: absolute;
+  top: 66vh;
   display: flex;
   justify-content: space-between;
+  border-radius: 0.5em;
 }
 
 #myBar {
   width: 1%;
-  height: 50px;
+  height: 20px;
   background-color: red;
   text-align: center; /* To center it horizontally*/
-  line-height: 50px; /* To center it vertically */
+  line-height: 20px; /* To center it vertically */
+  border-radius: 0.5em;
   color: black;
 }
 
 
-/* ------------------------------------------------------------ PROS & CONS ------------------------------------------------------ */
+/* ----------------- SCORE pros & cons -------------------- */
 
 .prosconsContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: 77%;
+    width: 100%;
     height: 30%;
 }
 
-.tips {
-    width: 45%;
-    height: 100%;
-    border: 0.4em solid black;
-    border-radius: 1em;
-    box-sizing: border-box;
-    text-align: center;
+.postIt {
+    max-width: 400px;
+    max-height: 150px;
+    min-height: 100%;
+    border: 0.5px solid black;
     padding: 1em;
+    box-sizing: border-box;
+    background-color: #f6f85bd7;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 75%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 250%;
+    letter-spacing: -0.02em;
 }
 
 #pros {
-    background-color: rgba(30, 180, 30, 0.726);
+    background-color: rgb(61, 180, 61);
     border-color: rgb(9, 66, 9);
+    transform: rotate(4deg);
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.493);
 }
 
 #cons {
-    background-color: rgba(214, 50, 50, 0.808);
+    background-color: rgb(214, 71, 71);
     border-color: rgb(78, 11, 11);
+    transform: rotate(-2deg);
+    box-shadow: -2px 2px rgba(0, 0, 0, 0.493);
 }
 
 }
