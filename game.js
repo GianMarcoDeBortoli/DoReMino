@@ -4,21 +4,6 @@ import {draw_table} from './modules/table';
 import {sameDirectionLeaps, neighbourNotes, notNeighbourNotes, tooWideLastLeap} from './modules/melodyEvaluator';
 
 
-/*window.onbeforeunload = function() {
-    return "Are you sure you want to leave?";
-}*/
-
-window.addEventListener('beforeunload', askToReload);
-
-function askToReload(e) {
-  e.preventDefault();
-  e.returnValue = '';
-}
-
-/*document.getElementById("fPlayGame").onclick = function() {
-window.removeEventListener('beforeunload', askToReload);
-}*/
-
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 const modelLength = 10;
 var grades = [];
@@ -285,6 +270,10 @@ function change_set() {
 }
 
 changeSet.onclick = change_set;
+
+document.getElementById("finishGame").onclick = function(){
+  window.removeEventListener('beforeunload', askToReload);
+}
 
 playMelody.onclick = function() {
   play_melody(result);

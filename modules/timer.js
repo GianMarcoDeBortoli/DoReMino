@@ -1,6 +1,6 @@
 window.addEventListener('beforeunload', askToReload);
 
-function askToReload(e) {
+export function askToReload(e) {
   e.preventDefault();
   e.returnValue = '';
 }
