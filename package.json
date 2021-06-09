@@ -1,7 +1,7 @@
 {
   "name": "Demly",
   "version": "1.0.0",
-  "main": "playGame.js",
+  "main": "game.js",
   "scripts": {
     "dev": "parcel *.html",
     "build": "parcel build *.html"

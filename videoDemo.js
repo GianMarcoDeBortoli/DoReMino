@@ -1,0 +1,9 @@
+import {playMembrane} from "./modules/sound";
+
+const backToRules = document.getElementById("backToRules");
+backToRules.addEventListener("click", redirectToRules);
+
+function redirectToRules() {
+    playMembrane();
+    setTimeout(function() {location.replace("rules.html")}, 700);
+}

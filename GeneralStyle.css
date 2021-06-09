@@ -196,9 +196,17 @@ h2 {
     justify-content: space-between;
 }
 
-#backToModeSelectionButton {
+.rulesContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 77%;
+    height: 30%;
+}
+
+.rulesContainer .goToButton {
     width: 30%;
-    height: 40px;
+    height: 30px;
     font: normal normal 1em Verdana;
     margin: 0;
 }
@@ -217,6 +225,21 @@ p {
     font-size: 90%;
 }
 
+/* ------------------------------------------------------------- DEMO FORM ------------------------------------------------------- */
+#demoForm {
+    align-items: center;
+    width: 75%;
+    padding: 1em;
+    text-align: justify;
+    justify-content: space-between;
+}
+
+#backToRules {
+    width: 30%;
+    height: 30px;
+    font: normal normal 1em Verdana;
+    margin: 4% 2% 1% 2%;
+}
 
 /* ---------------------------------------------------- SCORE PLAY MELODY BUTTON --------------------------------------------------- */
 
