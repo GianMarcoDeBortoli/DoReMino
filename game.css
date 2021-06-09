@@ -214,8 +214,19 @@
     border: 2px solid black;
 }
 
-/* ------------------------------------------------------- PLAY MELODY BUTTON ------------------------------------------------ */
 
+/* -------------------------------------------------------- TABLE CONTAINER -------------------------------------------------- */
+
+#tableContainer {
+    width: 95%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+/* ----------------- BUTTON "play melody" ------------------ */
 .buttonPlay {
   place-items: center;
   float: left;
@@ -249,16 +260,7 @@
 }
 
 
-#tableContainer {
-    width: 95%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-
-/* ---------------------------------------------------- TABLE --------------------------------------------------- */
+/* ----------------------- TABLE --------------------- */
 #table {
     float: left;
     display: flex;
@@ -289,29 +291,44 @@
     box-sizing: border-box;
 }
 
-#copySpace {
-    height: 45%;
-    width: 90%;
-    background-color: #EBE2FF;
-    border: 3px solid black;
-    border-radius: 10px;
-    margin: 1% 2% 1% 1%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
+/* ----------------------- COMMAND CONTAINER ------------------------ */
 #commandContainer {
     padding-top: 1%;
     width:20%;  
-    height:100%;
+    height:97%;
     display:flex; 
     flex-direction:column; 
     justify-content:space-between; 
     align-items:center;
 }
 
-/* --------------------------------------------------  END TABLE ------------------------------------------------------ */
+/* ------------- COPY SPACE ------------- */
+#copySpace {
+    height: 45%;
+    width: 90%;
+    background-color: #EBE2FF;
+    border: 3px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#commands {
+    height: 35%;
+    width: 77%;
+    background-color: #f6f85bd7;
+    border: 0.5px solid black;
+    transform: rotate(3deg);
+    font-size: 75%;
+    font-weight: bold;
+    letter-spacing: -0.02em;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.493);
+    text-align: center;
+    padding-top: 10%;
+    line-height: 250%;
+    font-family:cursive;
+}
 
 }
-  /* ----------------------------------------------- END @media screen -------------------------------------------------- */

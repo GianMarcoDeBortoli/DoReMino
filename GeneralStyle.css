@@ -255,6 +255,7 @@ p {
     display: flex;
     justify-content: space-between;
 }
+
 .dominos {
   text-align: center;
   background-color: trasparent;
@@ -263,6 +264,7 @@ p {
   list-style: none;
   display: block;
 }
+
 .dominos .domino {
   display: inline-block;
   list-style: none;
@@ -286,7 +288,10 @@ p {
 @keyframes topple {
   4% {
     transform: rotate(-90deg);
-    box-shadow: 0 0 1em #c9b0ffab;
+    box-shadow: 0 0 1em #85f397b7;
+  }
+  10% {
+    box-shadow: 0 0 1em #85f3a9ab;
   }
   42% {
     margin-left: .5em;
