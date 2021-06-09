@@ -4,6 +4,7 @@ import { playNoteOnHeader, playPluck, playMembrane } from "./modules/sound";
 const rulesButton = document.getElementById("rulesButton");
 rulesButton.addEventListener("click", redirectToRules);
 
+/* redirecting to the rules of the game when clicking the button */
 function redirectToRules() {
   playMembrane();
   setTimeout(function() {location.replace("rules.html")}, 700);
@@ -20,7 +21,7 @@ title.forEach(element => element.addEventListener("mouseleave", function() {
   event.currentTarget.style.setProperty("transform", '');
 }))
 
-/* ------------- elementi che servono per modificare CSS select mode ---------------*/
+/* ------------- elements needed to modify CSS select mode ---------------*/
 var x, i, j, l, ll, selElmnt, a, b, c;
 /* Look for any elements with the class "custom-select": */
 x = document.getElementsByClassName("custom-select");
@@ -103,4 +104,4 @@ function closeAllSelect(elmnt) {
 then close all select boxes: */
 document.addEventListener("click", closeAllSelect);
 
-/* ------------- END elementi che servono per modificare CSS select mode ---------------*/
+/* ------------- END elements needed to modify CSS select mode ---------------*/

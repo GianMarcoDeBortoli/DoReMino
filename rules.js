@@ -6,11 +6,13 @@ backToModeSelectionButton.addEventListener("click", redirectToModeSelection);
 const goToDemo = document.getElementById("goToDemo");
 goToDemo.addEventListener("click", redirectToDemo);
 
+/* redirecting to mode selction when clicking the button */
 function redirectToModeSelection() {
     playMembrane();
     setTimeout(function() {location.replace("modeSelection.html")}, 700);
 }
 
+/* redirecting to the demo of the game when clicking the button */
 function redirectToDemo() {
     playMembrane();
     setTimeout(function() {location.replace("videoDemo.html")}, 700);

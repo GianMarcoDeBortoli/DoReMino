@@ -1,6 +1,6 @@
 import { playChordsOnHeader } from "./modules/sound";
 
-
+/* redirecting to mode selction when clicking the button, after the animation */
 function redirectToModeSelection() {
     location.replace("modeSelection.html");
 }
