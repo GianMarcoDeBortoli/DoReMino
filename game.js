@@ -1,6 +1,7 @@
 import * as timer from './modules/timer';
 import {play_melody, synth, searchForNote, errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
 import {draw_table} from './modules/table';
+import {sameDirectionLeaps, neighbourNotes, notNeighbourNotes, tooWideLastLeap} from './modules/melodyEvaluator';
 
 
 /*window.onbeforeunload = function() {
@@ -557,6 +558,7 @@ function addToSequence(grade1,grade2,id){
   }
 
   hiddenField.setAttribute("value", result.join('_'));
+  onGoingEvaluateMelody(result);
 }
 
 // questa funzione in base al parametro, che dipende dal tipo di feedback che devo dare,
@@ -569,8 +571,45 @@ function cartoonFeedback(feedback){
 
   setTimeout(function(){cartoon.style.visibility="hidden"}, 2000);
 }
-//------------------------------------------- END of DRAG and DROP ---------------------------
+// evaluating melody --------------------------------------------------------
+function onGoingEvaluateMelody(melody) {
 
+  let l = melody.length;
+
+  // All notes are neighbour notes (no jumps)
+  if (l > 3 && notNeighbourNotes(melody) == 0 ) {
+    /*Do not only use neigbour notes!*/
+    cartoonFeedback("Do not only use neigbour notes!");
+  }
+
+  // All notes are far away from each other (no usage of neighbour notes)
+  if (l > 3 && neighbourNotes(melody) == 0 ) {
+    /*Use some neighbour notes!*/
+    cartoonFeedback("Use some neighbour notes!");
+  }
+
+  if(l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
+    cartoonFeedback("Do not overuse neigbour notes!");
+  }
+
+  if(l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
+      cartoonFeedback("Use more neighbour notes!");
+  }
+
+  // Last leap over 1 octave
+  if (tooWideLastLeap(melody) == 1){
+    /*Try to avoid big jumps!*/
+    cartoonFeedback("Try to avoid big jumps!");
+  }
+
+  // Big jump followed by other big jump
+  if (l > 3 && sameDirectionLeaps(melody) != 0 ) {
+    /* Try to change direction after a big jump! */
+    cartoonFeedback("Try to change direction after a big jump!");
+  }
+
+}
+//------------------------------------------- END of DRAG and DROP ---------------------------
 // ------------ TIMER controller ---------------------------------------------
 timer.startTimer();
 //-----------------------------------------------END of CONTROLLER-----------------------------------------------------

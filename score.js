@@ -1,4 +1,5 @@
 import {synth, searchForNote} from './modules/sound';
+import * as melodyEvaluator from './modules/melodyEvaluator';
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 var dominosContainer = document.getElementById("dominosContainer");
@@ -70,7 +71,6 @@ function createDomino(resultElement){
   let grade = resultElement;
   let index = searchForNote[0].indexOf(grade);
   let note = searchForNote[1][index];
-  console.log(note);
   piece.textContent = note;
   let color = colors[grade+lowerGrades];
   piece.style.backgroundColor = color;
@@ -96,7 +96,7 @@ const COLOR_CODES = {
   }
 };
 var i = 0;
-var score = 100;
+var score = finalEvaluateMelody(result);
 function moveScoreBar() {
   if (i == 0) {
     i = 1;
@@ -136,3 +136,57 @@ function firstPainfulRender() {
 
 //----------------------------------------------- CONTROLLER --------------------------------------------------------------
 firstPainfulRender();
+
+//---------- scoring ------------------------
+//the evaluation tends to subtract points if you did WRONG THINGS
+
+function finalEvaluateMelody(melody){
+  // BEGIN AND END
+  var begin = melodyEvaluator.beginOnTonic(melody);
+  var end = melodyEvaluator.endOnTonic(melody);
+
+  // CONTOUR
+  var contour = melodyEvaluator.findContour(melody);
+  var negContour = melodyEvaluator.oneDirectionContour(contour);
+  var posContour = melodyEvaluator.multiDirectionContour(contour);
+
+  // LEAPS
+  var wideLeaps = melodyEvaluator.tooWideLeaps(melody);
+  var meanDistance = melodyEvaluator.meanOfDistances(melody);
+  var sameDirLeaps= melodyEvaluator.sameDirectionLeaps(melody);
+  var neighNotes = melodyEvaluator.neighbourNotes(melody);
+  var notNeighNotes = melodyEvaluator.notNeighbourNotes(melody);
+
+  // REPETITION
+  //var repetitions = repetitionIdentifier(melody);
+
+  // MESSAGES
+  if (begin == 0){
+     /* +   Great, your melody begins on the first grade!   */  //-> it's not really wrong to make it start on a different note
+  }
+  if (end == 0) {
+    /*  +   Your melody ends on the tonic, that's awesome  */
+  } else {
+    /*  -  Next time, try to end the melody on the tonic!  */
+  }
+
+  // TOTAL POINTS
+
+  score = 100 - begin - end;
+  score = score + 2*negContour + 2*posContour;
+  score = score - wideLeaps - sameDirLeaps;
+
+  if(meanDistance > 7) {
+    score = score - meanDistance;
+  }
+  if(neighNotes>3*notNeighNotes || 3*neighNotes < notNeighNotes) {
+    score = score - 10;   //random value to be evaluated.....
+  }
+
+  return score;
+
+  /*if(repetitionIdentifier>3*l){
+    score = score - 10;   //random value to be evaluated.....
+  }*/
+
+}

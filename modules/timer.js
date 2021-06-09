@@ -1,3 +1,10 @@
+window.addEventListener('beforeunload', askToReload);
+
+function askToReload(e) {
+  e.preventDefault();
+  e.returnValue = '';
+}
+
 //------------------------- TIMER MODEL ------------------------------------------------
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 10;
@@ -49,6 +56,7 @@ document.getElementById("timer").innerHTML = `
 //------------------------- END TIMER MODEL ------------------------------------------------
 
 function onTimesUp() {
+  window.removeEventListener('beforeunload', askToReload);
   clearInterval(timerInterval);
   // qua devo scrivere il codice per fare la stessa cosa che faccio se clicco su Finish Game
   //hiddenField2.setAttribute("type", "submit");
