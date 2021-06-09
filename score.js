@@ -10,9 +10,6 @@ const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "
                 "rgb(181, 128, 230)", "rgb(100, 61, 240)"];
 var lowerGrades = 5;
 let delay = 0;
-window.onbeforeunload = function() {
-    return "Are you sure you want to leave?";
-}
 
 // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
