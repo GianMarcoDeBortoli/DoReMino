@@ -83,8 +83,12 @@ h2 {
     color: rgb(17, 47, 155);
     text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
     display: inline-block;
-    width: 25%;
-    font: normal normal 2em Verdana;
+    width: 20%;
+    font: normal normal 200% Verdana;
+}
+
+#difficulty {
+    width: 30%;
 }
 
 /* ---- BUTTONS "new game", "how to play", "back to the game" ---- */

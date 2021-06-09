@@ -112,7 +112,7 @@ function createTile(color1,color2,i) {
   if (difficulty == "expert") {
     tileUpper.style.backgroundColor = "rgb(159, 93, 44)";
   }
-  else if (difficulty == "amateur") {
+  else if (difficulty == "normal") {
     tileUpper.style.backgroundColor = color1;
   }
   tileUpper.addEventListener("click", playNoteOnUpperTile);
@@ -121,7 +121,7 @@ function createTile(color1,color2,i) {
   if (difficulty == "expert") {
     tileLower.style.backgroundColor = "rgb(159, 93, 44)";
   }
-  else if (difficulty == "amateur") {
+  else if (difficulty == "normal") {
     tileLower.style.backgroundColor = color2;
   }
   tileLower.addEventListener("click", playNoteOnLowerTile);
