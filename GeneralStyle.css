@@ -208,12 +208,12 @@ h2 {
 
 h4 {
     margin: 0.5em 0 0.3em 0;
-    font-family:cursive;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 
 p {
     margin: 1em 0 0 0;
-    font-family:cursive;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-size: 90%;
 }
 
@@ -350,7 +350,7 @@ p {
     box-sizing: border-box;
     text-align: center;
     padding: 1em;
-    font-family:cursive;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 
 #pros {
