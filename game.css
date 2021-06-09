@@ -226,7 +226,7 @@
 }
 
 
-/* ----------------- BUTTON "play melody" ------------------ */
+/* ---------------------- BUTTON "play melody" --------------------- */
 .buttonPlay {
     place-items: center;
     position: relative;
@@ -260,7 +260,7 @@
 }
 
 
-/* ----------------------- TABLE --------------------- */
+/* ----------------------------- TABLE ----------------------------- */
 #table {
     float: left;
     display: flex;

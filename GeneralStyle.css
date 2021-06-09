@@ -24,13 +24,14 @@
 /* ----------------------------------------------------------- TITLE --------------------------------------------------------- */
 .theHeader{
     background: linear-gradient(#EFDCE9, #FFA59E, #CD4137);
-    padding: 0 50px 0 50px;
+    padding: 0 2em 0 2em;
     border: 0.4em solid rgb(109, 41, 44);
     border-radius: 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 1em;
 }
 
 .titleContainer {
@@ -40,24 +41,24 @@
 
 .title {
     transition: transform 300ms;
-    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 70px "Lucida Handwriting", Cursive;
+    text-shadow: -0.04em -0.04em 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 3.5vw "Lucida Handwriting", Cursive;
     font-variant: small-caps;
-    margin: 20px 0 20px 0;
+    margin: 0.5em 0 0.5em 0;
 }
 
 .titleNoSound{
-    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 50px "Lucida Handwriting", Cursive;
+    text-shadow: -0.04em -0.04em 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 3vw "Lucida Handwriting", Cursive;
     font-variant: small-caps;
-    margin: 20px 0 -10px 0;
+    margin: 0.5em 0 -0.2em 0;
 }
 
 h2 {
-    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 30px Verdana;
+    text-shadow: -0.04em -0.04em 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 2vw Verdana;
     color: rgb(80, 22, 25);
-    margin: 0 0 10px 0;
+    margin: 0 0 0.5em 0;
 }
 
 
@@ -67,9 +68,8 @@ h2 {
     border: 0.4em solid rgb(38, 52, 101);
     background: linear-gradient(#F3F0FF, #E0E2FF, #6581BE);
     width: 70%;
-    height: 70%;
     margin: auto;
-    padding: 3em 1em 3em 1em;
+    padding: 6vh 1vw 6vh 1vw;
     border-radius: 1em;
     text-align: center;
     display: flex;
@@ -78,7 +78,16 @@ h2 {
     align-content: center;
 }
 
+#modeSelectionForm {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .selectionContainer {
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -86,10 +95,10 @@ h2 {
 /* ----------------- LABELS "mode", "difficulty" ----------------- */
 .form label {
     color: rgb(17, 47, 155);
-    text-shadow: -1px -1px 0 rgba(26, 26, 26, 0.5);
+    text-shadow: -0.04em -0.04em 0 rgba(26, 26, 26, 0.5);
     display: inline-block;
     width: 20%;
-    font: normal normal 200% Verdana;
+    font: normal normal 2vw Verdana;
 }
 
 #difficulty {
@@ -99,20 +108,20 @@ h2 {
 /* ---- BUTTONS "new game", "how to play", "back to the game" ---- */
 .form input[type=submit], input[type=button] {
     cursor: pointer;
-    width:60%;
-    height:70px;
+    width: 50%;
+    height: 30%;
     border: none;
     margin: 30px;
-    position: relative;
+    padding: 0.5em;
     text-align:center;
     color: #F2F2F2;
     outline: none;
-    border-radius: 6px;
-    font: normal normal 2em/1 Verdana;
+    border-radius: 0.3em;
+    font: normal normal 2vw Verdana;
     text-decoration: none;
     background: linear-gradient(#112d92, #4e68c5);
-    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 10px 15px rgba(67, 211, 255, 0);
+    text-shadow: -0.04em -0.04em 0 rgba(26, 26, 26, 0.5);
+    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 1em 1em rgba(67, 211, 255, 0);
     transition: all 100ms ease-in-out;
 }
 
@@ -125,9 +134,8 @@ h2 {
 /* ------------------------ DROP DOWN MENUS ---------------------- */
 .custom-select {
     margin-right: 80px;
-    width: 200px;
     position: relative;
-    font: normal normal 1em Verdana;
+    font: normal normal 1.3vw Verdana;
     display: inline-block;
     width: 20%;
     margin: 0 5% 5% 1%;
@@ -195,11 +203,11 @@ h2 {
 
 #rulesForm {
     align-items: center;
-    width: 75%;
-    height: 75%;
-    padding: 1em 2em 2em 2em;
-    text-align: justify;
+    width: 68%;
+    min-height: 80%;
+    padding: 1em 2em 1em 2em;
     justify-content: space-between;
+    box-sizing: content-box;
 }
 
 .rulesContainer {
@@ -207,28 +215,31 @@ h2 {
     flex-direction: row;
     justify-content: space-around;
     width: 77%;
-    height: 30%;
+    height: 10%;
+    margin-bottom: 0.5em;
 }
 
 .rulesContainer .goToButton {
     width: 30%;
-    height: 90%;
-    font: normal normal 1em Verdana;
+    height: 100%;
+    font: normal normal 1vw Verdana;
     margin: 0;
+    padding: 0.5em;
 }
 
 
-/* ------------------------------------------------------------- RULES TEXT ------------------------------------------------------- */
+/* ----------------- RULES TEXT ------------------ */
 
-h4 {
+#rulesForm h4 {
     margin: 0.5em 0 0.3em 0;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 1.1vw;
 }
 
-p {
+#rulesForm p {
     margin: 1em 0 0 0;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
-    font-size: 90%;
+    font-size: 0.9vw;
 }
 
 /* ------------------------------------------------------------- DEMO FORM ------------------------------------------------------- */
@@ -252,7 +263,7 @@ p {
 
 #scoreForm {
     align-items: center;
-    height: 80%;
+    height: 90%;
     justify-content: space-between;
     padding: 1em 1em 0.5em 1em;
 }
@@ -357,7 +368,7 @@ p {
   width: 50%;
   background-color: grey;
   position: absolute;
-  top: 66vh;
+  top: 55vh;
   display: flex;
   justify-content: space-between;
   border-radius: 0.5em;
@@ -381,7 +392,8 @@ p {
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
-    height: 33%;
+    height: 38%;
+    margin-bottom: 6%;
 }
 
 .postIt {
@@ -395,22 +407,49 @@ p {
     font-size: 75%;
     font-weight: bold;
     text-align: center;
-    line-height: 250%;
     letter-spacing: -0.02em;
 }
 
 #pros {
     background-color: rgb(61, 180, 61);
     border-color: rgb(9, 66, 9);
-    transform: rotate(4deg);
+    transform: rotate(3deg);
     box-shadow: 2px 2px rgba(0, 0, 0, 0.493);
 }
 
 #cons {
     background-color: rgb(214, 71, 71);
     border-color: rgb(78, 11, 11);
-    transform: rotate(-2deg);
+    transform: rotate(-1deg);
     box-shadow: -2px 2px rgba(0, 0, 0, 0.493);
+}
+
+
+/* ----------------- SCORE BUTTON retry ------------------- */
+#backToModeSelection {
+    position: absolute;
+    top: 89%;
+    left: 45%;
+    cursor: pointer;
+    width: 10%;
+    height: 5%;
+    border: none;
+    text-align: center;
+    color: #F2F2F2;
+    outline: none;
+    border-radius: 6px;
+    font: normal normal 1.2em Verdana;
+    text-decoration: none;
+    background: linear-gradient(#112d92, #4e68c5);
+    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
+    box-shadow: inset 0 -1px 1px #848adb, 0 8px 0 #122879, 0 10px 15px rgba(67, 211, 255, 0);
+    transition: all 100ms ease-in-out;
+}
+
+#backToModeSelection:hover {
+    background: linear-gradient(#183fca, #5976e0);
+    box-shadow: inset 0 -1px 1px #969ce9, 0 8px 0 #1836a1, 0 10px 15px #a3ffebe5;
+    color: #a3ffeb;
 }
 
 }

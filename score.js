@@ -1,4 +1,4 @@
-import {synth, searchForNote} from './modules/sound';
+import {synth, searchForNote, playMembrane} from './modules/sound';
 import * as melodyEvaluator from './modules/melodyEvaluator';
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
@@ -10,6 +10,13 @@ const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "
                 "rgb(181, 128, 230)", "rgb(100, 61, 240)"];
 var lowerGrades = 5;
 let delay = 0;
+
+// arrays to be filled with tips shown in green and red post-it
+var pros = ["well done", "this are good things", "you've done well", "that's a fourth", "that's a fifth"];
+var cons = ["bad idea", "that's evil", "i don't know what else to write", "brombeee"];
+
+// retry button
+const retryButton = document.getElementById("backToModeSelection");
 
 // function to get parameters from URL
 // URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
@@ -75,6 +82,25 @@ function createDomino(resultElement){
   piece.style.animationDelay = delay+"s";
   return piece;
 }
+
+function writeTips() {
+  const positive = document.querySelector("#pros");
+  const negative = document.querySelector("#cons");
+
+  positive.innerHTML = "";
+  for (let i = 0; i < pros.length; i++) {
+    positive.innerHTML += pros[i];
+    positive.innerHTML += "<br>";
+  }
+
+  negative.innerHTML = "";
+  for (let i = 0; i < cons.length; i++) {
+    negative.innerHTML += cons[i];
+    negative.innerHTML += "<br>";
+  }
+}
+
+writeTips();
 
 //---------------------------------------------------- score bar -------------------------------------
 const GOOD_THRESHOLD = 50;
@@ -187,3 +213,8 @@ function finalEvaluateMelody(melody){
   }*/
 
 }
+
+retryButton.addEventListener("click", function() {
+  playMembrane();
+  setTimeout(function() {location.replace("modeSelection.html")}, 700);
+})

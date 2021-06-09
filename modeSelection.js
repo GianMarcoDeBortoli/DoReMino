@@ -2,13 +2,13 @@ import { playNoteOnHeader, playPluck, playMembrane } from "./modules/sound";
 
 
 const rulesButton = document.getElementById("rulesButton");
-rulesButton.addEventListener("click", redirectToRules);
 
 /* redirecting to the rules of the game when clicking the button */
-function redirectToRules() {
+rulesButton.addEventListener("click", function() {
   playMembrane();
   setTimeout(function() {location.replace("rules.html")}, 700);
-}
+});
+
 
 const title = document.querySelectorAll(".title");
 

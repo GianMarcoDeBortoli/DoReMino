@@ -65,8 +65,8 @@
     display: inline-block;
     opacity: 0.0;
     transition: opacity 800ms, transform 300ms;
-    text-shadow: -2px -2px 0 rgba(26, 26, 26, 0.5);
-    font: normal normal 120px "Lucida Handwriting", Cursive;
+    text-shadow: -0.04em -0.04em 0 rgba(26, 26, 26, 0.5);
+    font: normal normal 4em "Lucida Handwriting", Cursive;
     margin: 0;
 }
 
