@@ -1,4 +1,6 @@
 //---------------------------------------- CREATION of TABLE -----------------------------------------------------------
+
+
 //prende in argomento la const table, il numero di rows e l'altezza di una row.
 //crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
 function add_rows(table, num, height) {

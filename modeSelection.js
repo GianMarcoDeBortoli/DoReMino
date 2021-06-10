@@ -1,9 +1,9 @@
 import { playNoteOnHeader, playPluck, playMembrane } from "./modules/sound";
 
 
+/* redirecting to the rules of the game when clicking the button */
 const rulesButton = document.getElementById("rulesButton");
 
-/* redirecting to the rules of the game when clicking the button */
 rulesButton.addEventListener("click", function() {
   playMembrane();
   setTimeout(function() {location.replace("rules.html")}, 700);
@@ -20,6 +20,7 @@ title.forEach((element, index) => element.addEventListener("mouseover", function
 title.forEach(element => element.addEventListener("mouseleave", function() {
   event.currentTarget.style.setProperty("transform", '');
 }))
+
 
 /* ------------- elements needed to modify CSS select mode ---------------*/
 var x, i, j, l, ll, selElmnt, a, b, c;
@@ -104,4 +105,3 @@ function closeAllSelect(elmnt) {
 then close all select boxes: */
 document.addEventListener("click", closeAllSelect);
 
-/* ------------- END elements needed to modify CSS select mode ---------------*/

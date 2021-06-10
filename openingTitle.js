@@ -6,6 +6,7 @@ function redirectToModeSelection() {
 }
 
 
+/* function that makes the title visible and plays a chord on each syllable */
 const title = document.querySelectorAll(".title");
 var indexTitle = 0;
 
@@ -22,7 +23,6 @@ const theHeader = document.getElementById("theHeader");
 /* creates the animation by timing both sound and style */
 audioButton?.addEventListener('click', async () => {
     await Tone.start()
-	console.log('audio is ready')
 
     setTimeout(function() {
         audioButton.style.setProperty("opacity", "0.0");
