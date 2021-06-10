@@ -50,7 +50,6 @@ export function changeSetSound() {
 
 /* function that plays back the melody built inside the game */
 export function play_melody(result){
-  console.log(Tone.Context.state);
   let time = 0;
   const now = Tone.now()
       for(let i=0 ; i<result.length; i++){

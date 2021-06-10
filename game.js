@@ -69,7 +69,7 @@ switch(mode){
     grades = [-5,-3,-2,0,2,3,5,7,9,10,12]
     break;
   case "Phrygian":
-    grades = [-4,-2,-0,1,3,5,7,8,10,12]
+    grades = [-6,-4,-2,-0,1,3,5,7,8,10,12]
     break;
   case "Lydian":
     grades = [-5,-3,-1,0,2,4,6,7,9,11,12]
@@ -78,7 +78,7 @@ switch(mode){
   case "Aeolian":
     grades = [-5,-4,-2,0,2,3,5,7,8,10,12]
   case "Locrian":
-    grades = [-4,-2,0,1,3,5,6,8,10,12]
+    grades = [-6,-4,-2,0,1,3,5,6,8,10,12]
 }
 
 //---------------------------------------------- END of MODEL --------------------------------------------------------------
@@ -566,7 +566,7 @@ function onGoingEvaluateMelody(melody) {
     if(l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
       cartoonFeedback("Do not overuse neigbour notes!");
     }
-    // Used 3 times more leaps than neighbour notes  
+    // Used 3 times more leaps than neighbour notes
     if(l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
         cartoonFeedback("Use more neighbour notes!");
     }
