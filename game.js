@@ -1,7 +1,7 @@
 import * as timer from './modules/timer';
 import {play_melody, synth, searchForNote, errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
-import {draw_table} from './modules/table';
-import {sameDirectionLeaps, neighbourNotes, notNeighbourNotes, tooWideLastLeap} from './modules/melodyEvaluator';
+import { draw_table } from './modules/table';
+import { meanOfDistances, sameDirectionLastLeap, neighbourNotes, notNeighbourNotes, tooWideLastLeap,  } from './modules/melodyEvaluator';
 
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
@@ -563,40 +563,51 @@ function cartoonFeedback(feedback){
 }
 // evaluating melody --------------------------------------------------------
 function onGoingEvaluateMelody(melody) {
+    let l = melody.length;
 
-  let l = melody.length;
+    // Last leap over 1 octave
+    if (tooWideLastLeap(melody) == 1) {
+        /*Try to avoid big jumps!*/
+        cartoonFeedback("Try to avoid big jumps!");
+    }
 
-  // All notes are neighbour notes (no jumps)
-  if (l > 3 && notNeighbourNotes(melody) == 0 ) {
-    /*Do not only use neigbour notes!*/
-    cartoonFeedback("Do not only use neigbour notes!");
-  }
+    // Repetition of the same note
+    if (l > 3 && meanOfDistances(melody) == 0) {
+        /* Do not only use one note */
+        cartoonFeedback("Do not only use one note!");
+    }
 
-  // All notes are far away from each other (no usage of neighbour notes)
-  if (l > 3 && neighbourNotes(melody) == 0 ) {
-    /*Use some neighbour notes!*/
-    cartoonFeedback("Use some neighbour notes!");
-  }
+    // All notes are neighbour notes (no jumps)
+    if (l > 4 && notNeighbourNotes(melody) == 0 ) {
+        /*Do not only use neigbour notes!*/
+        cartoonFeedback("Do not only use neigbour notes!");
+    }
 
-  if(l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
-    cartoonFeedback("Do not overuse neigbour notes!");
-  }
+    // All notes are far away from each other (no usage of neighbour notes)
+    if (l > 3 && neighbourNotes(melody) == 0 ) {
+      /*Use some neighbour notes!*/
+      cartoonFeedback("Use some neighbour notes!");
+    }
 
-  if(l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
-      cartoonFeedback("Use more neighbour notes!");
-  }
+    // Big jump followed by other big jump
+    if (l > 3 && sameDirectionLastLeap(melody) != 0) {
+        /* Try to change direction after a big jump! */
+        cartoonFeedback("Try to change direction after a big jump!");
+    }
 
-  // Last leap over 1 octave
-  if (tooWideLastLeap(melody) == 1){
-    /*Try to avoid big jumps!*/
-    cartoonFeedback("Try to avoid big jumps!");
-  }
+    if(l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
+      cartoonFeedback("Do not overuse neigbour notes!");
+    }
 
-  // Big jump followed by other big jump
-  if (l > 3 && sameDirectionLeaps(melody) != 0 ) {
-    /* Try to change direction after a big jump! */
-    cartoonFeedback("Try to change direction after a big jump!");
-  }
+    if(l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
+        cartoonFeedback("Use more neighbour notes!");
+    }
+
+    
+
+    
+    
+  
 
 }
 //------------------------------------------- END of DRAG and DROP ---------------------------

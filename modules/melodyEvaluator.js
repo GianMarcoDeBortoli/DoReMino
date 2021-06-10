@@ -1,13 +1,12 @@
 // ------------------------------------ functions used also to evaluate the melody during the game -----------------------
 /*This function returns the number of wide leaps (at least 1 sixth - 9 semitones) followed by a leap in the same direction*/
-export function sameDirectionLeaps(melody){
-  var score = 0.0;
-  for(let i=2; i<melody.length; i++){
-    if ( Math.abs(melody[i-2]-melody[i-1]) > 9 &&  ( Math.sign(melody[i-2]-melody[i-1]) == Math.sign(melody[i-1]-melody[i-0]) ) ) {
-      score ++;
+export function sameDirectionLastLeap(melody) {
+    var l = melody.length;
+    if (Math.abs(melody[l - 2] - melody[l - 1]) > 9 && (Math.sign(melody[l - 2] - melody[l - 1]) == Math.sign(melody[l - 1] - melody[l - 0]))) {
+        return 1;
+    } else {
+        return 0;
     }
-  }
-  return score;
 }
 
 /* This function returns the number of consecutive neighbour notes*/
@@ -41,19 +40,23 @@ export function tooWideLastLeap(melody){
     return 0;
   }
 }
+
+/* This function returns the mean of the abs value of the jumps. Checks if there are too many wide oscillations in the melody (meaning many jumps)
+If the mean value is more than a 5th, the melody is too oscillating*/
+export function meanOfDistances(melody) {
+    var score = 0.0;
+    for (let i = 1; i < melody.length; i++) {
+        score = Math.abs(melody[i - 1] - melody[i + 1]);
+    }
+    return score / melody.length;
+}
+
+
 // ------------------------------------ END functions used also to evaluate the melody during the game -----------------------
 
 // ------------------------------------ functions used only to evaluate the melody at the end of the game -----------------------
 
-/* This function returns the mean of the abs value of the jumps. Checks if there are too many wide oscillations in the melody (meaning many jumps)
-If the mean value is more than a 5th, the melody is too oscillating*/
-export function meanOfDistances(melody){
-  var score = 0.0;
-  for(let i=1; i<melody.length-1; i++){
-    score = Math.abs(melody[i-1]-melody[i+1]);
-  }
-  return score/melody.length;
-}
+
 
 /* This function returns a negative score: returns the number of too wide leaps (over 1 octave). 1 ocatve is represented by a leap of 12 in our case. */
 export function tooWideLeaps(melody){
@@ -64,6 +67,17 @@ export function tooWideLeaps(melody){
    }
  }
  return score;
+}
+
+/*This function returns the number of wide leaps (at least 1 sixth - 9 semitones) followed by a leap in the same direction*/
+export function sameDirectionLeaps(melody) {
+    var score = 0.0;
+    for (let i = 2; i < melody.length; i++) {
+        if (Math.abs(melody[i - 2] - melody[i - 1]) > 9 && (Math.sign(melody[i - 2] - melody[i - 1]) == Math.sign(melody[i - 1] - melody[i - 0]))) {
+            score++;
+        }
+    }
+    return score;
 }
 
 // -- FUNCTIONS ABOUT FIRST AND LAST NOTE -- //
@@ -86,6 +100,20 @@ export function endOnTonic(melody){
   }
 }
 
+/* This function counts how many different notes are there in the melody */
+export function differentNotes(melody) {
+    var score = 0.0;
+    for (let i = 0; i < melody.length; i++) {
+        for (let j = i + 1; j < melody.length; j++)
+            if (melody[i] == melody) {
+                score++;
+            }
+    }
+
+}
+
+
+
 // -- FUNCTIONS ABOUT CONTOUR -- //
 
 /* this function returns an evaluation of the melody so far based on the melody contour.*/
@@ -107,7 +135,7 @@ In other cases, if the consecutive are inversions (eg: 12 - 21) it means that vo
 export function findContour(melody){
   var len = melody.length;
   if (len<3){
-    return; //not sure what to return, I want to not do anything since the melody is too short
+    return;
   }
   // scanning trough the melody to detect patterns.
   for(let i=1; i<len-1; i++){ //i goes from the second note to the second-last note
@@ -127,27 +155,39 @@ export function findContour(melody){
 
 /* This function returns a negative score: subtracts a point every time 4 notes are in the same contour (rising - flat - falling) */
 export function oneDirectionContour(contourCode) {
-  var score=0.0;
-  // remove points when patterns with not repeated digits are placed next to each other
-  for(let i=1; i<contourCode.length; i++){
-    if ( (contourCode[i-1]=contourCode[i] && (contourCode[i-1] == 11 || contourCode[i-1] == 22 || contourCode[i-1] == 33 ) ) ) {
-      score --;
+    var score = 0.0;
+    if (undefined !== contourCode && contourCode.length) {
+        // remove points when patterns with not repeated digits are placed next to each other
+        for (let i = 1; i < len; i++) {
+            if ((contourCode[i - 1] = contourCode[i] && (contourCode[i - 1] == 11 || contourCode[i - 1] == 22 || contourCode[i - 1] == 33))) {
+                score--;
+            }
+        }
     }
-  }
+    
   return score;
 }
 
 /* This function returns a positive score: adds a point then same contours are repeated every other note*/
 export function multiDirectionContour(contourCode) {
-  var score=0.0;
-  // adding points when patterns are repeated every other note
-  for(let i=1; i<contourCode.length-1; i++){
-    if (contourCode[i-1]=contourCode[i+1] ) {
-      score ++;
+    var score = 0.0;
+    if (undefined !== contourCode && contourCode.length) {
+        // adding points when patterns are repeated every other note or every other 2 notes
+        for (let i = 1; i < contourCode.length - 1; i++) {
+            if (contourCode[i - 1] = contourCode[i + 1]) {
+                score++;
+            }
+        }
+        for (let i = 1; i < contourCode.length - 2; i++) {
+            if (contourCode[i - 1] = contourCode[i + 2]) {
+                score++;
+            }
+        }
     }
-  }
   return score;
 }
+
+
 
 
 

@@ -119,7 +119,11 @@ const COLOR_CODES = {
   }
 };
 var i = 0;
+
+
 var score = finalEvaluateMelody(result);
+
+
 function moveScoreBar() {
   if (i == 0) {
     i = 1;
@@ -161,52 +165,123 @@ function firstPainfulRender() {
 firstPainfulRender();
 
 //---------- scoring ------------------------
-//the evaluation tends to subtract points if you did WRONG THINGS
 
 function finalEvaluateMelody(melody){
-  // BEGIN AND END
-  var begin = melodyEvaluator.beginOnTonic(melody);
-  var end = melodyEvaluator.endOnTonic(melody);
+    // BEGIN AND END, DIFFERENT NOTES
+    var begin = melodyEvaluator.beginOnTonic(melody);
+    var end = melodyEvaluator.endOnTonic(melody);
+    var diffNotes = melodyEvaluator.differentNotes(melody);
 
-  // CONTOUR
-  var contour = melodyEvaluator.findContour(melody);
-  var negContour = melodyEvaluator.oneDirectionContour(contour);
-  var posContour = melodyEvaluator.multiDirectionContour(contour);
+    // CONTOUR
+    var contour = melodyEvaluator.findContour(melody);
+    var negContour = melodyEvaluator.oneDirectionContour(contour);
+    var posContour = melodyEvaluator.multiDirectionContour(contour);
 
-  // LEAPS
-  var wideLeaps = melodyEvaluator.tooWideLeaps(melody);
-  var meanDistance = melodyEvaluator.meanOfDistances(melody);
-  var sameDirLeaps= melodyEvaluator.sameDirectionLeaps(melody);
-  var neighNotes = melodyEvaluator.neighbourNotes(melody);
-  var notNeighNotes = melodyEvaluator.notNeighbourNotes(melody);
+    // LEAPS
+    var wideLeaps = melodyEvaluator.tooWideLeaps(melody);
+    var meanDistance = melodyEvaluator.meanOfDistances(melody);
+    var sameDirLeaps= melodyEvaluator.sameDirectionLeaps(melody);
+    var neighNotes = melodyEvaluator.neighbourNotes(melody);
+    var notNeighNotes = melodyEvaluator.notNeighbourNotes(melody);
 
-  // REPETITION
-  //var repetitions = repetitionIdentifier(melody);
+ 
+    // MESSAGES
+    //length
+    if (melody.length == 0) {
+        /* - You placed no tiles!*/
+    }
+    if (melody.length == 2) {
+        /* - You only placed one tile!*/
+    } else if (melody.length > 2 && melody.length<7 ) {
+        /* - The melody is a little short... */
+    } else if (melody.length > 7) {
+        /* + You placed many tiles! */
+    }
+    //begin and end
+    if (begin == 0 && end == 0) {
+        /* +   Great, your melody begins and ends on the first grade!   */  //-> it's not really wrong to make it start on a different note
+    } else if (begin == 0) {
+        /* +   Great, your melody begins on the first grade!   */
+    } else if (end == 0) {
+        /*  +   Your melody ends on the tonic, that's awesome!  */
+    } else {
+        /*  -  Next time, try to end the melody on the tonic!  */  //-> it's not really wrong to make it start on a different note
+    }
+    if (diffNotes < 3) {
+        /*  - You didn't use many different notes... */
+    }
+    //contour
+    if (negContour < -3) {
+        /* - You used continously the same boring patterns! */
+    }
+    if (posContour > 3) {
+        /* + You used various patterns and repeated them!*/
+    }
+    //leap
+    if (wideLeaps > 2) {
+        /* - There are quite a few very wide leaps, better avoid them */
+    } else {
+        /* + There aren't many wide leaps! */
+    }
+    if (meanDistance > 7) {
+        /* - The melody is not really linear */
+    }
+    if (sameDirLeaps > 2) {
+        /* - After big leaps, try to go in the opposite direction */
+    }
+    if (neighNotes > 3 * notNeighNotes) {
+        /* - You mostly used neighbour notes*/
+    } else if (notNeighNotes > 3 * neighNotes) {
+        /* - You did not use many neighbour notes*/
+    } else {
+        /* + You balanced well neighbour and not neighbour notes*/
+    }
+    
 
-  // MESSAGES
-  if (begin == 0){
-     /* +   Great, your melody begins on the first grade!   */  //-> it's not really wrong to make it start on a different note
-  }
-  if (end == 0) {
-    /*  +   Your melody ends on the tonic, that's awesome  */
-  } else {
-    /*  -  Next time, try to end the melody on the tonic!  */
-  }
 
-  // TOTAL POINTS
+    // TOTAL POINTS
+    var indivScores = [];
+    // each aspect of the game is given a score from o to 100. The score will be the mean of them.
 
-  score = 100 - begin - end;
-  score = score + 2*negContour + 2*posContour;
-  score = score - wideLeaps - sameDirLeaps;
+    // [0] = length of the melody 
+    if (melody.length < 2) {
+        indivScores[0] = 0;
+    } else if (melody.length < 7) {
+        indivScores[0] = (melody.length-2) * 20;
+    } else { indivScores[0] = 100; }
 
-  if(meanDistance > 7) {
-    score = score - meanDistance;
-  }
-  if(neighNotes>3*notNeighNotes || 3*neighNotes < notNeighNotes) {
-    score = score - 10;   //random value to be evaluated.....
-  }
+    // [1] = begin and end on tonic; not enough different notes
+    indivScores[1] = 90;
+    if (begin == 0) { indivScores[1] += 10; }
+    if (end == 1) { indivScores[1] -= 10; }
+    if (diffNotes <= (melody.length * 0.2 )) { indivScores[1] -= 75 }
 
-  return score;
+    // [2] = contour
+    indivScores[2] = 100 - negContour - posContour;
+
+    // [3] = leaps
+    if (meanDistance > 7) {
+        indivScores[3] = 50;
+    }
+    indivScores[3] = 100;
+    indivScores[3] -= wideLeaps * 4;
+    indivScores[3] -= sameDirLeaps * 2;
+
+    if (neighNotes > 3 * notNeighNotes) {
+        indivScores[3] -= 10;
+    }
+    if (notNeighNotes > 3 * neighNotes) {
+        indivScores[3] -= 10;
+    }
+
+
+    if (indivScores[0] = 0) {
+        score = 0;
+    } else {
+        score = indivScores[0] + indivScores[1] + indivScores[2] + indivScores[3];
+        score = score / 4;
+    }
+    return score;
 
   /*if(repetitionIdentifier>3*l){
     score = score - 10;   //random value to be evaluated.....
