@@ -119,8 +119,7 @@ function setCircleDasharray() {
 
 
 // this function makes sure that the user doesn't lose all the progresses by accidentally refreshing the page
-// we need it here because we need to remove it when the timer ends
-
+// needed here because we need to remove it when the timer ends
 window.addEventListener('beforeunload', askToReload);
 
 export function askToReload(e) {
