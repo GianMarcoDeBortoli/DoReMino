@@ -19,6 +19,7 @@ function showTitle() {
 const audioButton = document.getElementById("startAudio");
 const theHeader = document.getElementById("theHeader");
 
+/* creates the animation by timing both sound and style */
 audioButton?.addEventListener('click', async () => {
     await Tone.start()
 	console.log('audio is ready')

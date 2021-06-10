@@ -1,6 +1,6 @@
 import * as timer from './modules/timer';
-import {play_melody, synth, searchForNote, errorSound, playNoteOnTile, changeSetSound} from './modules/sound';
-import { draw_table } from './modules/table';
+import {play_melody, synth, searchForNote, errorSound, changeSetSound} from './modules/sound';
+import {draw_table} from './modules/table';
 import { meanOfDistances, sameDirectionLastLeap, neighbourNotes, notNeighbourNotes, tooWideLastLeap,  } from './modules/melodyEvaluator';
 
 
@@ -15,8 +15,7 @@ const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "
                 "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)",
                 "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)", "rgb(15, 242, 178)",
                 "rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(100, 61, 240)"]
-// each color is associated to a note
-var colorsAvailable= []
+
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
 var lowerGrades = 5;

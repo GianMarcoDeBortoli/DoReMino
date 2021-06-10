@@ -9,7 +9,7 @@ rulesButton.addEventListener("click", function() {
   setTimeout(function() {location.replace("rules.html")}, 700);
 });
 
-
+/* animates the title upon pointing the mouse over it */
 const title = document.querySelectorAll(".title");
 
 title.forEach((element, index) => element.addEventListener("mouseover", function() {
