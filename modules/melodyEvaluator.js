@@ -158,7 +158,7 @@ export function oneDirectionContour(contourCode) {
     var score = 0.0;
     if (undefined !== contourCode && contourCode.length) {
         // remove points when patterns with not repeated digits are placed next to each other
-        for (let i = 1; i < len; i++) {
+        for (let i = 1; i < contourCode.length; i++) {
             if ((contourCode[i - 1] = contourCode[i] && (contourCode[i - 1] == 11 || contourCode[i - 1] == 22 || contourCode[i - 1] == 33))) {
                 score--;
             }

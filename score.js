@@ -12,8 +12,8 @@ var lowerGrades = 5;
 let delay = 0;
 
 // arrays to be filled with tips shown in green and red post-it
-var pros = ["well done", "this are good things", "you've done well", "that's a fourth", "that's a fifth"];
-var cons = ["bad idea", "that's evil", "i don't know what else to write", "brombeee"];
+var pros = ["GOOD JOB!"];
+var cons = ["FOR THE NEXT TIME:"];
 
 // retry button
 const retryButton = document.getElementById("backToModeSelection");
@@ -100,7 +100,7 @@ function writeTips() {
   }
 }
 
-writeTips();
+
 
 //---------------------------------------------------- score bar -------------------------------------
 const GOOD_THRESHOLD = 50;
@@ -156,7 +156,8 @@ function setColor(width) {
 
 // RENDER
 function firstPainfulRender() {
-  moveScoreBar();
+    moveScoreBar();
+    writeTips();
 }
 
 //----------------------------------------------- END of VIEW --------------------------------------------------------------
@@ -188,54 +189,103 @@ function finalEvaluateMelody(melody){
     // MESSAGES
     //length
     if (melody.length == 0) {
-        /* - You placed no tiles!*/
-    }
-    if (melody.length == 2) {
+        cons.push("You placed no tiles!");
+    } else if (melody.length == 2) {
         /* - You only placed one tile!*/
-    } else if (melody.length > 2 && melody.length<7 ) {
-        /* - The melody is a little short... */
-    } else if (melody.length > 7) {
-        /* + You placed many tiles! */
-    }
-    //begin and end
-    if (begin == 0 && end == 0) {
-        /* +   Great, your melody begins and ends on the first grade!   */  //-> it's not really wrong to make it start on a different note
-    } else if (begin == 0) {
-        /* +   Great, your melody begins on the first grade!   */
-    } else if (end == 0) {
-        /*  +   Your melody ends on the tonic, that's awesome!  */
+        cons.push("You only placed one tile! Try to place at least 3!");
+    } else if (melody.length == 3) {
+        cons.push("You only placed 2 tiles! Try to place at least 3!");
     } else {
-        /*  -  Next time, try to end the melody on the tonic!  */  //-> it's not really wrong to make it start on a different note
+        if (diffNotes == 0) {
+            /*  - You didn't use many different notes... */
+            cons.push("You repeated only one note!");
+        } else {
+            // if the melody is long enough: 
+            if (melody.length > 2 && melody.length < 7) {
+                /* - The melody is a little short... */
+                cons.push("The melody is a little short...");
+            } else if (melody.length > 7) {
+                /* + You placed many tiles! */
+                pros.push("You placed many tiles!");
+            }
+
+            //begin and end
+            if (begin == 0 && end == 0) {
+                /* +   Great, your melody begins and ends on the first grade!   */  //-> it's not really wrong to make it start on a different note
+                pros.push("Great, your melody begins and ends on the first grade!");
+            } else if (begin == 0) {
+                /* +   Great, your melody begins on the first grade!   */
+                pros.push("Great, your melody begins on the first grade!");
+            } else if (end == 0) {
+                /*  +   Your melody ends on the tonic, that's awesome!  */
+                pros.push("Your melody ends on the tonic, that's awesome!");
+            } else {
+                /*  -  Next time, try to end the melody on the tonic!  */  //-> it's not really wrong to make it start on a different note
+                cons.push("Try to end the melody on the tonic!");
+            }
+
+            if (diffNotes < 3) {
+                /*  - You didn't use many different notes... */
+                cons.push("You didn't use many different notes...");
+            }
+
+            //contour
+            if (negContour < -3) {
+                /* - You used continously the same boring patterns! */
+                cons.push("You used continously the same boring patterns!");
+            }
+
+            if (posContour > 3) {
+                /* + You used various patterns and repeated them!*/
+                pros.push("You used various patterns and repeated them!");
+            }
+
+            //leap
+            if (wideLeaps > 2) {
+                /* - There are quite a few very wide leaps, better avoid them */
+                cons.push("There are quite a few very wide leaps, better avoid them!");
+            } else {
+                /* + There aren't many wide leaps! */
+                pros.push("There aren't many wide leaps!");
+            }
+
+            if (meanDistance > 7) {
+                /* - The melody is not really linear */
+                cons.push("The melody is not really linear...");
+            }
+
+            if (sameDirLeaps > 2) {
+                /* - After big leaps, try to go in the opposite direction */
+                cons.push(" After big leaps, try to go in the opposite direction to balance everything!");
+            }
+
+            if (neighNotes > 3 * notNeighNotes) {
+                /* - You mostly used neighbour notes*/
+                cons.push("You mostly used neighbour notes! Use leaps too!");
+            } else if (notNeighNotes > 3 * neighNotes) {
+                /* - You did not use many neighbour notes*/
+                cons.push("You did not use many neighbour notes, try to insert a few!");
+            } else {
+                /* + You balanced well neighbour and not neighbour notes*/
+                pros.push("You balanced well neighbour and not neighbour notes!");
+            }
+
+
+
+        }
+
+
+
+
+       
+
+
     }
-    if (diffNotes < 3) {
-        /*  - You didn't use many different notes... */
-    }
-    //contour
-    if (negContour < -3) {
-        /* - You used continously the same boring patterns! */
-    }
-    if (posContour > 3) {
-        /* + You used various patterns and repeated them!*/
-    }
-    //leap
-    if (wideLeaps > 2) {
-        /* - There are quite a few very wide leaps, better avoid them */
-    } else {
-        /* + There aren't many wide leaps! */
-    }
-    if (meanDistance > 7) {
-        /* - The melody is not really linear */
-    }
-    if (sameDirLeaps > 2) {
-        /* - After big leaps, try to go in the opposite direction */
-    }
-    if (neighNotes > 3 * notNeighNotes) {
-        /* - You mostly used neighbour notes*/
-    } else if (notNeighNotes > 3 * neighNotes) {
-        /* - You did not use many neighbour notes*/
-    } else {
-        /* + You balanced well neighbour and not neighbour notes*/
-    }
+    
+
+
+
+   
     
 
 
@@ -244,10 +294,10 @@ function finalEvaluateMelody(melody){
     // each aspect of the game is given a score from o to 100. The score will be the mean of them.
 
     // [0] = length of the melody 
-    if (melody.length < 2) {
+    if (melody.length < 4) {
         indivScores[0] = 0;
     } else if (melody.length < 7) {
-        indivScores[0] = (melody.length-2) * 20;
+        indivScores[0] = (melody.length-2);
     } else { indivScores[0] = 100; }
 
     // [1] = begin and end on tonic; not enough different notes
@@ -275,7 +325,7 @@ function finalEvaluateMelody(melody){
     }
 
 
-    if (indivScores[0] = 0) {
+    if (indivScores[0] == 0) {
         score = 0;
     } else {
         score = indivScores[0] + indivScores[1] + indivScores[2] + indivScores[3];
