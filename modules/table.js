@@ -1,8 +1,7 @@
-//---------------------------------------- CREATION of TABLE -----------------------------------------------------------
+// The table is divided in sections, each section is a row containing some boxes
 
 
-//prende in argomento la const table, il numero di rows e l'altezza di una row.
-//crea le rows, le disegna, aggiunge gli attributi per il flex del contenuto e le appendChilda al table.
+// this function draws the row and adds them to the table
 function add_rows(table, num, height) {
   for (let i = 0; i < num; i++) {
       let row = document.createElement("div");
@@ -18,7 +17,8 @@ function add_rows(table, num, height) {
   }
 }
 
-//due funzioni ausiliarie chiamate poi dalla add_boxes che disegnano i singoli box e danno gli attributi per il flex di contenuto
+
+//these functions draw the horizontal and vertical boxes
 function horiz_box(box, dim1, dim2) {
   box.classList.add("box");
   box.style.width = dim2+"px";
@@ -32,9 +32,8 @@ function vert_box(box, dim1, dim2) {
 
 }
 
-//prende in argomento il numero di rows, il numero di boxes per ogni row e le dimensioni di un box
-//prende una row alla volta per id, crea l'elemento box, chiama per i primi numBox-1 la horiz_box e per l'ultimo
-//di ogni riga la vert_box per disegnarli. Infine assegna il box alla row.
+
+// this function adds the boxes to each single row
 function add_boxes(numRows, numBoxes, width, height) {
   let cntbox = 0;
 
@@ -61,6 +60,7 @@ function add_boxes(numRows, numBoxes, width, height) {
 }
 
 
+// this is the function that, by calling the previous ones, creates the table
 export function draw_table(table, tableWidth, tableHeight, numRows, rowHeight, numBoxes, width, height) {
   table.style.width = tableWidth+"px";
   table.style.height = tableHeight+"px";

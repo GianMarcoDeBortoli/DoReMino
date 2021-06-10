@@ -1,11 +1,5 @@
-window.addEventListener('beforeunload', askToReload);
 
-export function askToReload(e) {
-  e.preventDefault();
-  e.returnValue = '';
-}
-
-//------------------------- TIMER MODEL ------------------------------------------------
+// *************************************************** TIMER MODEL ***************************************************
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 10;
 const ALERT_THRESHOLD = 5;
@@ -53,15 +47,13 @@ document.getElementById("timer").innerHTML = `
   )}</span>
 </div>
 `;
-//------------------------- END TIMER MODEL ------------------------------------------------
+
+
+// *************************************************** TIMER CONTROLLER ***************************************************
 
 function onTimesUp() {
   window.removeEventListener('beforeunload', askToReload);
   clearInterval(timerInterval);
-  // qua devo scrivere il codice per fare la stessa cosa che faccio se clicco su Finish Game
-  //hiddenField2.setAttribute("type", "submit");
-  //hiddenField2.setAttribute("name", "end");
-  //document.getElementById("fPlayGame").appendChild(hiddenField2);
   document.fPlayGame.submit();
 }
 
@@ -124,4 +116,14 @@ function setCircleDasharray() {
     .getElementById("base-timer-path-remaining")
     .setAttribute("stroke-dasharray", circleDasharray);
 }
-// ------------ END of TIMER controller ------------------
+
+
+// this function makes sure that the user doesn't lose all the progresses by accidentally refreshing the page
+// we need it here because we need to remove it when the timer ends
+
+window.addEventListener('beforeunload', askToReload);
+
+export function askToReload(e) {
+    e.preventDefault();
+    e.returnValue = '';
+}
