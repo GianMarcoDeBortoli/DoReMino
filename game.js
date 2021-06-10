@@ -11,14 +11,14 @@ var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazion
 var setBoxes = []; //elenco dei tiles all'interno dei "box" con associati i due gradi e l'angolazione
 var setCopy = []; //tile contenuto in copySpace con associati i due gradi e l'angolazione
 var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
-const colors = ["rgb(60, 116, 9)", "rgb(123, 180, 255)", "rgb(114, 67, 13)", "rgb(217, 164, 4)",
-                "rgb(135, 28, 235)", "rgb(165, 29, 54)", "rgb(255, 115, 0)", "rgb(56, 5, 242)",
-                "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(255, 140, 230)", "rgb(106, 206, 13)",
-                "rgb(181, 214, 255)", "rgb(201, 115, 17)", "rgb(242, 205, 19)", "rgb(181, 128, 230)", "rgb(217, 72, 98)"]
+const colors = ["rgb(255, 104, 222)", "rgb(60, 116, 9)", "rgb(123, 180, 255)", "rgb(114, 67, 13)", "rgb(217, 164, 4)",
+                "rgb(128, 21, 228)", "rgb(165, 29, 54)", "rgb(255, 115, 0)", "rgb(0, 4, 255)", "rgb(207, 178, 143)",
+                "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(255, 163, 235)", "rgb(106, 206, 13)", "rgb(181, 214, 255)",
+                "rgb(201, 115, 17)", "rgb(242, 205, 19)", "rgb(184, 109, 255)", "rgb(217, 72, 98)"];
 
 // for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
 // by selecting the colors in colors corresponding to the number present in grades
-var lowerGrades = 5;
+var lowerGrades = 6;
 const barContainer = document.getElementById("bar");
 var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
@@ -43,11 +43,6 @@ const table = document.getElementById("table");
 
 //copyspace
 const copySpace = document.getElementById("copySpace");
-
-//sound on tiles
-//const synth = new Tone.Synth().toDestination();
-//const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
-          //             ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 
 // function to get parameters from URL

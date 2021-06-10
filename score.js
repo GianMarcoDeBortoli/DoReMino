@@ -3,12 +3,12 @@ import * as melodyEvaluator from './modules/melodyEvaluator';
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
 var dominosContainer = document.getElementById("dominosContainer");
-const colors = ["rgb(11, 191, 140)", "rgb(165, 29, 54)", "rgb(167, 200, 242)", "rgb(217, 164, 4)",
-                "rgb(135, 28, 235)", "rgb(56, 5, 242)", "rgb(253, 105, 19)", "rgb(12, 242, 27)",
-                "rgb(207, 178, 143)", "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(240, 11, 118)",
-                "rgb(15, 242, 178)","rgb(217, 72, 98)", "rgb(206, 222, 242)", "rgb(242, 205, 19)",
-                "rgb(181, 128, 230)", "rgb(100, 61, 240)"];
-var lowerGrades = 5;
+const colors = ["rgb(255, 104, 222)", "rgb(60, 116, 9)", "rgb(123, 180, 255)", "rgb(114, 67, 13)", "rgb(217, 164, 4)",
+                "rgb(128, 21, 228)", "rgb(165, 29, 54)", "rgb(255, 115, 0)", "rgb(0, 4, 255)", "rgb(207, 178, 143)",
+                "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(255, 163, 235)", "rgb(106, 206, 13)", "rgb(181, 214, 255)",
+                "rgb(201, 115, 17)", "rgb(242, 205, 19)", "rgb(184, 109, 255)", "rgb(217, 72, 98)"];
+
+var lowerGrades = 6;
 let delay = 0;
 
 // arrays to be filled with tips shown in green and red post-it

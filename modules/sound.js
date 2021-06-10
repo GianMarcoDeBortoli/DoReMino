@@ -8,8 +8,8 @@ pluck.volume.value = -12;
 membrane.volume.value = -12;
 metal.volume.value = -12;
 
-export const searchForNote = [[-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
-                       ["G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
+export const searchForNote = [[-6, -5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12],
+                       ["F#3", "G3", "G#3", "A3", "A#3", "B3", "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"]];
 
 //----------------------------------------- SOUND INSIDE openingTitle.html ----------------------------------------
 export function playChordsOnHeader(index) {
