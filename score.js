@@ -303,8 +303,8 @@ function finalEvaluateMelody(melody) {
   else {
      if (meanDistance < 7)
         indivScores[3] = 100;
-     /*else 
-        indivScores[3] = 50; */
+     else 
+        indivScores[3] = 50;
       
      indivScores[3] -= wideLeaps * 4;
      indivScores[3] -= sameDirLeaps * 2;

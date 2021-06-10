@@ -97,7 +97,7 @@ function createTile(color1,color2,i) {
   const tileUpper = document.createElement("div");
   tileUpper.classList.add("tileUpper");
   if (difficulty == "expert") {
-    tileUpper.style.backgroundColor = "rgb(159, 93, 44)";
+    tileUpper.style.backgroundColor = "#FFF4E9";
   }
   else if (difficulty == "normal") {
     tileUpper.style.backgroundColor = color1;
@@ -106,7 +106,7 @@ function createTile(color1,color2,i) {
   const tileLower = document.createElement("div");
   tileLower.classList.add("tileLower");
   if (difficulty == "expert") {
-    tileLower.style.backgroundColor = "rgb(159, 93, 44)";
+    tileLower.style.backgroundColor = "#FFF4E9";
   }
   else if (difficulty == "normal") {
     tileLower.style.backgroundColor = color2;
