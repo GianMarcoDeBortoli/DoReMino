@@ -224,8 +224,12 @@ function finalEvaluateMelody(melody) {
     }
 
     // contour
-    if (negContour < -3) {
-        cons.push("You used continously the same boring patterns!");
+    if (negContour > 2) {
+        cons.push("Try to make the contour of the melody more interesting!");
+    }
+
+    if (posContour < 4) {
+        cons.push("Try to make the contour of the melody more interesting!");
     }
 
     if (posContour > 3) {
@@ -239,8 +243,8 @@ function finalEvaluateMelody(melody) {
         pros.push("There aren't many wide leaps!");
     }
 
-    if (meanDistance > 7) {
-        cons.push("The melody is not really linear...");
+    if (meanDistance > 5) {
+        cons.push("The melody could be more linear...");
     }
 
     if (sameDirLeaps > 2) {
@@ -252,7 +256,7 @@ function finalEvaluateMelody(melody) {
     } else if (notNeighNotes > 3 * neighNotes) {
         cons.push("You did not use many neighbour notes, try to insert a few!");
     } else {
-        pros.push("You balanced well neighbour and not neighbour notes!");
+        pros.push("You balanced nicely neighbour and not neighbour notes");
     }
 
   }
@@ -285,25 +289,29 @@ function finalEvaluateMelody(melody) {
   indivScores[1] -= diff * 10;
 
   // [2] = contour
-  indivScores[2] = 50 - 10 * negContour + 2 * posContour;
+  indivScores[2] = 50 - 10 * negContour + 5 * posContour;
   if (indivScores[2] < 0)
     indivScores[2] = 0;
   else if (indivScores[2] > 100)
     indivScores[2] = 100;
 
-  // [3] = leaps
-  if (meanDistance < 2) {
-    indivScores[3] = 0;
-  } else if (meanDistance > 7) {
-    indivScores[3] = 50;
-    indivScores[3] -= wideLeaps * 4;
-    indivScores[3] -= sameDirLeaps * 2;
-    if (neighNotes > 3 * notNeighNotes) {
-      indivScores[3] -= 60;
-    }
-    if (notNeighNotes > 3 * neighNotes) {
-      indivScores[3] -= 60;
-    }
+    // [3] = leaps
+    console.log(meanDistance)
+    if (meanDistance < 2)
+     
+     indivScores[3] = 0;
+  else {
+     if (meanDistance < 7)
+        indivScores[3] = 100;
+     /*else 
+        indivScores[3] = 50; */
+      
+     indivScores[3] -= wideLeaps * 4;
+     indivScores[3] -= sameDirLeaps * 2;
+     if (neighNotes > 3 * notNeighNotes) 
+        indivScores[3] -= 60;
+     if (notNeighNotes > 3 * neighNotes) 
+      indivScores[3] -= 60;  
   }
 
 

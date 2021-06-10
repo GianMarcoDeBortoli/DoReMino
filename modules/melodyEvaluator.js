@@ -48,9 +48,9 @@ If the mean value is more than a 5th, the melody is too oscillating*/
 export function meanOfDistances(melody) {
     var score = 0.0;
     for (let i = 1; i < melody.length; i++) {
-        score = Math.abs(melody[i - 1] - melody[i]);
+        score += Math.abs(melody[i - 1] - melody[i]);
     }
-    return score / melody.length;
+    return score / (melody.length-1);
 }
 
 
