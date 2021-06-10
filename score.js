@@ -180,13 +180,43 @@ function finalEvaluateMelody(melody){
   var negContour = melodyEvaluator.oneDirectionContour(contour);
   var posContour = melodyEvaluator.multiDirectionContour(contour);
 
-  // LEAPS
-  var wideLeaps = melodyEvaluator.tooWideLeaps(melody);
-  var meanDistance = melodyEvaluator.meanOfDistances(melody);
-  var sameDirLeaps= melodyEvaluator.sameDirectionLeaps(melody);
-  var neighNotes = melodyEvaluator.neighbourNotes(melody);
-  var notNeighNotes = melodyEvaluator.notNeighbourNotes(melody);
+ 
+    // MESSAGES
+    //length 
+    if (melody.length == 1) {
+        cons.push("You placed no tiles! Try to place at least 3!");
+    } else if (melody.length == 2) {
+        /* - You only placed one tile!*/
+        cons.push("You only placed one tile! Try to place at least 3!");
+    } else if (melody.length == 3) {
+        cons.push("You only placed 2 tiles! Try to place at least 3!");
+    } else if (diffNotes == 0) {
+        /*  - You didn't use many different notes... */
+        cons.push("You repeated only one note!");
+    } else {
+            // if the melody is long enough: 
+            if (melody.length > 2 && melody.length < 7) {
+                /* - The melody is a little short... */
+                cons.push("The melody is a little short...");
+            } else if (melody.length > 7) {
+                /* + You placed many tiles! */
+                pros.push("You placed many tiles!");
+            }
 
+            //begin and end
+            if (begin == 0 && end == 0) {
+                /* +   Great, your melody begins and ends on the first grade!   */  //-> it's not really wrong to make it start on a different note
+                pros.push("Great, your melody begins and ends on the tonic");
+            } else if (begin == 0) {
+                /* +   Great, your melody begins on the first grade!   */
+                pros.push("Great, your melody begins on the tonic");
+            } else if (end == 0) {
+                /*  +   Your melody ends on the tonic, that's awesome!  */
+                pros.push("Your melody ends on the tonic, that's awesome!");
+            } else {
+                /*  -  Next time, try to end the melody on the tonic!  */  //-> it's not really wrong to make it start on a different note
+                cons.push("Try to end the melody on the tonic!");
+            }
 
   // MESSAGES
 
@@ -201,12 +231,10 @@ function finalEvaluateMelody(melody){
       cons.push("You repeated only one note!");
   } else {
 
-    // if the melody is long enough: 
-    if (melody.length > 2 && melody.length < 7) {
-        cons.push("The melody is a little short...");
-    } else if (melody.length > 7) {
-        pros.push("You placed many tiles!");
-    }
+            if (posContour > 3) {
+                /* + You used various patterns and repeated them!*/
+                pros.push("You used various patterns and repeated them");
+            }
 
     // begin and end on tonic
     if (begin == 0 && end == 0) {
@@ -288,21 +316,24 @@ function finalEvaluateMelody(melody){
   indivScores[3] -= wideLeaps * 4;
   indivScores[3] -= sameDirLeaps * 2;
 
-  if (neighNotes > 3 * notNeighNotes) {
-      indivScores[3] -= 10;
-  }
-  if (notNeighNotes > 3 * neighNotes) {
-      indivScores[3] -= 10;
-  }
+    if (neighNotes > 3 * notNeighNotes) {
+        indivScores[3] -= 60;
+    }
+    if (notNeighNotes > 3 * neighNotes) {
+        indivScores[3] -= 60;
+    }
 
 
-  if (indivScores[0] == 0) {
-      score = 0;
-  } else {
-      score = indivScores[0] + indivScores[1] + indivScores[2] + indivScores[3];
-      score = score / 4;
-  }
-  return score;
+    if (indivScores[0] == 0) {
+        score = 0;
+    } else {
+        score = indivScores[0] + indivScores[1] + indivScores[2] + indivScores[3];
+        score = score / 4;
+        if (score >= 100) {
+            score = 100;
+        }
+    }
+    return score;
 
 }
 
