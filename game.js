@@ -241,6 +241,8 @@ function rotateCopy(ev) {
     // ending up with [grade1, grade2]
   }
   setCopy[0].angle = iterate_angle(setCopy[0].angle);
+  console.log("setCopy", setCopy);
+  console.log("setBoxes", setBoxes);
 }
 
 
@@ -377,7 +379,6 @@ function drop_box(array) {
     if (array[i].children.length == 0) {
       array[i].addEventListener("drop", drop);
       array[i].addEventListener("dragover", prevent_drop);
-      array[i].firstElementChild.removeAttribute("id");
       break;
     }
     i++;
@@ -399,22 +400,22 @@ function drop(ev) {
         }else if((Math.floor((ev.target.id)/boxesPerRow))%2!=0 && result.length != 0 && result[result.length-1]!=setCopy[0].grade2){
           cartoonFeedback("Remember to match the color!");
         }else{
-        ev.target.textContent= "";
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(setCopy[0].tile);
-        // putting the grades of the piece in addToSequence to create result, before removing the tile from setPieces
-        addToSequence(setCopy[0].grade1, setCopy[0].grade2,ev.target.id);
-        setBoxes.push(setCopy.pop());
-        ev.target.firstElementChild.removeEventListener("dblclick", rotateCopy);
-        ev.target.removeEventListener("drop", drop);
-        ev.target.removeEventListener("dragover", prevent_drop);
-        ev.target.firstElementChild.addEventListener("click", copy);
-        ev.target.firstElementChild.removeAttribute("id");
-        copySpace.removeChild;
-        drop_box(boxes);
-        console.log(setBoxes);
-        console.log(setCopy);
+          ev.target.textContent= "";
+          ev.preventDefault();
+          var data = ev.dataTransfer.getData("text");
+          ev.target.appendChild(setCopy[0].tile);
+          // putting the grades of the piece in addToSequence to create result, before removing the tile from setPieces
+          addToSequence(setCopy[0].grade1, setCopy[0].grade2,ev.target.id);
+          setBoxes.push(setCopy.pop());
+          ev.target.firstElementChild.removeEventListener("dblclick", rotateCopy);
+          ev.target.removeEventListener("drop", drop);
+          ev.target.removeEventListener("dragover", prevent_drop);
+          ev.target.firstElementChild.addEventListener("click", copy);
+          ev.target.firstElementChild.removeAttribute("id");
+          copySpace.removeChild;
+          drop_box(boxes);
+          console.log("setCopy", setCopy);
+          console.log("setBoxes", setBoxes);
         }
       }
       // checking if the box and the tile are both vertical
@@ -436,8 +437,8 @@ function drop(ev) {
           ev.target.firstElementChild.removeAttribute("id");
           copySpace.removeChild
           drop_box(boxes);
-          console.log(setCopy);
-          console.log(setCopy);
+          console.log("setCopy", setCopy);
+          console.log("setBoxes", setBoxes);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -464,6 +465,8 @@ function drop(ev) {
         ev.target.firstElementChild.addEventListener("click", copy);
         ev.target.firstElementChild.removeAttribute("id");
         drop_box(boxes);
+        console.log("setCopy", setCopy);
+        console.log("setBoxes", setBoxes);
         }
       }
       // checking if the box and the tile are both vertical
@@ -484,6 +487,8 @@ function drop(ev) {
           ev.target.firstElementChild.addEventListener("click", copy);
           ev.target.firstElementChild.removeAttribute("id");
           drop_box(boxes);
+          console.log("setCopy", setCopy);
+          console.log("setBoxes", setBoxes);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -495,18 +500,22 @@ function drop(ev) {
 function copy() {
   if (event.altKey) {
     if (copySpace.children.length == 0) {
-      setCopy.push(setBoxes[event.currentTarget.parentNode.id]);
-      let copyTile = event.currentTarget.cloneNode(true);
-      setCopy[0].tile = copyTile;
-      copyTile.setAttribute("id", "11");
-      copyTile.addEventListener("dblclick", rotateCopy);
-      copyTile.setAttribute("draggable", true)
-      copyTile.addEventListener("dragstart", function() {pieceNum = drag(event)});
-      copyTile.firstElementChild.addEventListener("click", playNoteOnUpperTile);
-      copyTile.lastElementChild.addEventListener("click", playNoteOnLowerTile);
+      let color1 = setBoxes[event.currentTarget.parentNode.id].tile.firstElementChild.style.backgroundColor;
+      let color2 = setBoxes[event.currentTarget.parentNode.id].tile.lastElementChild.style.backgroundColor;
+      let copyTile = createTile(color1, color2, 11);
       copySpace.appendChild(copyTile);
-      console.log(setCopy);
+
+      setCopy[0].tile = copyTile;
+      setCopy[0].grade1 = setBoxes[event.currentTarget.parentNode.id].grade1;
+      setCopy[0].grade2 = setBoxes[event.currentTarget.parentNode.id].grade2;
+      setCopy[0].angle = setBoxes[event.currentTarget.parentNode.id].angle;
+      
+      copyTile.removeEventListener("dblclick", rotate);
+      copyTile.addEventListener("dblclick", rotateCopy);
+      copyTile.addEventListener("dragstart", function() {pieceNum = drag(event)});      
     }
+    console.log("setCopy", setCopy);
+    console.log("setBoxes", setBoxes);
   }
 }
 
