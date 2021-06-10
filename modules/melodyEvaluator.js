@@ -1,4 +1,6 @@
 // ------------------------------------ functions used also to evaluate the melody during the game -----------------------
+
+
 /*This function returns the number of wide leaps (at least 1 sixth - 9 semitones) followed by a leap in the same direction*/
 export function sameDirectionLastLeap(melody) {
     var l = melody.length;
@@ -102,14 +104,18 @@ export function endOnTonic(melody){
 
 /* This function counts how many different notes are there in the melody */
 export function differentNotes(melody) {
-    var score = 0.0;
-    for (let i = 0; i < melody.length; i++) {
-        for (let j = i + 1; j < melody.length; j++)
-            if (melody[i] == melody) {
-                score++;
-            }
-    }
+    let score = 0;
 
+    for (let i = 0; i < melody.length; i++) {
+        var j;
+        for (j = 0; j < i; j++)
+           if (melody[i] == melody[j])
+               break;
+   
+        if (i == j)
+            score += 1
+    }
+    return score;
 }
 
 

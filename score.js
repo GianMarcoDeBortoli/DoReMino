@@ -27,7 +27,7 @@ function parseGetVars() {
 }
 
 var params = parseGetVars();
-console.log(params);
+
 var resultString = params[0].split("_"); // in this way I have again an array with all the grades
 var result = [];
 
@@ -196,7 +196,7 @@ function finalEvaluateMelody(melody) {
         cons.push("You only placed one tile! Try to place at least 3!");
     } else if (melody.length == 3) {
         cons.push("You only placed 2 tiles! Try to place at least 3!");
-    } else if (diffNotes == 0) {
+    } else if (diffNotes == 1) {
         cons.push("You repeated only one note!");
     } else {
         // if the melody is long enough
@@ -219,7 +219,7 @@ function finalEvaluateMelody(melody) {
 
 
         // if to many notes are equal to each other
-        if (diffNotes < 3) {
+        if (diffNotes < 4) {
             cons.push("You didn't use many different notes...");
         }
 
@@ -267,14 +267,23 @@ function finalEvaluateMelody(melody) {
     if (melody.length < 4) {
         indivScores[0] = 0;
     } else if (melody.length < 7) {
-        indivScores[0] = (melody.length - 2);
+        indivScores[0] = 1;
+    } else if (melody.length < 10) {
+        indivScores[0] = melody.length * 10;
     } else { indivScores[0] = 100; }
 
     // [1] = begin and end on tonic; not enough different notes
     indivScores[1] = 90;
     if (begin == 0) { indivScores[1] += 10; }
     if (end == 1) { indivScores[1] -= 10; }
-    if (diffNotes <= (melody.length * 0.2)) { indivScores[1] -= 75 }
+    let diff = 0;
+    if (melody.length < 12) {
+      diff = Math.round(diffNotes - 1.8 * Math.sqrt(melody.length));
+    } else if (melody.length >= 12) {
+      diff = Math.round(diffNotes - 2 * Math.sqrt(melody.length));
+    }
+    indivScores[1] -= diff * 8;
+    console.log(indivScores[1]);
 
     // [2] = contour
     indivScores[2] = 100 - negContour - posContour;
