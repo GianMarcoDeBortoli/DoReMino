@@ -130,8 +130,9 @@ function createSet() {
   for (let i = 0; i < modelLength; i++) { // for each element of the model, so of the bar
     let index1 = Math.floor(Math.random() * grades.length);
     let grade1 = grades[index1];
-    let color1 = colors[grade1+lowerGrades];
-
+    let color1 = colors[grade1+lowerGrades]; 
+    // lowerGrades is used to translate the grade number, that starts from -6, to number 0, that is the first element of the
+    // array colors. In this way there's a one to one relation between colors and grades.
     let index2 = Math.floor(Math.random() * grades.length);
     let grade2 = grades[index2];
     let color2 = colors[grade2+lowerGrades];
