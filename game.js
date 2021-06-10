@@ -377,6 +377,7 @@ function drop_box(array) {
     if (array[i].children.length == 0) {
       array[i].addEventListener("drop", drop);
       array[i].addEventListener("dragover", prevent_drop);
+      array[i].firstElementChild.removeAttribute("id");
       break;
     }
     i++;
@@ -412,6 +413,8 @@ function drop(ev) {
         ev.target.firstElementChild.removeAttribute("id");
         copySpace.removeChild;
         drop_box(boxes);
+        console.log(setBoxes);
+        console.log(setCopy);
         }
       }
       // checking if the box and the tile are both vertical
@@ -433,6 +436,8 @@ function drop(ev) {
           ev.target.firstElementChild.removeAttribute("id");
           copySpace.removeChild
           drop_box(boxes);
+          console.log(setCopy);
+          console.log(setCopy);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -500,6 +505,7 @@ function copy() {
       copyTile.firstElementChild.addEventListener("click", playNoteOnUpperTile);
       copyTile.lastElementChild.addEventListener("click", playNoteOnLowerTile);
       copySpace.appendChild(copyTile);
+      console.log(setCopy);
     }
   }
 }
@@ -529,48 +535,44 @@ function cartoonFeedback(feedback){
 }
 // evaluating melody when dropping a tile --------------------------------------------------------
 function onGoingEvaluateMelody(melody) {
-    let l = melody.length;
+  let l = melody.length;
 
-    // Last leap over 1 octave
-    if (tooWideLastLeap(melody) == 1) {
-        /*Try to avoid big jumps!*/
-        cartoonFeedback("Try to avoid big jumps!");
-    }
+  // Last leap over 1 octave
+  if (tooWideLastLeap(melody) == 1) {
+    cartoonFeedback("Try to avoid big jumps!");
+  }
 
-    // Repetition of the same note
-    if (l > 3 && meanOfDistances(melody) == 0) {
-        /* Do not only use one note */
-        cartoonFeedback("Do not only use one note!");
-    }
+  /* // All notes are neighbour notes (no jumps)
+  if (l > 4 && notNeighbourNotes(melody) == 0 ) {
+    cartoonFeedback("Do not only use neigbour notes!");
+  }
 
-    // All notes are neighbour notes (no jumps)
-    if (l > 4 && notNeighbourNotes(melody) == 0 ) {
-        /*Do not only use neigbour notes!*/
-        cartoonFeedback("Do not only use neigbour notes!");
-    }
+  // All notes are far away from each other (no usage of neighbour notes)
+  if (l > 3 && neighbourNotes(melody) == 0 ) {
+    cartoonFeedback("Use some neighbour notes!");
+  }
+ */
 
-    // All notes are far away from each other (no usage of neighbour notes)
-    if (l > 3 && neighbourNotes(melody) == 0 ) {
-      /*Use some neighbour notes!*/
-      cartoonFeedback("Use some neighbour notes!");
-    }
+  // Big jump followed by other big jump
+  if (l > 3 && sameDirectionLastLeap(melody) != 0) {
+    cartoonFeedback("Try to change direction after a big jump!");
+  }
 
-    // Big jump followed by other big jump
-    if (l > 3 && sameDirectionLastLeap(melody) != 0) {
-        /* Try to change direction after a big jump! */
-        cartoonFeedback("Try to change direction after a big jump!");
-    }
+  // Repetition of the same note
+  if (l > 3 && meanOfDistances(melody) == 0) {
+    cartoonFeedback("Do not only use one note!");
+  }
+  // Used 3 times more neigbour notes than leaps
+  else if (l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
+    cartoonFeedback("Do not overuse neigbour notes!");
+  }
 
-
-    // Used 3 times more neigbour notes than leaps
-    if(l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
-      cartoonFeedback("Do not overuse neigbour notes!");
-    }
-    // Used 3 times more leaps than neighbour notes
-    if(l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
-        cartoonFeedback("Use more neighbour notes!");
-    }
+  // Used 3 times more leaps than neighbour notes
+  if (l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
+    cartoonFeedback("Use more neighbour notes!");
+  }
 }
+
 //------------------------------------------- END of DRAG and DROP ---------------------------
 // ------------ TIMER controller ---------------------------------------------
 timer.startTimer();

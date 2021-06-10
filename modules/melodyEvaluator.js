@@ -4,7 +4,7 @@
 /*This function returns the number of wide leaps (at least 1 sixth - 9 semitones) followed by a leap in the same direction*/
 export function sameDirectionLastLeap(melody) {
     var l = melody.length;
-    if (Math.abs(melody[l - 2] - melody[l - 1]) > 9 && (Math.sign(melody[l - 2] - melody[l - 1]) == Math.sign(melody[l - 1] - melody[l - 0]))) {
+    if (Math.abs(melody[l - 2] - melody[l - 1]) > 9 && (Math.sign(melody[l - 2] - melody[l - 1]) == Math.sign(melody[l - 1] - melody[l]))) {
         return 1;
     } else {
         return 0;
@@ -48,7 +48,7 @@ If the mean value is more than a 5th, the melody is too oscillating*/
 export function meanOfDistances(melody) {
     var score = 0.0;
     for (let i = 1; i < melody.length; i++) {
-        score = Math.abs(melody[i - 1] - melody[i + 1]);
+        score = Math.abs(melody[i - 1] - melody[i]);
     }
     return score / melody.length;
 }
@@ -64,8 +64,8 @@ export function meanOfDistances(melody) {
 export function tooWideLeaps(melody){
  var score = 0.0;
  for(let i=1; i<melody.length-1; i++){
-   if ( Math.abs(melody[i-1]-melody[i+1]) > 12 ) {
-     score --;
+   if ( Math.abs(melody[i-1]-melody[i]) > 12 ) {
+     score ++;
    }
  }
  return score;
@@ -143,16 +143,16 @@ export function findContour(melody){
   if (len<3){
     return;
   }
+  var contourCode = [];
   // scanning trough the melody to detect patterns.
   for(let i=1; i<len-1; i++){ //i goes from the second note to the second-last note
     var code;
     if (melody[i-1]<melody[i]) code = 10; // first note is lower than second: rising
-    if (melody[i-1]==melody[i]) code = 20; // first note is same as second: flat
-    if (melody[i-1]>melody[i]) code = 30; // first note is higher than second: falling
+    else if (melody[i-1]==melody[i]) code = 20; // first note is same as second: flat
+    else if (melody[i-1]>melody[i]) code = 30; // first note is higher than second: falling
     if (melody[i]<melody[i+1]) code = code + 1; // second note is lower than third: rising
-    if (melody[i]==melody[i+1]) code = code + 2; // second note is same as third: flat
-    if (melody[i]>melody[i+1]) code = code + 3;// second note is higher than third: falling
-    var contourCode = [];
+    else if (melody[i]==melody[i+1]) code = code + 2; // second note is same as third: flat
+    else if (melody[i]>melody[i+1]) code = code + 3;// second note is higher than third: falling
     contourCode[i-1] = code;
   }
 
@@ -165,8 +165,8 @@ export function oneDirectionContour(contourCode) {
     if (undefined !== contourCode && contourCode.length) {
         // remove points when patterns with not repeated digits are placed next to each other
         for (let i = 1; i < contourCode.length; i++) {
-            if ((contourCode[i - 1] = contourCode[i] && (contourCode[i - 1] == 11 || contourCode[i - 1] == 22 || contourCode[i - 1] == 33))) {
-                score--;
+            if ((contourCode[i - 1] == contourCode[i] && (contourCode[i - 1] == 11 || contourCode[i - 1] == 22 || contourCode[i - 1] == 33))) {
+                score++;
             }
         }
     }
@@ -180,21 +180,18 @@ export function multiDirectionContour(contourCode) {
     if (undefined !== contourCode && contourCode.length) {
         // adding points when patterns are repeated every other note or every other 2 notes
         for (let i = 1; i < contourCode.length - 1; i++) {
-            if (contourCode[i - 1] = contourCode[i + 1]) {
+            if (contourCode[i - 1] == contourCode[i + 1]) {
                 score++;
             }
         }
         for (let i = 1; i < contourCode.length - 2; i++) {
-            if (contourCode[i - 1] = contourCode[i + 2]) {
+            if (contourCode[i - 1] == contourCode[i + 2]) {
                 score++;
             }
         }
     }
   return score;
 }
-
-
-
 
 
 // ------------------------------------ END functions used only to evaluate the melody at the end of the game -----------------------
