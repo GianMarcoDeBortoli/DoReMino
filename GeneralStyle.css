@@ -203,8 +203,8 @@ h2 {
 
 #rulesForm {
     align-items: center;
-    width: 68%;
-    min-height: 80%;
+    width: 60%;
+    min-height: 85%;
     padding: 1em 2em 1em 2em;
     justify-content: space-between;
     box-sizing: content-box;
@@ -246,8 +246,8 @@ h2 {
 #demoForm {
     align-items: center;
     width: 75%;
-    height: 80%;
-    padding: 2em 1em 2em 1em;
+    min-height: 85%;
+    padding: 1em 2em 1em 2em;
     text-align: justify;
     justify-content: space-between;
 }
@@ -269,38 +269,45 @@ h2 {
 }
 
 /* ------------ SCORE BUTTON play melody ----------- */
+
 .buttonPlay {
-  place-items: center;
-  float: left;
-  display:block;
-  position: relative;
-  width: 60px;
-  height: 60px;
-  border-radius: 35px;
-  background-color: rgb(129, 47, 51);
-  cursor: pointer;
-  font-size: 0;  /* Hide the text 'play', which is present in the HTML document for accessibility */
-  margin: 1% 1% 1% 1%;
+    place-items: center center;
+    position:relative;
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    min-height: 60px;
+    border-radius: 50%;
+    background-color: rgb(30, 138, 48);
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 60px;
+    text-align: center;
+    font-size: 100%;
 }
 
-.buttonPlay:hover{
-    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
-    box-shadow: 0 0 7px #f75f5fd0;
+#playMelody {
+    background-color: rgb(30, 138, 48);
+    font-size: 0;   /* Hide the text 'play', which is present in the HTML document for accessibility */
 }
 
-.buttonPlay::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-bottom: 20px solid transparent;
-  border-top: 20px solid transparent;
-  border-left: 28px solid white;
-  top: 10px;
-  left: 20px;
+#playMelody.buttonPlay:hover{
+    background: radial-gradient(rgb(0, 255, 21), rgb(30, 138, 48));
+    box-shadow: 0 0 10px #39ff8cd0;
 }
 
+#playMelody.buttonPlay::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-bottom: 20px solid transparent;
+    border-top: 20px solid transparent;
+    border-left: 26px solid #F2F2F2;
+    top: 10px;
+    left: 20px;
+}
 
 /* -------------------- SCORE DOMINO EFFECT --------------------- */
 

@@ -226,27 +226,44 @@
 }
 
 
-/* ---------------------- BUTTON "play melody" --------------------- */
+/* ---------------------- BUTTON "playMelody", "playTonic"--------------------- */
+#playContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 40%;
+    width: auto;
+    align-items: center;
+    padding: 1.1em 0 0 2em;
+}
+
 .buttonPlay {
-    place-items: center;
-    position: relative;
+    place-items: center center;
+    position:relative;
     width: 60px;
     min-width: 60px;
     height: 60px;
     min-height: 60px;
     border-radius: 50%;
-    background-color: rgb(129, 47, 51);
+    background-color: rgb(30, 138, 48);
     cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 60px;
+    text-align: center;
+    font-size: 100%;
+}
+
+#playMelody {
+    background-color: rgb(30, 138, 48);
     font-size: 0;   /* Hide the text 'play', which is present in the HTML document for accessibility */
-    margin: 1% 0 0 2%;
 }
 
-.buttonPlay:hover{
-    background: radial-gradient(rgb(255, 0, 0), rgb(105, 38, 42));
-    box-shadow: 0 0 7px #f75f5fd0;
+#playMelody.buttonPlay:hover{
+    background: radial-gradient(rgb(0, 255, 21), rgb(30, 138, 48));
+    box-shadow: 0 0 10px #39ff8cd0;
 }
 
-.buttonPlay::before {
+#playMelody.buttonPlay::before {
     content: "";
     display: block;
     position: absolute;
@@ -259,6 +276,15 @@
     left: 20px;
 }
 
+#playTonic {
+    background-color: rgb(165, 29, 54);
+    color:#F2F2F2;
+}
+
+#playTonic.buttonPlay:hover{
+    background: radial-gradient(rgb(255, 0, 0), rgb(165, 29, 54));
+    box-shadow: 0 0 10px #ff1212e3;
+}
 
 /* ----------------------------- TABLE ----------------------------- */
 #table {
