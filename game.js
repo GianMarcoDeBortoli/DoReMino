@@ -241,8 +241,6 @@ function rotateCopy(ev) {
     // ending up with [grade1, grade2]
   }
   setCopy[0].angle = iterate_angle(setCopy[0].angle);
-  console.log("setCopy", setCopy);
-  console.log("setBoxes", setBoxes);
 }
 
 
@@ -414,8 +412,6 @@ function drop(ev) {
           ev.target.firstElementChild.removeAttribute("id");
           copySpace.removeChild;
           drop_box(boxes);
-          console.log("setCopy", setCopy);
-          console.log("setBoxes", setBoxes);
         }
       }
       // checking if the box and the tile are both vertical
@@ -437,8 +433,6 @@ function drop(ev) {
           ev.target.firstElementChild.removeAttribute("id");
           copySpace.removeChild
           drop_box(boxes);
-          console.log("setCopy", setCopy);
-          console.log("setBoxes", setBoxes);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -465,8 +459,6 @@ function drop(ev) {
         ev.target.firstElementChild.addEventListener("click", copy);
         ev.target.firstElementChild.removeAttribute("id");
         drop_box(boxes);
-        console.log("setCopy", setCopy);
-        console.log("setBoxes", setBoxes);
         }
       }
       // checking if the box and the tile are both vertical
@@ -487,8 +479,6 @@ function drop(ev) {
           ev.target.firstElementChild.addEventListener("click", copy);
           ev.target.firstElementChild.removeAttribute("id");
           drop_box(boxes);
-          console.log("setCopy", setCopy);
-          console.log("setBoxes", setBoxes);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -500,22 +490,35 @@ function drop(ev) {
 function copy() {
   if (event.altKey) {
     if (copySpace.children.length == 0) {
-      let color1 = setBoxes[event.currentTarget.parentNode.id].tile.firstElementChild.style.backgroundColor;
-      let color2 = setBoxes[event.currentTarget.parentNode.id].tile.lastElementChild.style.backgroundColor;
-      let copyTile = createTile(color1, color2, 11);
-      copySpace.appendChild(copyTile);
 
-      setCopy[0].tile = copyTile;
-      setCopy[0].grade1 = setBoxes[event.currentTarget.parentNode.id].grade1;
-      setCopy[0].grade2 = setBoxes[event.currentTarget.parentNode.id].grade2;
-      setCopy[0].angle = setBoxes[event.currentTarget.parentNode.id].angle;
-      
+      if (setBoxes[event.currentTarget.parentNode.id].angle == 90 || setBoxes[event.currentTarget.parentNode.id].angle == 180) {
+        var color1 = setBoxes[event.currentTarget.parentNode.id].tile.lastElementChild.style.backgroundColor;
+        var color2 = setBoxes[event.currentTarget.parentNode.id].tile.firstElementChild.style.backgroundColor;
+      }
+      else if (setBoxes[event.currentTarget.parentNode.id].angle == 0 || setBoxes[event.currentTarget.parentNode.id].angle == 270) {
+        var color1 = setBoxes[event.currentTarget.parentNode.id].tile.firstElementChild.style.backgroundColor;
+        var color2 = setBoxes[event.currentTarget.parentNode.id].tile.lastElementChild.style.backgroundColor;
+      }
+      let copyTile = createTile(color1, color2, 11);
       copyTile.removeEventListener("dblclick", rotate);
       copyTile.addEventListener("dblclick", rotateCopy);
-      copyTile.addEventListener("dragstart", function() {pieceNum = drag(event)});      
+      copyTile.addEventListener("dragstart", function() {pieceNum = drag(event)});
+
+      copySpace.appendChild(copyTile);
+
+      let grade1 = setBoxes[event.currentTarget.parentNode.id].grade1;
+      let grade2 = setBoxes[event.currentTarget.parentNode.id].grade2;
+
+      let piece = {
+        tile: copyTile,
+        grade1: grade1,
+        grade2: grade2,
+        angle: 0,
+      }
+
+      setCopy.push(piece);
+
     }
-    console.log("setCopy", setCopy);
-    console.log("setBoxes", setBoxes);
   }
 }
 

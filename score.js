@@ -228,7 +228,7 @@ function finalEvaluateMelody(melody) {
         cons.push("Try to make the contour of the melody more interesting!");
     }
 
-    if (posContour < 4) {
+    else if (posContour < 4) {
         cons.push("Try to make the contour of the melody more interesting!");
     }
 
