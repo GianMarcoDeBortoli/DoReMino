@@ -261,8 +261,6 @@ function finalEvaluateMelody(melody) {
 
   }
 
-
-
   // TOTAL POINTS
   var indivScores = [];
   // each aspect of the game is given a score from 0 to 100. The score will be the mean of them.
@@ -296,29 +294,21 @@ function finalEvaluateMelody(melody) {
     indivScores[2] = 100;
 
     // [3] = leaps
-    console.log(meanDistance)
-    if (meanDistance < 2)
-     
+  if (meanDistance < 2)
      indivScores[3] = 0;
   else {
-     if (meanDistance < 7)
-        indivScores[3] = 100;
-     else 
-        indivScores[3] = 50;
+    if (meanDistance < 7)
+      indivScores[3] = 100;
+    else 
+      indivScores[3] = 50;
       
-     indivScores[3] -= wideLeaps * 4;
-     indivScores[3] -= sameDirLeaps * 2;
-     if (neighNotes > 3 * notNeighNotes) 
-        indivScores[3] -= 60;
-     if (notNeighNotes > 3 * neighNotes) 
+    indivScores[3] -= wideLeaps * 4;
+    indivScores[3] -= sameDirLeaps * 2;
+    if (neighNotes > 3 * notNeighNotes) 
+      indivScores[3] -= 60;
+    if (notNeighNotes > 3 * neighNotes) 
       indivScores[3] -= 60;  
   }
-
-
-  console.log("indivScores[0]" + indivScores[0]);
-  console.log("indivScores[1]" + indivScores[1]);
-  console.log("indivScores[2]" + indivScores[2]);
-  console.log("indivScores[3]" + indivScores[3]);
 
   var score = computeScore(indivScores[0], indivScores[1], indivScores[2], indivScores[3]);
 
@@ -327,12 +317,6 @@ function finalEvaluateMelody(melody) {
 
   return score
 }
-
-var score = finalEvaluateMelody(result);
-
-
-firstPainfulRender();
-
 
 function computeScore(length, diffnotes, countour, leaps) {
   var a = 0.2, b = 0.2, c = 0.3, d = 0.3;
@@ -352,3 +336,8 @@ function computeScore(length, diffnotes, countour, leaps) {
 
   return a * length + b * diffnotes + c * countour + d * leaps
 }
+
+var score = finalEvaluateMelody(result);
+
+
+firstPainfulRender();
