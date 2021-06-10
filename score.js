@@ -187,19 +187,18 @@ function finalEvaluateMelody(melody){
 
  
     // MESSAGES
-    //length
-    if (melody.length == 0) {
+    //length 
+    if (melody.length == 1) {
         cons.push("You placed no tiles!");
     } else if (melody.length == 2) {
         /* - You only placed one tile!*/
         cons.push("You only placed one tile! Try to place at least 3!");
     } else if (melody.length == 3) {
         cons.push("You only placed 2 tiles! Try to place at least 3!");
+    } else if (diffNotes == 0) {
+        /*  - You didn't use many different notes... */
+        cons.push("You repeated only one note!");
     } else {
-        if (diffNotes == 0) {
-            /*  - You didn't use many different notes... */
-            cons.push("You repeated only one note!");
-        } else {
             // if the melody is long enough: 
             if (melody.length > 2 && melody.length < 7) {
                 /* - The melody is a little short... */
@@ -269,16 +268,6 @@ function finalEvaluateMelody(melody){
                 /* + You balanced well neighbour and not neighbour notes*/
                 pros.push("You balanced well neighbour and not neighbour notes!");
             }
-
-
-
-        }
-
-
-
-
-       
-
 
     }
     
