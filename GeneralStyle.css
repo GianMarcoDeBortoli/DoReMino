@@ -249,7 +249,7 @@ h2 {
     min-height: 85%;
     padding: 1em 2em 1em 2em;
     text-align: justify;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 #backToRules {
@@ -411,7 +411,7 @@ h2 {
     box-sizing: border-box;
     background-color: #f6f85bd7;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
-    font-size: 75%;
+    font-size: 80%;
     font-weight: bold;
     text-align: center;
     letter-spacing: -0.02em;
