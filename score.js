@@ -263,7 +263,7 @@ function finalEvaluateMelody(melody) {
     var indivScores = [];
     // each aspect of the game is given a score from 0 to 100. The score will be the mean of them.
 
-    // [0] = length of the melody 
+    // [0] = length of the melody
     if (melody.length < 4) {
         indivScores[0] = 0;
     } else if (melody.length < 7) {

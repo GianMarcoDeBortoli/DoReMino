@@ -5,20 +5,18 @@ import { meanOfDistances, sameDirectionLastLeap, neighbourNotes, notNeighbourNot
 
 
 //------------------------------------------------------- MODEL -----------------------------------------------------------
-const modelLength = 10;
-var grades = [];
-var setPieces = []; // elenco dei tiles con associati i due gradi e l'angolazione
-var setBoxes = []; //elenco dei tiles all'interno dei "box" con associati i due gradi e l'angolazione
-var setCopy = []; //tile contenuto in copySpace con associati i due gradi e l'angolazione
-var pieceNum = -1; // I need this to remove the dropped tile from setPieces array
+const modelLength = 10; // number of tiles in the bar
+var grades = []; // grades of the game, they are based on the mode selected by the user
+var setPieces = []; // dictionary of the tiles  in the bar with the two grades and the orientation associated
+var setBoxes = []; // dictionary of the tiles  in the board with the two grades and the orientation associated
+var setCopy = []; // tile contained in copySpace with the two grades and the orientation associated
+var pieceNum = -1; // var needed to remove the dropped tile from setPieces array
 const colors = ["rgb(255, 104, 222)", "rgb(60, 116, 9)", "rgb(123, 180, 255)", "rgb(114, 67, 13)", "rgb(217, 164, 4)",
                 "rgb(128, 21, 228)", "rgb(165, 29, 54)", "rgb(255, 115, 0)", "rgb(0, 4, 255)", "rgb(207, 178, 143)",
                 "rgb(242, 242, 242)", "rgb(93, 93, 107)", "rgb(255, 163, 235)", "rgb(106, 206, 13)", "rgb(181, 214, 255)",
                 "rgb(201, 115, 17)", "rgb(242, 205, 19)", "rgb(184, 109, 255)", "rgb(217, 72, 98)"];
 
-// for all grades values, I put into colorsAvailable in this game session, only a subgroup of the ones available,
-// by selecting the colors in colors corresponding to the number present in grades
-var lowerGrades = 6;
+var lowerGrades = 6; // used to choose the correct index from colors by translating the grades that start from -6
 const barContainer = document.getElementById("bar");
 var result = [] // array with the sequence created: everytime I add a piece to the board, the tile grade is added to result
 
@@ -46,8 +44,7 @@ const copySpace = document.getElementById("copySpace");
 
 
 // function to get parameters from URL
-// URLSearchParams crea una sorta di dizionario dalla stringa data in argomento, la stringa data è la parte dell'URL che sta dopo l'uguale
-// per accedere ai valori del dizionario si usa la get(key)
+// URLSearchParams creates a sort of dictionary from the string given passed by the argument
 function parseGetVars() {
   let res = [];
   let params = new URLSearchParams(document.location.search.substring(1));
@@ -55,16 +52,12 @@ function parseGetVars() {
   let difficulty = params.get("difficulty");
   res[0] = modal;
   res[1] = difficulty;
-  console.log(res);
   return res;
 }
 
 var params = parseGetVars();
-console.log(params);
 var mode = params[0];
-console.log(mode);
 var difficulty = params[1];
-console.log(difficulty);
 
 
 // Filling grades according to the mode received by the select input in the form by the user
@@ -96,11 +89,11 @@ switch(mode){
 function createTile(color1,color2,i) {
   let tile = document.createElement("div");
   tile.classList.add("tile_v");
-  tile.id = i;   // L'id serve al drag
+  tile.id = i;   // id needed in the drag function
   tile.setAttribute("draggable", true)
   tile.addEventListener("dragstart",  function() {pieceNum = drag(event)})
 
-  // I create two subclasses with the lower and upper part that are of two different colors
+  // creating two subclasses with the lower and upper part that are of two different colors
   const tileUpper = document.createElement("div");
   tileUpper.classList.add("tileUpper");
   if (difficulty == "expert") {
@@ -118,7 +111,7 @@ function createTile(color1,color2,i) {
   else if (difficulty == "normal") {
     tileLower.style.backgroundColor = color2;
   }
-  
+
   tileLower.addEventListener("click", playNoteOnLowerTile);
 
 
@@ -126,7 +119,7 @@ function createTile(color1,color2,i) {
   tile.appendChild(tileLower);
 
 
-  tile.addEventListener("dblclick", rotate); // non so se questo sia giusto che sia nella view ?
+  tile.addEventListener("dblclick", rotate);
 
   return tile
 
@@ -134,7 +127,7 @@ function createTile(color1,color2,i) {
 
 function createSet() {
 
-  for (let i = 0; i < modelLength; i++) { // For each element of the model, so of the bar
+  for (let i = 0; i < modelLength; i++) { // for each element of the model, so of the bar
     let index1 = Math.floor(Math.random() * grades.length);
     let grade1 = grades[index1];
     let color1 = colors[grade1+lowerGrades];
@@ -142,11 +135,11 @@ function createSet() {
     let index2 = Math.floor(Math.random() * grades.length);
     let grade2 = grades[index2];
     let color2 = colors[grade2+lowerGrades];
-    //Math.floor() restituisce un numero intero arrotondato per difetto
-    const tile = createTile(color1,color2,i) // Create actual tile of that two colors chosen in a randomic way
+    const tile = createTile(color1,color2,i) // Create the actual tile of that two colors chosen in a randomic way
     barContainer.appendChild(tile) // Add it to the bar div
     let piece = {
-      // all'inizio i pezzi sono sempre in verticale e assegno grade1 di default al pezzo in alto e grade2 al pezzo in basso
+      // at the beginning the tiles are always in vertical position and by default grade1 is assigned to
+      // the upper part of the tile, grade2 is assigned to the lower part of the tile
       tile: tile,
       grade1: grade1,
       grade2: grade2,
@@ -164,7 +157,6 @@ function firstPainfulRender() {
   createSet();
   draw_table(table, tableWidth, tableHeight, rows, rowHeight, boxesPerRow, dim1, dim2); // take a look at table.js
 }
-//document.write(result)
 
 //----------------------------------------------- END of VIEW --------------------------------------------------------------
 
@@ -187,7 +179,7 @@ function rotate(ev){
     ev.currentTarget.classList.remove("tile_v");
     ev.currentTarget.classList.add("tile_h");
     ev.currentTarget.style.flexFlow = "row-reverse wrap";
-    // I want to swap grade1 and grade2 to have [grade2, grade1]
+    // swapping grade1 and grade2 to have [grade2, grade1]
     let tempGrade = setPieces[i].grade1;
     setPieces[i].grade1 = setPieces[i].grade2;
     setPieces[i].grade2 = tempGrade;
@@ -196,13 +188,13 @@ function rotate(ev){
     ev.currentTarget.classList.remove("tile_h");
     ev.currentTarget.classList.add("tile_v");
     ev.currentTarget.style.flexFlow = "column-reverse wrap";
-    // I still have [grade2, grade1]
+    // still having [grade2, grade1]
   }
   if (setPieces[i].angle == 180) {
     ev.currentTarget.classList.remove("tile_v");
     ev.currentTarget.classList.add("tile_h");
     ev.currentTarget.style.flexFlow = "row wrap";
-    // I want to swap to [grade1, grade2]
+    // swapping to [grade1, grade2]
     let tempGrade = setPieces[i].grade1;
     setPieces[i].grade1 = setPieces[i].grade2;
     setPieces[i].grade2 = tempGrade;
@@ -211,10 +203,9 @@ function rotate(ev){
     ev.currentTarget.classList.remove("tile_h");
     ev.currentTarget.classList.add("tile_v");
     ev.currentTarget.style.flexFlow = "column wrap";
-    // I end up with [grade1, grade2]
+    // ending up with [grade1, grade2]
   }
   setPieces[i].angle = iterate_angle(setPieces[i].angle);
-  console.log(setPieces[i]);
 }
 
 
@@ -232,13 +223,13 @@ function rotateCopy(ev) {
     ev.currentTarget.classList.remove("tile_h");
     ev.currentTarget.classList.add("tile_v");
     ev.currentTarget.style.flexFlow = "column-reverse wrap";
-    // I still have [grade2, grade1]
+    // still having [grade2, grade1]
   }
   if (setCopy[0].angle == 180) {
     ev.currentTarget.classList.remove("tile_v");
     ev.currentTarget.classList.add("tile_h");
     ev.currentTarget.style.flexFlow = "row wrap";
-    // I want to swap to [grade1, grade2]
+    // swapping to [grade1, grade2]
     let tempGrade = setCopy[0].grade1;
     setCopy[0].grade1 = setCopy[0].grade2;
     setCopy[0].grade2 = tempGrade;
@@ -247,10 +238,9 @@ function rotateCopy(ev) {
     ev.currentTarget.classList.remove("tile_h");
     ev.currentTarget.classList.add("tile_v");
     ev.currentTarget.style.flexFlow = "column wrap";
-    // I end up with [grade1, grade2]
+    // ending up with [grade1, grade2]
   }
   setCopy[0].angle = iterate_angle(setCopy[0].angle);
-  console.log(setCopy);
 }
 
 
@@ -259,9 +249,9 @@ function change_set() {
   for (let i = 0; i < setPieces.length; i++) { // For each element of the model, so of the bar
      barContainer.removeChild(setPieces[i].tile)
   }
-  // svuotare setPieces
-  setPieces = []
-  createSet()
+  // setPieces must be empty again, because it is the dictionary contaning the tiles in the bar
+  setPieces = [];
+  createSet();
 }
 
 changeSet.onclick = change_set;
@@ -307,10 +297,8 @@ function playNoteOnUpperTile() {
         grade = setCopy[0].grade2;
     }
 
-    console.log(grade);
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
-    console.log(note);
 
     synth.triggerAttackRelease(note, "8n");
   }
@@ -342,17 +330,15 @@ function playNoteOnLowerTile() {
         grade = setCopy[0].grade1;
     }
 
-    console.log(grade);
     let index = searchForNote[0].indexOf(grade);
     let note = searchForNote[1][index];
-    console.log(note);
 
     synth.triggerAttackRelease(note, "8n");
   }
 }
 
 // ------------------------------------------------- DRAG and DROP --------------------------------
-// Creo l'array "boxes" che contenga i contenitori box creati creati in html a cui dare le funzionalità di drop
+// creating the "boxes" array to give to the boxes created in html the drop functionality
 let rowCollection = document.getElementById("table").children;
 let boxes = [];
 for (let i = 0; i < rows; i++) {
@@ -363,8 +349,7 @@ for (let i = 0; i < rows; i++) {
 }
 
 
-// PreventDefault() impedisce che all'evento a cui è legato sia associata un'azione di default del browser.
-// Per esempio se in mozilla, per default, l'evento dragover aziona il drop siamo fregati.
+// PreventDefault() prevents the default action of the browser of the event to which it is associated
 function prevent_drop(ev) {
   ev.preventDefault();
 }
@@ -381,8 +366,8 @@ function drag(ev) {
   }
 }
 
-// Assegna solamente al primo elemento senza figli dell'array dato gli eventListeners necessari a permettere il drop
-// al suo interno e toglie l'attributo draggable all'ultima tessera inserita.
+// assigning the eventListeners needed to allow the drop and removes the draggable attribute from the last tile,
+// only to the first element without childs of the array
 function drop_box(array) {
   let i = 0;
   while(array[i]) {
@@ -399,13 +384,13 @@ function drop_box(array) {
 }
 drop_box(boxes);
 
-// Dato l'evento drop, trasferisce i dati dell'elemento in drag all'elemento container in cui si vuole droppare tramite l'id.
-// La splice su setPieces serve a rimuovere dall'array la tessera appena droppata per far sì che la funzione rotate
-// continui a funzionare tramite l'indice pieceNum preso dall'elemento "bar" tramite il drag
+// given the drop event, it transfers the element in drag to the container element selected via id.
+// The splice on setPieces is needed to remove the dropped tile from the array to allow the function rotate to
+// keep working through the index pieceNum taken from the element "bar"
 function drop(ev) {
 
   if (ev.target.children.length === 0) {
-    //controllo che la casella e la tessera siano entrambe orizzontali
+    // checking if the box and the tile are both horizontal
     if (pieceNum == 11) {
       if (ev.target.style.width == dim2+"px" && (setCopy[0].angle == 90 || setCopy[0].angle == 270)) {
         if((Math.floor((ev.target.id)/boxesPerRow))%2==0 && result.length != 0 && result[result.length-1]!=setCopy[0].grade1){
@@ -417,7 +402,7 @@ function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(setCopy[0].tile);
-        // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+        // putting the grades of the piece in addToSequence to create result, before removing the tile from setPieces
         addToSequence(setCopy[0].grade1, setCopy[0].grade2,ev.target.id);
         setBoxes.push(setCopy.pop());
         ev.target.firstElementChild.removeEventListener("dblclick", rotateCopy);
@@ -427,12 +412,9 @@ function drop(ev) {
         ev.target.firstElementChild.removeAttribute("id");
         copySpace.removeChild;
         drop_box(boxes);
-        console.log(setPieces);
-        console.log(setBoxes);
-        console.log(setCopy);
         }
       }
-      //controllo che la casella e la tessera siano entrambe verticali
+      // checking if the box and the tile are both vertical
       else if (ev.target.style.width == dim1+"px" && (setCopy[0].angle == 0 || setCopy[0].angle == 180)) {
         if(result[result.length-1]!=setCopy[0].grade1){
           cartoonFeedback("Remember to match the color!");
@@ -441,9 +423,8 @@ function drop(ev) {
           ev.preventDefault();
           var data = ev.dataTransfer.getData("text");
           ev.target.appendChild(setCopy[0].tile);
-          // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+          // putting the grades of the piece in addToSequence to create result, before removing the tile from setPieces
           addToSequence(setCopy[0].grade1, setCopy[0].grade2,1);
-          // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
           setBoxes.push(setCopy.pop());
           ev.target.firstElementChild.removeEventListener("dblclick", rotateCopy);
           ev.target.removeEventListener("drop", drop);
@@ -452,9 +433,6 @@ function drop(ev) {
           ev.target.firstElementChild.removeAttribute("id");
           copySpace.removeChild
           drop_box(boxes);
-          console.log(setPieces);
-          console.log(setBoxes);
-          console.log(setCopy);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -472,7 +450,7 @@ function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
-        // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+        // putting the grades of the piece in addToSequence to create result, before removing the tile from setPieces
         addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,ev.target.id);
         setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
         ev.target.firstElementChild.removeEventListener("dblclick", rotate);
@@ -481,12 +459,9 @@ function drop(ev) {
         ev.target.firstElementChild.addEventListener("click", copy);
         ev.target.firstElementChild.removeAttribute("id");
         drop_box(boxes);
-        console.log(setPieces);
-        console.log(setBoxes);
-        console.log(setCopy);
         }
       }
-      //controllo che la casella e la tessera siano entrambe verticali
+      // checking if the box and the tile are both vertical
       else if (ev.target.style.width == dim1+"px" && (setPieces[pieceNum].angle == 0 || setPieces[pieceNum].angle == 180)) {
         if(result[result.length-1]!=setPieces[pieceNum].grade1){
           cartoonFeedback("Remember to match the color!");
@@ -495,9 +470,8 @@ function drop(ev) {
           ev.preventDefault();
           var data = ev.dataTransfer.getData("text");
           ev.target.appendChild(document.getElementById(data));
-          // prima di toglierlo da setPieces metto i grades del pezzo in questa funzione che crea result
+          // putting the grades of the piece in addToSequence to create result, before removing the tile from setPieces
           addToSequence(setPieces[pieceNum].grade1, setPieces[pieceNum].grade2,1);
-          // passo 2 come id perchè i pezzi verticali si comportano sempre come se fossero in una riga pari
           setBoxes.push(setPieces.splice(pieceNum, 1)[0]);
           ev.target.firstElementChild.removeEventListener("dblclick", rotate);
           ev.target.removeEventListener("drop", drop);
@@ -505,9 +479,6 @@ function drop(ev) {
           ev.target.firstElementChild.addEventListener("click", copy);
           ev.target.firstElementChild.removeAttribute("id");
           drop_box(boxes);
-          console.log(setPieces);
-          console.log(setBoxes);
-          console.log(setCopy);
         }
       }else{
         cartoonFeedback("Remember you can rotate the tile!");
@@ -533,15 +504,13 @@ function copy() {
   }
 }
 
-// this function adds the tile
+// this function adds the tile to the result array
 function addToSequence(grade1,grade2,id){
   if(id==0){
     result.push(grade1,grade2);
   }else if(Math.floor((id)/boxesPerRow)%2==0){
-    //result.push(grade1,grade2);
     result.push(grade2);
   }else{
-    //result.push(grade2,grade1);
     result.push(grade1);
   }
 
@@ -549,8 +518,7 @@ function addToSequence(grade1,grade2,id){
   onGoingEvaluateMelody(result);
 }
 
-// questa funzione in base al parametro, che dipende dal tipo di feedback che devo dare,
-// fa comparire il fumetto con il commento
+// this function shows up a cartoon with a feedback, based on the string passed as argument
 function cartoonFeedback(feedback){
   errorSound();
   let cartoon = document.getElementById("cartoon");
@@ -559,7 +527,7 @@ function cartoonFeedback(feedback){
 
   setTimeout(function(){cartoon.style.visibility="hidden"}, 2000);
 }
-// evaluating melody --------------------------------------------------------
+// evaluating melody when dropping a tile --------------------------------------------------------
 function onGoingEvaluateMelody(melody) {
     let l = melody.length;
 
@@ -593,20 +561,15 @@ function onGoingEvaluateMelody(melody) {
         cartoonFeedback("Try to change direction after a big jump!");
     }
 
+
+    // Used 3 times more neigbour notes than leaps
     if(l > 3 && neighbourNotes(melody)>3*notNeighbourNotes(melody)) {
       cartoonFeedback("Do not overuse neigbour notes!");
     }
-
+    // Used 3 times more leaps than neighbour notes  
     if(l > 3 && notNeighbourNotes(melody)>3*neighbourNotes(melody)) {
         cartoonFeedback("Use more neighbour notes!");
     }
-
-    
-
-    
-    
-  
-
 }
 //------------------------------------------- END of DRAG and DROP ---------------------------
 // ------------ TIMER controller ---------------------------------------------
