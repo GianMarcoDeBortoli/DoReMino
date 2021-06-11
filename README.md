@@ -5,9 +5,9 @@
 Most of the scripts are built using just HTML, CSS and vanilla Javascript, but to put the application into action you must first download the needed features. Please, follow the instructions below:
   * download Node.js from the site https://nodejs.org/it/download/;
   * install Parcel.js with the following command line from your shell:
-    ``` bash
-    npm install -g parcel-bundler
-    ```
+  ``` bash
+  npm install -g parcel-bundler
+  ```
   * run the application from you shell with:
   ``` bash
   npm run build
@@ -69,14 +69,18 @@ The core of the project is represented by two Javascript files: “game.js” an
 
 ### Game
 
- image 
- 
 The array of grades in game.js is filled accordingly to the mode received by the select input of the previous page (modeSelection.html). Therefore, the set of notes (and colours) of the tiles available in the game changes. 
+
+<img width="333" alt="ex1" src="https://user-images.githubusercontent.com/74858242/121670817-26435800-caae-11eb-8962-0b1cb1fb6712.png">
+
 The set of tiles is created by associating randomly two grades to each tile; colours are taken accordingly to the grade from an array called “colours”. The created set appears in the dedicated space on the top of the page.
 
- image 
- 
-When the set is created, all the tiles are also added to a dictionary called “setPieces” that contains all the information we need to work with: the two grades and the orientation. This is because all the tiles present in the set can rotate and therefore the angle in the dictionary “setPieces” changes accordingly. 
+When the set is created, all the tiles are also added to a dictionary called “setPieces” that contains all the information we need to work with: the two grades and the orientation. 
+
+<img width="984" alt="ex2" src="https://user-images.githubusercontent.com/74858242/121670862-30fded00-caae-11eb-8c1d-6be76b0f6215.png">
+
+This is because all the tiles present in the set can rotate and therefore the angle in the dictionary “setPieces” changes accordingly. 
+
 Two important event listeners added to the tile are the drag one and the drop one, that allow the user to place the tile in the board.In particular, the drop is allowed only when the tile is rotated in the right way and the colour of the last tile matches with the new one. Feedbacks are given if the player makes a mistake. 
 If the drop is allowed, then the tile is removed from the “setPieces” dictionary, and the correct grade is added to the “result” array. This array contains the sequence of grades of the tiles placed on the board. It represents the melody that is being created. It is interesting to note that it contains a subset of the integer numbers of the mode that was selected. 
 
@@ -87,11 +91,11 @@ It is used, in particular, to give tips and help the user to not make the same m
 At any time during the game the player can listen to the notes on the tiles, both the ones in the set and the ones already on the board. If needed, the entire melody created can be listened to as well thanks to designated button. 
 To play the melody during the game we used a function created using Tone.js, that can be found inside the module “sound.js”. It can be called anytime during the game or at the end of the game, in the scoring page. 
  
-   image 
+<img width="544" alt="ex3" src="https://user-images.githubusercontent.com/74858242/121671057-660a3f80-caae-11eb-8610-75f14fa51463.png">
 
 This function uses a constant dictionary “searchForNote” that contains all the possible grades and the corresponding note, needed to associate the grade present in the “result” array with the name of the note. 
   
-  image
+<img width="1053" alt="ex4" src="https://user-images.githubusercontent.com/74858242/121671104-74585b80-caae-11eb-9efb-af701db1dd8b.png">
  
 The array "result” is then passed to the scoring page score.js. 
  
@@ -105,13 +109,20 @@ We created a button that, starting from “result” and with the help of the ar
 Below the animation, a score bar appears. The number displayed is the one calculated by the evaluation system and with the number some comments are written. The comments are divided between compliments, if the player created a melody with particularly good features, and suggestions, if some mistakes are detected. 
 
 The evaluation system is built as follows: 
- 1) Calls the functions from the module “melodyEvaluator.js” and stores the returned values in some variables to       take track of the results. image 
- 2) Based on those results, the comments are then chosen and inserted inside the correct boxes of the page. image
- 3) The total score is a percentage and is given by a weighted mean of four main features: image 
+
+ 1) Calls the functions from the module “melodyEvaluator.js” and stores the returned values in some variables to take track of the results.
+ <img width="552" alt="ex5" src="https://user-images.githubusercontent.com/74858242/121671143-80441d80-caae-11eb-8901-374620d18ce3.png">
+ 
+ 2) Based on those results, the comments are then chosen and inserted inside the correct boxes of the page. 
+ <img width="628" alt="ex6" src="https://user-images.githubusercontent.com/74858242/121671295-a8338100-caae-11eb-98eb-43b54bd574f3.png">
+
+3) The total score is a percentage and is given by a weighted mean of four main features: image 
     * Length of the melody 
     * The use of different notes throughout the melody and the fact that player has started and/or ended on the         tonic
     * The contour of the melody
-    * The length of the leaps used to pass from note to note. image  
+    * The length of the leaps used to pass from note to note.
+
+<img width="633" alt="ex7" src="https://user-images.githubusercontent.com/74858242/121671384-c4cfb900-caae-11eb-84e8-9a27f378510b.png">  
 
 Note that there is a further mechanisms that changes the weigths of each feature change depending on the situation: i.e., if the player has created a long melody using only one note, then the system recognizes the case and gives a high weight to the parameters that punishes more the fact that most of the notes are untouched.  
 
