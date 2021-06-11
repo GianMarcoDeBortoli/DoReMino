@@ -1,5 +1,23 @@
 # DòReMino
 
+# Usage
+
+Most of the scripts are built using just HTML, CSS and vanilla Javascript, but to put the application into action you must first download the needed features. Please, follow the instructions below:
+  * download Node.js from the site https://nodejs.org/it/download/;
+  * install Parcel.js with the following command line from your shell:
+    '''bash
+    npm install -g parcel-bundler
+    '''
+  * run the application from you shell with:
+  '''bash
+  npm run build
+  '''
+  * the application must begin from the page "openingTitle.html", to allow that, follow the link given by the shell with the previous command
+  and append:
+  '''bash
+  openingTitle.html
+  '''
+
 ## Introduction 
 The project consists in the development of a melodic game loosely based on the rules of traditional Domino. 
 
