@@ -4,7 +4,7 @@
   "main": "game.js",
   "scripts": {
     "start": "parcel ./*.html",
-    "predeploy": "rm -rf dist && parcel build ./*.html --public-url https://github.com/Giemme13/DoReMino.git",
+    "predeploy": "rm -rf dist && parcel build ./*.html --public-url https://github.com/Giemme13/DoReMino/openingTitle.html.git",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
