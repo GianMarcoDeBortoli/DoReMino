@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "game.js",
   "scripts": {
-    "dev": "parcel *.html",
-    "build": "parcel build *.html"
+    "start": "parcel ./*.html",
+    "predeploy": "rm -rf dist && parcel build ./*.html --public-url https://github.com/Giemme13/DoReMino.git",
+    "deploy": "gh-pages -d dist/"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "babel-polyfill": "^6.26.0",
+    "gh-pages": "^3.2.0",
     "jquery": "^3.6.0"
   },
   "description": "",
