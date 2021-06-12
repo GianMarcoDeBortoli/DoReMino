@@ -2,6 +2,8 @@
 
 ## Links
 
+Cross-browser features are not implemented. Please, use Google Chrome browser, otherwise the design will not be displayed as it's meant to be.
+
 Game link: https://giemme13.github.io/DoReMino/openingTitle.html
 
 Demo video: https://youtu.be/DPyeD5LiCds
