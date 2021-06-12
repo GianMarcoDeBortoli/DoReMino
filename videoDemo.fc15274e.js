@@ -3,4 +3,4 @@ parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcel
 },{}],"eQIN":[function(require,module,exports) {
 "use strict";var e=require("./modules/sound");const t=document.getElementById("backToRules");function n(){(0,e.playMembrane)(),setTimeout(function(){location.replace("rules.html")},700)}t.addEventListener("click",n);
 },{"./modules/sound":"QI2D"}]},{},["eQIN"], null)
-//# sourceMappingURL=/DoReMino/openingTitle.html/videoDemo.fc15274e.js.map
+//# sourceMappingURL=/DoReMino/videoDemo.fc15274e.js.map
