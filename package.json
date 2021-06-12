@@ -5,7 +5,7 @@
   "scripts": {
     "start": "parcel ./*.html",
     "predeploy": "rm -rf dist && parcel build ./*.html --public-url https://github.com/Giemme13/DoReMino.git",
-    "deploy": "gh-pages -d dist/"
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
