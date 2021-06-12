@@ -3,6 +3,7 @@
 ## Links
 
 Game link: https://giemme13.github.io/DoReMino/openingTitle.html
+
 Demo video: https://youtu.be/DPyeD5LiCds
 
 ## Introduction 
