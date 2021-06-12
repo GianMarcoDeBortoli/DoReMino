@@ -17,6 +17,9 @@ Most of the scripts are built using just HTML, CSS and vanilla Javascript, but t
   ``` bash
   openingTitle.html
   ```
+## Links
+
+Demo: https://youtu.be/DPyeD5LiCds
 
 ## Introduction 
 The project consists in the development of a melodic game loosely based on the rules of traditional Domino. 
